@@ -24,7 +24,7 @@ class SocialAccountService
                 'email' => $providerUser->getEmail(),
                 'name' => $providerUser->getName(),
                 'google_id' => $providerUser->getId(),
-                'group' => 'unactivated',
+                'role' => 'unactivated',
             ]);
 
             return $user;

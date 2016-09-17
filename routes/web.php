@@ -18,5 +18,16 @@ Route::get('/', function () {
 });
 
 Route::get('/home', 'HomeController@index');
+Route::get('/profile/edit', 'Auth\EditController@index');
+Route::post('/profile/edit', 'Auth\EditController@update_profile');
+Route::get('/profile/edit/password', 'Auth\EditController@password');
+Route::post('/profile/edit/password', 'Auth\EditController@update_password');
+Route::get('/users', 'UserController@index');
+Route::get('/users/edit/{id}', 'UserController@edit');
+Route::post('/users/edit', 'UserController@save');
+Route::post('/users/delete', 'UserController@delete');
+
+
+// Google Auth
 Route::get('/redirect', 'SocialAuthController@redirect');
 Route::get('/callback', 'SocialAuthController@callback');
