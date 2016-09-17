@@ -6,15 +6,16 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Brukere</div>
                 <div class="panel-body">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>Navn</th>
-                            <th>E-post</th>
-                            <th>Rolle</th>
-                        </tr>
-                        </thead>
-                        <tbody>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Navn</th>
+                                <th>E-post</th>
+                                <th>Rolle</th>
+                            </tr>
+                            </thead>
+                            <tbody>
                             @foreach($users as $user)
                                 <tr>
                                     <th>{{ $user->name }}</th>
@@ -32,8 +33,9 @@
                                     </th>
                                 </tr>
                             @endforeach
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

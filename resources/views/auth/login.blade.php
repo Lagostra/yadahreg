@@ -1,17 +1,22 @@
 @extends('layouts.main')
 
+@section('head')
+    <link rel="stylesheet" href="{{ url('/plugins/bootstrap-social.css') }}" />
+    <link rel="stylesheet" href="{{ url('/plugins/font-awesome/css/font-awesome.min.css') }}" />
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Login</div>
+                <div class="panel-heading">Logg inn</div>
                 <div class="panel-body">
                     <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+                            <label for="email" class="col-md-4 control-label">E-post</label>
 
                             <div class="col-md-6">
                                 <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
@@ -25,7 +30,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Password</label>
+                            <label for="password" class="col-md-4 control-label">Passord</label>
 
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control" name="password" required>
@@ -42,7 +47,7 @@
                             <div class="col-md-6 col-md-offset-4">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="remember"> Remember Me
+                                        <input type="checkbox" name="remember"> Husk meg
                                     </label>
                                 </div>
                             </div>
@@ -51,14 +56,16 @@
                         <div class="form-group">
                             <div class="col-md-8 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
-                                    Login
+                                    Logg inn
                                 </button>
 
-                                <a class="btn btn-link" href="{{ url('/password/reset') }}">
-                                    Forgot Your Password?
+                                <a class="btn btn-primary btn-social btn-google" href="{{ url('/redirect') }}">
+                                    <span class="fa fa-google"></span> Innlogging med Google
                                 </a>
 
-                                <a href="redirect">Login with Google</a>
+                                <a class="btn btn-link" href="{{ url('/password/reset') }}">
+                                    Glemt passord?
+                                </a>
                             </div>
                         </div>
                     </form>

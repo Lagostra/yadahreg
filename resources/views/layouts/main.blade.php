@@ -30,7 +30,7 @@
             ]); ?>
         </script>
 
-        {{--@yield('header')--}}
+        @yield('head')
     </head>
 
     <body>
@@ -52,7 +52,7 @@
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-left">
                         @if(Auth::check())
-                            <li class="active"><a href="{{ url('/home') }}">Hjem</a></li>
+                            <li><a href="{{ url('/home') }}">Hjem</a></li>
                             @if(Auth::user()->role == 'user' || Auth::user()->role == 'admin')
                                 <li><a href="#">Registrering</a></li>
                                 <li><a href="#">Medlemmer</a></li>

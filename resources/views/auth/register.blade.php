@@ -1,5 +1,10 @@
 @extends('layouts.main')
 
+@section('head')
+    <link rel="stylesheet" href="{{ url('/plugins/bootstrap-social.css') }}" />
+    <link rel="stylesheet" href="{{ url('/plugins/font-awesome/css/font-awesome.min.css') }}" />
+@endsection
+
 @section('content')
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
@@ -70,8 +75,14 @@
                             <button type="submit" class="btn btn-primary">
                                 Registrer
                             </button>
+                            <a class="btn btn-primary btn-social btn-google" href="{{ url('/redirect') }}">
+                                <span class="fa fa-google"></span> Registrering med Google
+                            </a>
                         </div>
+
                     </div>
+
+
                 </form>
             </div>
         </div>
