@@ -12,9 +12,15 @@
                     _token: '{{ csrf_token() }}',
                     member_id: member_id,
                     event_id: {{ $chosen_event->id }},
-                    status: status
+                    status: status,
                 }
+            }).fail(function(data, status) {
+                window.alert("Noe gikk galt. Vennligst last siden på nytt.");
             });
+        }
+
+        function selectEvent(sel) {
+            window.location = "{{ url('/registration') }}/" + sel.value;
         }
     </script>
 @endsection
@@ -28,30 +34,41 @@
 
                 <div class="panel-body">
 
-                    <select onchange="function(e) {
-                        window.location = "{{ url('/registration') }}/" + e.value;
-                    }">
-                            }>
-                        @foreach($events as $event)
-                            <?php $date = date("d.m.Y", strtotime($event->date)); ?>
-                            <option value="{{ $event->id }}">{{ $event->title == "" ? $date : $date . " - " . $event->title }}</option>
-                        @endforeach
-                        @if(count($events) == 0)
-                            <option selected disabled>Ingen hendelser</option>
-                        @endif
-                    </select>
+                    <div class="row margin-bottom-fix">
+                        <div class="col-md-8">
+                            <select class="form-control" onchange="selectEvent(this);">
+                                @foreach($events as $event)
+                                    <?php $date = date("d.m.Y", strtotime($event->date)); ?>
+                                    <option value="{{ $event->id }}" {{ ($event->id === $chosen_event->id) ? 'selected' : '' }}>{{ $event->title == "" ? $date : $date . " - " . $event->title }}</option>
+                                @endforeach
+                                @if(count($events) == 0)
+                                    <option selected disabled>Ingen hendelser</option>
+                                @endif
+                            </select>
+                        </div>
+                    </div>
 
                     <form class="form-inline" role="form" method="POST" action="{{ url('/registration/today') }}">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-primary margin-bottom-fix">
                             Ny hendelse i dag
                         </button>
                     </form>
-                    <a class="btn btn-primary" href="{{ url('/registration/addevent') }}">Ny hendelse</a>
+                    <a class="btn btn-primary margin-bottom-fix" href="{{ url('/registration/addevent') }}">Ny hendelse</a>
 
                     @if($chosen_event != null)
-                    <a class="btn btn-primary" href="{{ url('/registration/edit/'.$chosen_event->today) }}">Rediger hendelse</a>
+                    <a class="btn btn-primary margin-bottom-fix" href="{{ url('/registration/editevent/'.$chosen_event->id) }}">Rediger hendelse</a>
+                    <form class="form-inline" role="form" method="POST"  onsubmit="return confirm('Sikker på at du vil slette hendelsen?');" action="{{ url('/registration/delete') }}">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="id" value="{{ $chosen_event->id }}" />
+                        <button type="submit" class="btn btn-primary margin-bottom-fix">
+                            Slett hendelse
+                        </button>
+                    </form>
 
+                    @endif
+
+                    @if($chosen_event != null)
                     <div class="table-responsive">
                         <table class="table">
                             <thead>

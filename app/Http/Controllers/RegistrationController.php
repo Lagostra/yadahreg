@@ -26,14 +26,14 @@ class RegistrationController extends Controller {
             return redirect(url('/home'));
         }
 
-
         $members = Member::orderBy('first_name')->get();
         $events = Event::orderBy('date', 'desc')->get();
 
-        if($event_id == -1)
+        $chosen_event = Event::find($event_id);
+
+        if($chosen_event == null) {
             $chosen_event = Event::orderBy('date', 'desc')->first();
-        else
-            $chosen_event = Event::find('id', $event_id);
+        }
 
         foreach($members as $member) {
             foreach($member->events as $event) {
@@ -93,7 +93,81 @@ class RegistrationController extends Controller {
             return redirect(url('/home'));
         }
 
+        return view('registration.add');
+    }
 
+    public function do_add(Request $request) {
+        if(!(Auth::user()->role == 'admin' || Auth::user()->role == 'user') ) {
+            return redirect(url('/home'));
+        }
+
+        $validator = Validator::make($request->all(), [
+            'date' => 'date|required',
+            'title' => 'string|max:50|required',
+        ]);
+
+        if ($validator->fails()) {
+            if($validator)
+                echo "Validation error:";
+            foreach ($validator->errors()->all() as $error) {
+                echo $error;
+            }
+            return;
+        }
+
+        $event = new Event();
+        $event->date = date("Y-m-d", strtotime($request->get('date')));
+        $event->title = $request->get('title');
+        $event->save();
+
+        return redirect(url('/registration/'.$event->id));
+    }
+
+    public function edit($id) {
+        $event = Event::find($id);
+
+        if($event == null)
+            return redirect(url('/registration'));
+
+        return view('registration.edit', array('event' => $event));
+    }
+
+    public function do_edit(Request $request) {
+        if(!(Auth::user()->role == 'admin' || Auth::user()->role == 'user') ) {
+            return redirect(url('/home'));
+        }
+
+        $validator = Validator::make($request->all(), [
+            'date' => 'date|required',
+            'title' => 'string|max:50|required',
+        ]);
+
+        if ($validator->fails()) {
+            if($validator)
+                echo "Validation error:";
+            foreach ($validator->errors()->all() as $error) {
+                echo $error;
+            }
+            return;
+        }
+
+        $event = Event::find($request->get('id'));
+        $event->date = date("Y-m-d", strtotime($request->get('date')));
+        $event->title = $request->get('title');
+        $event->save();
+
+        return redirect(url('/registration/'.$event->id));
+    }
+
+    public function delete(Request $request) {
+        if(!(Auth::user()->role == 'admin' || Auth::user()->role == 'user') ) {
+            return redirect(url('/home'));
+        }
+
+        $event = Event::find($request->get('id'));
+        $event->delete();
+
+        return redirect(url('/registration'));
     }
 
 }
