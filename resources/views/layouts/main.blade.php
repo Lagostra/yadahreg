@@ -15,7 +15,7 @@
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         <link rel="stylesheet" href="{{ url('/plugins/bootstrap/css/bootstrap.min.css') }}" />
-        <link rel="stylesheet" href="{{url('/css/styles.css"')}} />
+        <link rel="stylesheet" href="{{url('/css/styles.css')}}" />
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
