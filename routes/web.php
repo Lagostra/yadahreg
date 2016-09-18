@@ -30,6 +30,7 @@ Route::post('/users/edit', 'UserController@save');
 Route::post('/users/delete', 'UserController@delete');
 
 Route::post('/registration/today', 'RegistrationController@add_today');
+Route::post('/registration', 'RegistrationController@set_present');
 Route::get('/registration/{event_id?}', 'RegistrationController@index');
 
 Route::get('/members/add', 'MemberController@add');

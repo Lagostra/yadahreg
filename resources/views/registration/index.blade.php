@@ -2,7 +2,21 @@
 
 @if($chosen_event != null)
 @section('head')
-    <script>var event_id={{ $chosen_event->id }};</script>
+    <script>
+        function setStatus(member_id, status) {
+            status = (status) ? 1 : 0;
+            $.ajax({
+                url: '{{ url('/registration') }}',
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    member_id: member_id,
+                    event_id: {{ $chosen_event->id }},
+                    status: status
+                }
+            });
+        }
+    </script>
 @endsection
 @endif
 
@@ -51,7 +65,8 @@
                                 <tr>
                                     <th class="member-name">{{ $member->first_name . " " . $member->last_name}}</th>
                                     <th>
-                                        <input type="checkbox" value="{{ $member->id }}" {{ (count($member->events) > 0 && in_array($chosen_event, $member->events)) ? 'selected' : '' }} />
+                                        <input type="checkbox" value="{{ $member->id }}" {{ $member->present ? 'checked' : '' }}
+                                                onclick="setStatus({{ $member->id }}, this.checked);"/>
                                     </th>
                                 </tr>
                             @endforeach
