@@ -61,13 +61,12 @@ class MemberController extends Controller {
         $member = new Member;
         $member->first_name = $request->get('first_name');
         $member->last_name = $request->get('last_name');
-        $member->email = $request->get('nullable|email');
-        $member->phone = $request->get('nullable|phone');
+        $member->email = $request->get('email');
+        $member->phone = $request->get('phone');
         $member->preferred_voice = $request->get('preferred_voice');
         $member->active = $this->toBool($request->get('active'));
         $member->save();
         return redirect(url('/members'));
-
     }
 
     private function toBool($string) {
@@ -90,7 +89,11 @@ class MemberController extends Controller {
             return redirect(url('/home'));
         }
 
-
+        $member = Member::find($id);
+        if($member == null) {
+            return redirect(url('/members'));
+        }
+        return view('members.edit', array('member' => $member));
     }
 
     public function do_edit(Request $request) {
@@ -98,7 +101,34 @@ class MemberController extends Controller {
             return redirect(url('/home'));
         }
 
+        $validator = Validator::make($request->all(), [
+            'first_name' => 'required|max:255',
+            'last_name' => 'required|max:255',
+            'email' => 'email|max:255',
+            'phone' => 'numeric',
+            'voice' => array('nullable','regex:[sopran|alt|tenor|bass]'),
+            'active' => array('required', 'regex:[true|false]')
+        ]);
 
+        if ($validator->fails()) {
+            if($validator)
+                return redirect(url('/members/add'))
+                    ->withErrors($validator)
+                    ->withInput();
+        }
+
+        $member = Member::find($request->id);
+        if($member == null)
+            return redirect(url('/members'));
+
+        $member->first_name = $request->get('first_name');
+        $member->last_name = $request->get('last_name');
+        $member->email = $request->get('email');
+        $member->phone = $request->get('phone');
+        $member->preferred_voice = $request->get('preferred_voice');
+        $member->active = $this->toBool($request->get('active'));
+        $member->save();
+        return redirect(url('/members'));
     }
 
 }

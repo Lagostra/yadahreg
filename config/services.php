@@ -38,6 +38,6 @@ return [
     'google' => [
         'client_id' => '81197200725-f8jkqatcd1cj1lv6e12g04cj3mm5gdd8.apps.googleusercontent.com',
         'client_secret' => 'ZwGxDpyOCdbnZC_Z4plR243L',
-        'redirect' => 'http://folk.ntnu.no:8000/callback',
+        'redirect' => 'http://localhost:8000/callback',
     ],
 ];
