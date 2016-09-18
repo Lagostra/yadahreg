@@ -37,7 +37,7 @@
                                             <button type="submit" class="btn btn-primary btn-xs">
                                                 Slett medlem
                                             </button>
-                                        </form>
+                                        </form> 
                                     </th>
 
                                 </tr>
