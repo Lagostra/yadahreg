@@ -54,8 +54,8 @@
                         @if(Auth::check())
                             <li><a href="{{ url('/home') }}">Hjem</a></li>
                             @if(Auth::user()->role == 'user' || Auth::user()->role == 'admin')
-                                <li><a href="#">Registrering</a></li>
-                                <li><a href="#">Medlemmer</a></li>
+                                <li><a href="{{ url('/registration') }}">Registrering</a></li>
+                                <li><a href="{{ url('/members') }}">Medlemmer</a></li>
                                 <li><a href="#">Betaling</a></li>
                             @endif
                         @endif
@@ -104,5 +104,6 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
         <script src="/plugins/bootstrap/js/bootstrap.min.js"></script>
+        @yield('foot')
     </body>
 </html>

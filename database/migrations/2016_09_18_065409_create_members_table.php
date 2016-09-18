@@ -19,6 +19,7 @@ class CreateMembersTable extends Migration
             $table->string('email')->nullable();
             $table->integer('phone')->nullable();
             $table->string('preferred_voice')->nullable();
+            $table->boolean('active');
             $table->timestamps();
         });
     }

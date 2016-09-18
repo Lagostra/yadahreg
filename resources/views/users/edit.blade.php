@@ -40,7 +40,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('role') ? ' has-error' : '' }}">
-                            <label for="role" class="col-md-4 control-label">E-post</label>
+                            <label for="role" class="col-md-4 control-label">Rolle</label>
 
                             <div class="col-md-6">
                                 <div class="form-check">
@@ -55,7 +55,7 @@
                                         Bruker
                                     </label>
                                 </div>
-                                <div class="form-check disabled">
+                                <div class="form-check">
                                     <label class="form-check-label">
                                         <input class="form-check-input" type="radio" name="role" id="role3" value="admin" @if($user->role == 'admin') checked @endif>
                                         Administrator
