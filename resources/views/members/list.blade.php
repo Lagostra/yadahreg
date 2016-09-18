@@ -1,5 +1,17 @@
 @extends('layouts.main')
 
+@section('head')
+    <script>
+        function onChooseActive(e) {
+            console.log("boop");
+            if(e.checked)
+                window.location = '{{ url('/members/1') }}';
+            else
+                window.location = '{{ url('/members') }}';
+        }
+    </script>
+@endsection
+
 @section('content')
     <div class="row">
         <div class="col-md-12">
@@ -8,7 +20,9 @@
 
                 <div class="panel-body">
 
-                    <th><a class="btn btn-primary" href="{{ url('/members/add/') }}">Legg til medlem</a></th>
+                    <a class="btn btn-primary" href="{{ url('/members/add/') }}">Legg til medlem</a>
+                    <span>Vis bare aktive medlemmer: </span>
+                    <input type="checkbox" {{ $active_only ? 'checked' : '' }} onclick="onChooseActive(this);" />
 
                     <div class="table-responsive">
                         <table class="table sortable" id="member_table">
@@ -37,7 +51,7 @@
                                             <button type="submit" class="btn btn-primary btn-xs">
                                                 Slett medlem
                                             </button>
-                                        </form> 
+                                        </form>
                                     </th>
 
                                 </tr>

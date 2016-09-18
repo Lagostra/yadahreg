@@ -29,14 +29,15 @@ Route::get('/users/edit/{id}', 'UserController@edit');
 Route::post('/users/edit', 'UserController@save');
 Route::post('/users/delete', 'UserController@delete');
 
-Route::get('/registration', 'RegistrationController@index');
+Route::post('/registration/today', 'RegistrationController@add_today');
+Route::get('/registration/{event_id?}', 'RegistrationController@index');
 
-Route::get('/members', 'MemberController@index');
 Route::get('/members/add', 'MemberController@add');
 Route::post('/members/add', 'MemberController@do_add');
 Route::get('/members/edit/{id}', 'MemberController@edit');
 Route::post('/members/edit', 'MemberController@do_edit');
 Route::post('/members/delete', 'MemberController@delete');
+Route::get('/members/{active_only?}', 'MemberController@index');
 
 // Google Auth
 Route::get('/redirect', 'SocialAuthController@redirect');
