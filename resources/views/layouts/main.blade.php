@@ -14,8 +14,8 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
-        <link rel="stylesheet" href="/plugins/bootstrap/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="/css/styles.css" />
+        <link rel="stylesheet" href="{{ url('/plugins/bootstrap/css/bootstrap.min.css') }}" />
+        <link rel="stylesheet" href="{{url('/css/styles.css"')}} />
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -103,7 +103,7 @@
         <!-- Placed at the end of the document so the pages load faster -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-        <script src="/plugins/bootstrap/js/bootstrap.min.js"></script>
+        <script src="{{ url('/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
         @yield('foot')
     </body>
 </html>
