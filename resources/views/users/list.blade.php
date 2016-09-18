@@ -20,7 +20,7 @@
                                 <tr>
                                     <th>{{ $user->name }}</th>
                                     <th>{{ $user->email }}</th>
-                                    <th>{{ $ucfirst($user->role) }}</th>
+                                    <th>{{ ucfirst($user->role) }}</th>
                                     <th><a class="btn btn-primary btn-xs" href="{{ url('/users/edit/' . $user->id) }}">Rediger</a></th>
                                     <th>
                                         <form class="form-inline" role="form" method="POST"  onsubmit="return confirm('Sikker på at du vil slette brukeren?');" action="{{ url('/users/delete') }}">
