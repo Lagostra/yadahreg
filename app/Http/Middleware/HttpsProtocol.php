@@ -1,4 +1,4 @@
-namespace MyApp\Http\Middleware;
+namespace App\Http\Middleware;
 
 use Closure;
 
