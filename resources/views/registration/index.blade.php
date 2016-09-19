@@ -73,19 +73,9 @@
 
                     @if($chosen_event != null)
                     <a class="btn btn-primary margin-bottom-fix" href="{{ url('/registration/editevent/'.$chosen_event->id) }}">Rediger hendelse</a>
-                    <form class="form-inline" role="form" method="POST"  onsubmit="return confirm('Sikker på at du vil slette hendelsen?');" action="{{ url('/registration/delete') }}">
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <input type="hidden" name="id" value="{{ $chosen_event->id }}" />
-                        <button type="submit" class="btn btn-primary margin-bottom-fix">
-                            Slett hendelse
-                        </button>
-                    </form>
 
                     <input id="search" type="text" class="form-control" placeholder="Søk her" name="title" oninput="search(this);">
 
-                    @endif
-
-                    @if($chosen_event != null)
                     <div class="table-responsive">
                         <table id="member-table" class="table">
                             <thead>

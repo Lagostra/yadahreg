@@ -51,13 +51,21 @@
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
-                                    Rediger
+                                    Lagre
                                 </button>
                             </div>
 
                         </div>
 
 
+                    </form>
+
+                    <form class="form-inline pull-right" role="form" method="POST"  onsubmit="return confirm('Sikker på at du vil slette hendelsen?');" action="{{ url('/registration/delete') }}">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="id" value="{{ $event->id }}" />
+                        <button type="submit" class="btn btn-primary margin-bottom-fix">
+                            Slett hendelse
+                        </button>
                     </form>
                 </div>
             </div>
