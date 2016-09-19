@@ -1,5 +1,9 @@
 @extends('layouts.main')
 
+@section('head')
+    <link rel="stylesheet" href="{{ url('/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" />
+@endsection
+
 @section('content')
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
@@ -32,6 +36,25 @@
                                 @if ($errors->has('last_name'))
                                     <span class="help-block">
                                     <strong>{{ $errors->first('last_name') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('birthday') ? ' has-error' : '' }}">
+                            <label for="birthday" class="col-md-4 control-label">Fødselsdato</label>
+
+                            <div class="col-md-6">
+                                <div id="datepicker" class="input-group date" data-provide="datepicker">
+                                    <input type="text" class="form-control datepicker" name="birthday" placeholder="dd.mm.YYYY" value="{{ old('date') }}" required>
+                                    <div class="input-group-addon">
+                                        <span class="glyphicon glyphicon-th"></span>
+                                    </div>
+                                </div>
+
+                                @if ($errors->has('birthday'))
+                                    <span class="help-block">
+                                    <strong>{{ $errors->first('birthday') }}</strong>
                                 </span>
                                 @endif
                             </div>
@@ -110,6 +133,34 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('address') ? ' has-error' : '' }}">
+                            <label for="address" class="col-md-4 control-label">Adresse</label>
+
+                            <div class="col-md-6">
+                                <input id="address" type="text" class="form-control" name="address" value="{{ old('address') }}">
+
+                                @if ($errors->has('address'))
+                                    <span class="help-block">
+                                    <strong>{{ $errors->first('address') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('allergies') ? ' has-error' : '' }}">
+                            <label for="allergies" class="col-md-4 control-label">Allergier</label>
+
+                            <div class="col-md-6">
+                                <input id="allergies" type="text" class="form-control" name="allergies" value="{{ old('allergies') }}">
+
+                                @if ($errors->has('allergies'))
+                                    <span class="help-block">
+                                    <strong>{{ $errors->first('allergies') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group{{ $errors->has('active') ? ' has-error' : '' }}">
                             <label for="active" class="col-md-4 control-label">Aktiv</label>
 
@@ -150,4 +201,13 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('foot')
+    <script src="{{ url('/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+    <script>
+        $('#datepicker').datepicker({
+            format: "dd.mm.yyyy"
+        });
+    </script>
 @endsection
