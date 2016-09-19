@@ -22,6 +22,21 @@
         function selectEvent(sel) {
             window.location = "{{ url('/registration') }}/" + sel.value;
         }
+
+        function search(field) {
+            var string = field.value;
+            var regex = new RegExp("(.*)" + string + "(.*)","i");
+
+            var $rows = $('#member-table').find("tbody").find('tr');
+            $.each($rows, function(i, row) {
+                var name = $(row).find('.member-name').html();
+                if(regex.test(name)) {
+                    $(row).show();
+                } else {
+                    $(row).hide();
+                }
+            });
+        }
     </script>
 @endsection
 @endif
@@ -66,11 +81,13 @@
                         </button>
                     </form>
 
+                    <input id="search" type="text" class="form-control" placeholder="Søk her" name="title" oninput="search(this);">
+
                     @endif
 
                     @if($chosen_event != null)
                     <div class="table-responsive">
-                        <table class="table">
+                        <table id="member-table" class="table">
                             <thead>
                             <tr>
                                 <th>Navn</th>
