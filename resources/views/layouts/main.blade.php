@@ -55,7 +55,7 @@
                             <li><a href="{{ url('/home') }}">Hjem</a></li>
                             @if(Auth::user()->role == 'user' || Auth::user()->role == 'admin')
                                 <li><a href="{{ url('/registration') }}">Registrering</a></li>
-                                <li><a href="{{ url('/members/1') }}">Medlemmer</a></li>
+                                <li><a href="{{ url('/members') }}">Medlemmer</a></li>
                                 <li><a href="#">Betaling</a></li>
                             @endif
                         @endif

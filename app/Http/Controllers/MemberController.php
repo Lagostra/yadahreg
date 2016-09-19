@@ -15,17 +15,17 @@ class MemberController extends Controller {
         $this->middleware('auth');
     }
 
-    public function index($active_only = 0) {
+    public function index($show_active = 0) {
         if(!(Auth::user()->role == 'admin' || Auth::user()->role == 'user') ) {
             return redirect(url('/home'));
         }
 
-        if($active_only)
+        if(!$show_active)
             $members = Member::where('active', true)->orderBy('last_name')->get();
         else
             $members = Member::orderBy('last_name')->get();
 
-        return view('members.list', array('members' => $members, 'active_only' => $active_only));
+        return view('members.list', array('members' => $members, 'show_active' => $show_active));
     }
 
     public function add() {

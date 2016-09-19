@@ -5,9 +5,9 @@
         function onChooseActive(e) {
             console.log("boop");
             if(e.checked)
-                window.location = '{{ url('/members/1') }}';
-            else
                 window.location = '{{ url('/members') }}';
+            else
+                window.location = '{{ url('/members/1') }}';
         }
 
         function search(field) {
@@ -38,7 +38,7 @@
                         <div class="col-md-12">
                             <a class="btn btn-primary" href="{{ url('/members/add/') }}">Legg til medlem</a>
                             <span>Vis bare aktive medlemmer: </span>
-                            <input type="checkbox" {{ $active_only ? 'checked' : '' }} onclick="onChooseActive(this);" />
+                            <input type="checkbox" {{ !$show_active ? 'checked' : '' }} onclick="onChooseActive(this);" />
                         </div>
                     </div>
 
