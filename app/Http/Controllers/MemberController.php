@@ -48,7 +48,10 @@ class MemberController extends Controller {
             'email' => 'email|max:255',
             'phone' => 'numeric',
             'voice' => array('regex:[sopran|alt|tenor|bass]'),
-            'active' => array('required', 'regex:[true|false]')
+            'active' => array('required', 'regex:[true|false]'),
+            'birthday' => 'date|nullable',
+            'address' => 'nullable',
+            'allergies' => 'nullable',
         ]);
 
         if ($validator->fails()) {
@@ -69,6 +72,9 @@ class MemberController extends Controller {
         $member->phone = $phone;
         $member->preferred_voice = $request->get('preferred_voice');
         $member->active = $this->toBool($request->get('active'));
+        $member->birthday = date("Y-m-d", strtotime($request->get('birthday')));
+        $member->address = $request->get('address');
+        $member->allergies = $request->get('allergies');
         $member->save();
         return redirect(url('/members'));
     }
@@ -111,7 +117,10 @@ class MemberController extends Controller {
             'email' => 'nullable|email|max:255',
             'phone' => 'nullable|numeric',
             'voice' => array('nullable','regex:[sopran|alt|tenor|bass]'),
-            'active' => array('required', 'regex:[true|false]')
+            'active' => array('required', 'regex:[true|false]'),
+            'birthday' => 'date|nullable',
+            'address' => 'nullable',
+            'allergies' => 'nullable',
         ]);
 
         if ($validator->fails()) {
@@ -135,6 +144,9 @@ class MemberController extends Controller {
         $member->phone = $phone;
         $member->preferred_voice = $request->get('preferred_voice');
         $member->active = $this->toBool($request->get('active'));
+        $member->birthday = date("Y-m-d", strtotime($request->get('birthday')));
+        $member->address = $request->get('address');
+        $member->allergies = $request->get('allergies');
         $member->save();
         return redirect(url('/members'));
     }
