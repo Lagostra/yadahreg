@@ -59,13 +59,12 @@
                             <tbody>
                             @foreach($members as $member)
                                 <tr>
-                                    <th class="member-last-name">{{ $member->last_name }}</th>
-                                    <th class="member-first-name">{{ $member->first_name }}</th>
-                                    <th>{{ $member->email }}</th>
-                                    <th>{{ $member->phone }}</th>
-                                    <th>{{ $member->preferred_voice == "null" ? "" : ucfirst($member->preferred_voice) }}</th>
-                                    <th><a class="btn btn-primary btn-xs" href="{{ url('/members/edit/' . $member->id) }}">Rediger</a></th>
-
+                                    <td class="member-last-name">{{ $member->last_name }}</td>
+                                    <td class="member-first-name">{{ $member->first_name }}</td>
+                                    <td>{{ $member->email }}</td>
+                                    <td>{{ $member->phone }}</td>
+                                    <td>{{ $member->preferred_voice == "null" ? "" : ucfirst($member->preferred_voice) }}</td>
+                                    <td><a class="btn btn-primary btn-xs" href="{{ url('/members/edit/' . $member->id) }}">Rediger</a></td>
                                 </tr>
                             @endforeach
                             </tbody>

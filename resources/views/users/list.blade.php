@@ -18,11 +18,11 @@
                             <tbody>
                             @foreach($users as $user)
                                 <tr>
-                                    <th>{{ $user->name }}</th>
-                                    <th>{{ $user->email }}</th>
-                                    <th>{{ ucfirst($user->role) }}</th>
-                                    <th><a class="btn btn-primary btn-xs" href="{{ url('/users/edit/' . $user->id) }}">Rediger</a></th>
-                                    <th>
+                                    <td>{{ $user->name }}</td>
+                                    <td>{{ $user->email }}</td>
+                                    <td>{{ ucfirst($user->role) }}</td>
+                                    <td><a class="btn btn-primary btn-xs" href="{{ url('/users/edit/' . $user->id) }}">Rediger</a></td>
+                                    <td>
                                         <form class="form-inline" role="form" method="POST"  onsubmit="return confirm('Sikker på at du vil slette brukeren?');" action="{{ url('/users/delete') }}">
                                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                             <input type="hidden" name="id" value="{{ $user->id }}" />
@@ -30,7 +30,7 @@
                                                 Slett bruker
                                             </button>
                                         </form>
-                                    </th>
+                                    </td>
                                 </tr>
                             @endforeach
                             </tbody>

@@ -81,17 +81,17 @@
                             <thead>
                             <tr>
                                 <th>Navn</th>
-                                <th>Tilstede</th>
+                                <th class="col-md-2">Tilstede</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($members as $member)
                                 <tr>
-                                    <th class="member-name">{{ $member->first_name . " " . $member->last_name}}</th>
-                                    <th>
+                                    <td class="member-name">{{ $member->first_name . " " . $member->last_name}}</td>
+                                    <td>
                                         <input type="checkbox" value="{{ $member->id }}" {{ $member->present ? 'checked' : '' }}
                                                 onclick="setStatus({{ $member->id }}, this.checked);"/>
-                                    </th>
+                                    </td>
                                 </tr>
                             @endforeach
                             </tbody>
