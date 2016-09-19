@@ -142,10 +142,15 @@
                                     Lagre
                                 </button>
                             </div>
-
                         </div>
 
-
+                    </form>
+                    <form class="form-inline pull-right" role="form" method="POST"  onsubmit="return confirm('Sikker på at du vil slette medlemmet?');" action="{{ url('/members/delete') }}">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="id" value="{{ $member->id }}" />
+                        <button type="submit" class="btn btn-primary">
+                            Slett medlem
+                        </button>
                     </form>
                 </div>
             </div>

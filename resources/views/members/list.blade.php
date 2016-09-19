@@ -64,15 +64,6 @@
                                     <th>{{ $member->phone }}</th>
                                     <th>{{ $member->preferred_voice == "null" ? "" : ucfirst($member->preferred_voice) }}</th>
                                     <th><a class="btn btn-primary btn-xs" href="{{ url('/members/edit/' . $member->id) }}">Rediger</a></th>
-                                    <th>
-                                        <form class="form-inline" role="form" method="POST"  onsubmit="return confirm('Sikker på at du vil slette medlemmet?');" action="{{ url('/members/delete') }}">
-                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                            <input type="hidden" name="id" value="{{ $member->id }}" />
-                                            <button type="submit" class="btn btn-primary btn-xs">
-                                                Slett medlem
-                                            </button>
-                                        </form>
-                                    </th>
 
                                 </tr>
                             @endforeach
