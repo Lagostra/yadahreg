@@ -26,7 +26,7 @@ class RegistrationController extends Controller {
             return redirect(url('/home'));
         }
 
-        $members = Member::orderBy('first_name')->get();
+        $members = Member::where('active', true)->orderBy('first_name', 'ASC')->get();
         $events = Event::orderBy('date', 'desc')->get();
 
         $chosen_event = Event::find($event_id);
