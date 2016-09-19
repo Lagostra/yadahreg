@@ -72,10 +72,10 @@
 
                     <div class="form-group">
                         <div class="col-md-6 col-md-offset-4">
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="btn btn-primary margin-bottom-fix">
                                 Registrer
                             </button>
-                            <a class="btn btn-primary btn-social btn-google" href="{{ url('/redirect') }}">
+                            <a class="btn btn-primary btn-social btn-google margin-bottom-fix" href="{{ url('/redirect') }}">
                                 <span class="fa fa-google"></span> Registrering med Google
                             </a>
                         </div>
