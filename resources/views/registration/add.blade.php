@@ -19,8 +19,8 @@
                             <label for="date" class="col-md-4 control-label">Dato</label>
 
                             <div class="col-md-6">
-                                <div class="input-group date" todayBtn="true" data-provide="datepicker">
-                                    <input type="text" class="form-control datepicker" name="date" required>
+                                <div id="datepicker" class="input-group date" data-provide="datepicker">
+                                    <input type="text" class="form-control datepicker" name="date" value="{{ date("d.m.Y") }}" required>
                                     <div class="input-group-addon">
                                         <span class="glyphicon glyphicon-th"></span>
                                     </div>
@@ -65,6 +65,12 @@
     </div>
 @endsection
 
+
 @section('foot')
     <script src="{{ url('/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+    <script>
+        $('#datepicker').datepicker({
+            format: "dd.mm.yyyy"
+        });
+    </script>
 @endsection
