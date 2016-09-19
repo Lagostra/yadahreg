@@ -37,8 +37,9 @@
                     <div class="row margin-bottom-fix">
                         <div class="col-md-12">
                             <a class="btn btn-primary" href="{{ url('/members/add/') }}">Legg til medlem</a>
-                            <span>Vis bare aktive medlemmer: </span>
+                            <span class="margin-left-10px">Vis bare aktive medlemmer: </span>
                             <input type="checkbox" {{ !$show_active ? 'checked' : '' }} onclick="onChooseActive(this);" />
+                            <span class="margin-left-10px">Antall: {{ count($members) }}</span>
                         </div>
                     </div>
 
