@@ -9,6 +9,21 @@
             else
                 window.location = '{{ url('/members') }}';
         }
+
+        function search(field) {
+            var string = field.value;
+            var regex = new RegExp("(.*)" + string + "(.*)","i");
+
+            var $rows = $('#member-table').find("tbody").find('tr');
+            $.each($rows, function(i, row) {
+                var name = $(row).find('.member-first-name').html() + " " + $(row).find('.member-last-name').html();
+                if(regex.test(name)) {
+                    $(row).show();
+                } else {
+                    $(row).hide();
+                }
+            });
+        }
     </script>
 @endsection
 
@@ -19,13 +34,18 @@
                 <div class="panel-heading">Medlemmer</div>
 
                 <div class="panel-body">
+                    <div class="row margin-bottom-fix">
+                        <div class="col-md-12">
+                            <a class="btn btn-primary" href="{{ url('/members/add/') }}">Legg til medlem</a>
+                            <span>Vis bare aktive medlemmer: </span>
+                            <input type="checkbox" {{ $active_only ? 'checked' : '' }} onclick="onChooseActive(this);" />
+                        </div>
+                    </div>
 
-                    <a class="btn btn-primary" href="{{ url('/members/add/') }}">Legg til medlem</a>
-                    <span>Vis bare aktive medlemmer: </span>
-                    <input type="checkbox" {{ $active_only ? 'checked' : '' }} onclick="onChooseActive(this);" />
+                    <input id="search" type="text" class="form-control" placeholder="Søk her" name="title" oninput="search(this);">
 
                     <div class="table-responsive">
-                        <table class="table sortable" id="member_table">
+                        <table id="member-table" class="table sortable" id="member_table">
                             <thead>
                             <tr>
                                 <th>Etternavn</th>
@@ -38,8 +58,8 @@
                             <tbody>
                             @foreach($members as $member)
                                 <tr>
-                                    <th>{{ $member->last_name }}</th>
-                                    <th>{{ $member->first_name }}</th>
+                                    <th class="member-last-name">{{ $member->last_name }}</th>
+                                    <th class="member-first-name">{{ $member->first_name }}</th>
                                     <th>{{ $member->email }}</th>
                                     <th>{{ $member->phone }}</th>
                                     <th>{{ $member->preferred_voice == "null" ? "" : ucfirst($member->preferred_voice) }}</th>
