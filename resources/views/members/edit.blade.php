@@ -113,17 +113,18 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('active') ? ' has-error' : '' }}">
+                            <label for="active" class="col-md-4 control-label">Aktiv</label>
                             <div class="col-md-6">
                                 <div class="form-check">
                                     <label class="form-check-label">
                                         <input class="form-check-input" type="radio" name="active" id="active1" value="true" checked>
-                                        Aktiv
+                                        Ja
                                     </label>
                                 </div>
                                 <div class="form-check">
                                     <label class="form-check-label">
                                         <input class="form-check-input" type="radio" name="active" id="active2" value="false">
-                                        Ikke aktiv
+                                        Nei
                                     </label>
                                 </div>
 
