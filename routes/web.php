@@ -57,6 +57,8 @@ Route::get('/payment/{id?}/{show_inactive?}', 'PaymentController@index');
 
 Route::get('/overview/attendance', 'OverviewController@list_events');
 
+Route::get('/graphs/attendance', 'GraphController@attendance');
+
 // Google Auth
 Route::get('/redirect', 'SocialAuthController@redirect');
 Route::get('/callback', 'SocialAuthController@callback');
