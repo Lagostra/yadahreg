@@ -15,13 +15,13 @@ class MemberController extends Controller {
         $this->middleware('user');
     }
 
-    public function index($show_active = 0) {
-        if(!$show_active)
+    public function index($show_inactive = 0) {
+        if(!$show_inactive)
             $members = Member::where('active', true)->orderBy('last_name')->get();
         else
             $members = Member::orderBy('last_name')->get();
 
-        return view('members.list', array('members' => $members, 'show_active' => $show_active));
+        return view('members.list', array('members' => $members, 'show_inactive' => $show_inactive));
     }
 
     public function add() {
