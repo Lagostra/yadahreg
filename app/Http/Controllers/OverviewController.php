@@ -14,7 +14,8 @@ class OverviewController extends Controller {
         $this->middleware('user');
     }
 
-    public function list_events(Request $request, $show_inactive = 0) {
+    public function list_events(Request $request) {
+        $show_inactive = $request->get('show_inactive');
         $start_date = $request->get('start_date');
         $end_date = $request->get('end_date');
 
@@ -45,7 +46,7 @@ class OverviewController extends Controller {
 
         $events = Event::whereBetween('date', array($start_date, $end_date))->orderBy('date')->get();
 
-        return view('overview.events', array('members' => $members, 'events' => $events,
+        return view('overview.events', array('members' => $members, 'events' => $events, 'show_inactive' => $show_inactive,
                                         'start_date' => $start_date,
                                         'end_date' => $end_date));
     }

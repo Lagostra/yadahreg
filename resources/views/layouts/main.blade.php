@@ -57,7 +57,7 @@
                                 <li><a href="{{ url('/registration') }}">Registrering</a></li>
                                 <li><a href="{{ url('/members') }}">Medlemmer</a></li>
                                 <li><a href="{{ url('/payment') }}">Betaling</a></li>
-                                <li><a href="{{ url('/overview') }}">Oversikt</a></li>
+                                <li><a href="{{ url('/overview/attendance') }}">Oversikt</a></li>
                             @endif
                         @endif
                     </ul>

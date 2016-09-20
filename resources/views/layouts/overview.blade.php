@@ -4,13 +4,8 @@
     <div class="row">
         <div class="col-md-12 navbar navbar-default">
             <ul class="nav navbar-nav navbar-left">
-                @if(Auth::check())
-                    <li><a href="{{ url('/overview') }}">Oppmøte</a></li>
-                    <li><a href="#">Oppmøte - plott</a></li>
-                    <li><a href="#">Stemmer - plott</a></li>
-                    <li><a href="#">Kjønn - plott</a></li>
-                    <li><a href="#">Betaling</a></li>
-                @endif
+                <li><a href="{{ url('/overview/attendance') }}">Oppmøte</a></li>
+                <li><a href="{{ url('/overview/payment') }}">Betaling</a></li>
             </ul>
         </div>
     </div>
