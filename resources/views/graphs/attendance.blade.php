@@ -9,7 +9,7 @@
                 <div class="panel-body">
                     <div id="attendance-div"></div>
 
-                    <?php echo Lava::render('LineChart', 'attendance', 'attendance-div'); ?>
+                    <?php echo Lava::render('AreaChart', 'attendance', 'attendance-div'); ?>
                 </div>
             </div>
         </div>
