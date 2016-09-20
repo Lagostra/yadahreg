@@ -97,7 +97,7 @@
                                             }
                                         }
                                         ?>
-                                        <td class="text-center">
+                                        <td class="td-padding-fix">
                                             {{ $present ? 'Y' : '' }}
                                         </td>
                                     @endforeach
