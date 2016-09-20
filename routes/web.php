@@ -52,6 +52,9 @@ Route::post('/semesters/add', 'SemesterController@do_add');
 Route::post('/semesters/edit', 'SemesterController@do_edit');
 Route::get('/semesters/edit/{id}', 'SemesterController@edit');
 
+Route::post('/payment', 'PaymentController@set_paid');
+Route::get('/payment/{id?}', 'PaymentController@index');
+
 // Google Auth
 Route::get('/redirect', 'SocialAuthController@redirect');
 Route::get('/callback', 'SocialAuthController@callback');

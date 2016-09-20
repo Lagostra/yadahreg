@@ -10,4 +10,8 @@ class Member extends Model{
         return $this->belongsToMany('App\Event');
     }
 
+    public function paid_semesters() {
+        return $this->belongsToMany('App\Semester');
+    }
+
 }

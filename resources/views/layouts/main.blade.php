@@ -56,7 +56,7 @@
                             @if(Auth::user()->role == 'user' || Auth::user()->role == 'admin')
                                 <li><a href="{{ url('/registration') }}">Registrering</a></li>
                                 <li><a href="{{ url('/members') }}">Medlemmer</a></li>
-                                <li><a href="#">Betaling</a></li>
+                                <li><a href="{{ url('/payment') }}">Betaling</a></li>
                             @endif
                         @endif
                     </ul>
