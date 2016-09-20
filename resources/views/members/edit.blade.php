@@ -43,6 +43,31 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('gender') ? ' has-error' : '' }}">
+                            <label for="gender" class="col-md-4 control-label">Kjønn</label>
+
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="radio" name="gender" id="gender1" value="kvinne" {{ $member->gender == "kvinne" ? "checked" : "" }} />
+                                        Kvinne
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="radio" name="gender" id="gender2" value="mann" {{ $member->gender == "mann" ? "checked" : "" }} />
+                                        Mann
+                                    </label>
+                                </div>
+
+                                @if ($errors->has('gender'))
+                                    <span class="help-block">
+                                    <strong>{{ $errors->first('gender') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group{{ $errors->has('birthday') ? ' has-error' : '' }}">
                             <label for="birthday" class="col-md-4 control-label">Fødselsdato</label>
 

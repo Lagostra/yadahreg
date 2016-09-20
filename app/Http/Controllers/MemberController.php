@@ -34,11 +34,12 @@ class MemberController extends Controller {
             'last_name' => 'required|max:255',
             'email' => 'email|max:255',
             'phone' => 'numeric',
-            'voice' => array('regex:[sopran|alt|tenor|bass]'),
+            'voice' => array('nullable', 'regex:[sopran|alt|tenor|bass]'),
             'active' => array('required', 'regex:[true|false]'),
             'birthday' => 'date|nullable',
             'address' => 'nullable',
             'allergies' => 'nullable',
+            'gender' => array('nullable', 'regex:[mann|kvinne]'),
         ]);
 
         if ($validator->fails()) {
@@ -62,6 +63,7 @@ class MemberController extends Controller {
         $member->birthday = date("Y-m-d", strtotime($request->get('birthday')));
         $member->address = $request->get('address');
         $member->allergies = $request->get('allergies');
+        $member->gender = $request->get('gender');
         $member->save();
         return redirect(url('/members'));
     }
@@ -96,6 +98,7 @@ class MemberController extends Controller {
             'birthday' => 'date|nullable',
             'address' => 'nullable',
             'allergies' => 'nullable',
+            'gender' => array('nullable', 'regex:[mann|kvinne]'),
         ]);
 
         if ($validator->fails()) {
@@ -122,6 +125,7 @@ class MemberController extends Controller {
         $member->birthday = date("Y-m-d", strtotime($request->get('birthday')));
         $member->address = $request->get('address');
         $member->allergies = $request->get('allergies');
+        $member->gender = $request->get('gender');
         $member->save();
         return redirect(url('/members'));
     }
