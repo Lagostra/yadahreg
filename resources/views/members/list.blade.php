@@ -3,7 +3,6 @@
 @section('head')
     <script>
         function onChooseActive(e) {
-            console.log("boop");
             if(e.checked)
                 window.location = '{{ url('/members') }}';
             else

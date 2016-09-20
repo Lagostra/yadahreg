@@ -14,8 +14,12 @@ class PaymentController extends Controller {
         $this->middleware('user');
     }
 
-    public function index($semester_id = -1) {
-        $members = Member::where('active', true)->orderBy('first_name', 'ASC')->get();
+    public function index($semester_id = -1, $show_inactive = 0) {
+        if(!$show_inactive)
+            $members = Member::where('active', true)->orderBy('first_name')->get();
+        else
+            $members = Member::orderBy('first_name')->get();
+
         $semesters = Semester::orderBy('end_date', 'desc')->get();
 
         $chosen_semester = Semester::find($semester_id);
@@ -33,7 +37,7 @@ class PaymentController extends Controller {
             }
         }
 
-        return view('payment.index', array('members' => $members, 'chosen_semester' => $chosen_semester, 'semesters' => $semesters));
+        return view('payment.index', array('members' => $members, 'chosen_semester' => $chosen_semester, 'semesters' => $semesters, 'show_inactive' => $show_inactive));
     }
 
     public function set_paid(Request $request) {
