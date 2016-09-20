@@ -4,8 +4,7 @@ namespace App;
 
 use Laravel\Socialite\Contracts\User as ProviderUser;
 
-class SocialAccountService
-{
+class SocialAccountService {
     public function createOrGetUser(ProviderUser $providerUser) {
         $user = User::where('google_id', $providerUser->getId())
             ->first();
