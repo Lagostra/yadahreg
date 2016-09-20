@@ -46,6 +46,12 @@ Route::post('/members/edit', 'MemberController@do_edit');
 Route::post('/members/delete', 'MemberController@delete');
 Route::get('/members/{active_only?}', 'MemberController@index');
 
+Route::post('/semesters/delete', 'SemesterController@delete');
+Route::get('/semesters/add', 'SemesterController@add');
+Route::post('/semesters/add', 'SemesterController@do_add');
+Route::post('/semesters/edit', 'SemesterController@do_edit');
+Route::get('/semesters/edit/{id}', 'SemesterController@edit');
+
 // Google Auth
 Route::get('/redirect', 'SocialAuthController@redirect');
 Route::get('/callback', 'SocialAuthController@callback');
