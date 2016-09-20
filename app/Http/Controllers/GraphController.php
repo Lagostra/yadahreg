@@ -3,22 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Event;
-use App\Member;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\DB;
+use Lava;
 
-class OverviewController extends Controller {
+class GraphController extends Controller {
 
     public function __construct() {
         $this->middleware('user');
     }
 
-    public function list_events(Request $request) {
-        $show_inactive = $request->get('show_inactive');
+    public function attendance(Request $request) {
         $start_date = $request->get('start_date');
         $end_date = $request->get('end_date');
-
 
         /*
          * Selects last 8 weeks if no dates are set, 8 weeks before end if only end is set,
@@ -39,16 +38,31 @@ class OverviewController extends Controller {
             $start_date = date("Y-m-d", strtotime($start_date));
         }
 
-        if($show_inactive)
-            $members = Member::orderBy('first_name')->get();
-        else
-            $members = Member::where('active', true)->orderBy('first_name')->get();
-
         $events = Event::whereBetween('date', array($start_date, $end_date))->orderBy('date')->get();
 
-        return view('overview.events', array('members' => $members, 'events' => $events, 'show_inactive' => $show_inactive,
-                                        'start_date' => $start_date,
-                                        'end_date' => $end_date));
+        $counts = DB::table('event_member')
+            ->select(['event_id'])
+            ->addSelect([DB::raw('count(*) as count')])
+            ->groupBy('event_id')->get();
+
+        $datatable = Lava::DataTable();
+        $datatable->addDateColumn('Dato')->addNumberColumn('Antall oppmøtte');
+
+        foreach($events as $event) {
+            $cur_count = 0;
+
+            foreach($counts as $count) {
+                if($count->event_id == $event->id) {
+                    $cur_count = $count->count;
+                    break;
+                }
+            }
+            $datatable->addRow([date("Y-m-d", strtotime($event->date)), $cur_count]);
+        }
+
+        Lava::LineChart('attendance', $datatable);
+
+        return view('graphs.attendance');
     }
 
 }

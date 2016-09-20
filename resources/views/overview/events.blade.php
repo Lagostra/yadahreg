@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.overview')
 
 @section('head')
     <link rel="stylesheet" href="{{ url('/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" />
@@ -28,8 +28,8 @@
                 <div class="panel-heading">Oppmøte - oversikt</div>
 
                 <div class="panel-body">
-                        <form class="form-horizontal form-inline margin-bottom-fix" role="form" name="add_form" method="GET" action="{{ url('/overview') }}">
-                           <div class="form-group">
+                        <form class="form-horizontal form-inline margin-bottom-fix" role="form" name="add_form" method="GET" action="{{ url('/overview/attendance') }}">
+                            <div class="form-group">
                                 <label for="start_date" class="col-md-4 control-label">Startdato</label>
 
                                 <div class="col-md-6">
@@ -54,6 +54,12 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="form-group">
+                                <input name="show_inactive" type="checkbox" {{ $show_inactive ? 'checked' : '' }} onclick="onChooseActive(this);" />
+                                <label for="show_inactive">Vis inaktive medlemmer</label>
+                            </div>
+
 
                             <div class="form-group">
                                 <div class="col-md-6 col-md-offset-4">
