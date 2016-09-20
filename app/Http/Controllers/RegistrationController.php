@@ -18,14 +18,10 @@ use Illuminate\Support\Facades\Auth;
 class RegistrationController extends Controller {
 
     public function __construct() {
-        $this->middleware('auth');
+        $this->middleware('user');
     }
 
     public function index($event_id = -1) {
-        if(!(Auth::user()->role == 'admin' || Auth::user()->role == 'user') ) {
-            return redirect(url('/home'));
-        }
-
         $members = Member::where('active', true)->orderBy('first_name', 'ASC')->get();
         $events = Event::orderBy('date', 'desc')->get();
 
@@ -48,10 +44,6 @@ class RegistrationController extends Controller {
     }
 
     public function set_present(Request $request) {
-        if(!(Auth::user()->role == 'admin' || Auth::user()->role == 'user') ) {
-            return redirect(url('/home'));
-        }
-
         $validator = Validator::make($request->all(), [
             'member_id' => 'numeric|required',
             'event_id' => 'numeric|required',
@@ -77,10 +69,6 @@ class RegistrationController extends Controller {
     }
 
     public function add_today() {
-        if(!(Auth::user()->role == 'admin' || Auth::user()->role == 'user') ) {
-            return redirect(url('/home'));
-        }
-
         $event = new Event();
         $event->date = date('Y-m-d');
         $event->save();
@@ -97,10 +85,6 @@ class RegistrationController extends Controller {
     }
 
     public function do_add(Request $request) {
-        if(!(Auth::user()->role == 'admin' || Auth::user()->role == 'user') ) {
-            return redirect(url('/home'));
-        }
-
         $validator = Validator::make($request->all(), [
             'date' => 'date|required',
             'title' => 'string|max:50|required',
@@ -133,10 +117,6 @@ class RegistrationController extends Controller {
     }
 
     public function do_edit(Request $request) {
-        if(!(Auth::user()->role == 'admin' || Auth::user()->role == 'user') ) {
-            return redirect(url('/home'));
-        }
-
         $validator = Validator::make($request->all(), [
             'date' => 'date|required',
             'title' => 'string|max:50|required',
@@ -160,10 +140,6 @@ class RegistrationController extends Controller {
     }
 
     public function delete(Request $request) {
-        if(!(Auth::user()->role == 'admin' || Auth::user()->role == 'user') ) {
-            return redirect(url('/home'));
-        }
-
         $event = Event::find($request->get('id'));
         $event->delete();
 

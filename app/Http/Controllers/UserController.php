@@ -17,24 +17,16 @@ use App\User;
 class UserController extends Controller {
 
     public function __construct() {
-        $this->middleware('auth');
+        $this->middleware('admin');
     }
 
     public function index() {
-        if(!Auth::user()->role == 'admin') {
-            return redirect(url('/home'));
-        }
-
         $users = User::orderBy('name')->get();
 
         return view('users.list', ['users' => $users]);
     }
 
     public function edit($id) {
-        if(!Auth::user()->role == 'admin') {
-            return redirect(url('/home'));
-        }
-
         $user = User::find($id);
 
         if(!$user) {
@@ -45,10 +37,6 @@ class UserController extends Controller {
     }
 
     public function save(Request $request) {
-        if(!Auth::user()->role == 'admin') {
-            return redirect(url('/home'));
-        }
-
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users,email,'. $request->get('id').',id',

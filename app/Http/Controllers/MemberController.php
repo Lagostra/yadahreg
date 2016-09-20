@@ -12,14 +12,10 @@ use Validator;
 class MemberController extends Controller {
 
     public function __construct() {
-        $this->middleware('auth');
+        $this->middleware('user');
     }
 
     public function index($show_active = 0) {
-        if(!(Auth::user()->role == 'admin' || Auth::user()->role == 'user') ) {
-            return redirect(url('/home'));
-        }
-
         if(!$show_active)
             $members = Member::where('active', true)->orderBy('last_name')->get();
         else
@@ -29,19 +25,10 @@ class MemberController extends Controller {
     }
 
     public function add() {
-        if(!(Auth::user()->role == 'admin' || Auth::user()->role == 'user') ) {
-            return redirect(url('/home'));
-        }
-
         return view('members.add');
     }
 
     public function do_add(Request $request) {
-        if(!(Auth::user()->role == 'admin' || Auth::user()->role == 'user') ) {
-            return redirect(url('/home'));
-        }
-
-
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|max:255',
             'last_name' => 'required|max:255',
@@ -86,19 +73,11 @@ class MemberController extends Controller {
     }
 
     public function delete(Request $request) {
-        if(!(Auth::user()->role == 'admin' || Auth::user()->role == 'user') ) {
-            return redirect(url('/home'));
-        }
-
         Member::where('id', $request->get('id'))->delete();
         return redirect(url('/members'));
     }
 
     public function edit($id) {
-        if(!(Auth::user()->role == 'admin' || Auth::user()->role == 'user') ) {
-            return redirect(url('/home'));
-        }
-
         $member = Member::find($id);
         if($member == null) {
             return redirect(url('/members'));
@@ -107,10 +86,6 @@ class MemberController extends Controller {
     }
 
     public function do_edit(Request $request) {
-        if(!(Auth::user()->role == 'admin' || Auth::user()->role == 'user') ) {
-            return redirect(url('/home'));
-        }
-
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|max:255',
             'last_name' => 'required|max:255',
