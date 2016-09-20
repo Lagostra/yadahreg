@@ -60,7 +60,7 @@ class GraphController extends Controller {
             $datatable->addRow([date("Y-m-d", strtotime($event->date)), $cur_count]);
         }
 
-        Lava::LineChart('attendance', $datatable);
+        Lava::AreaChart('attendance', $datatable);
 
         return view('graphs.attendance');
     }
