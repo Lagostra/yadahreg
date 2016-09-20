@@ -37,6 +37,13 @@
                 }
             });
         }
+
+        function onChooseActive(e) {
+            if(e.checked)
+                window.location = '{{ url('/payment/'.$chosen_semester->id) }}';
+            else
+                window.location = '{{ url('/payment/'.$chosen_semester->id.'/1') }}';
+        }
     </script>
 @endsection
 @endif
@@ -66,6 +73,9 @@
 
                     @if($chosen_semester != null)
                         <a class="btn btn-primary margin-bottom-fix" href="{{ url('/semesters/edit/'.$chosen_semester->id) }}">Rediger semester</a>
+
+                        <span class="margin-left-10px">Vis bare aktive medlemmer: </span>
+                        <input type="checkbox" {{ !$show_inactive ? 'checked' : '' }} onclick="onChooseActive(this);" />
 
                         <input id="search" type="text" class="form-control" placeholder="Søk her" name="title" oninput="search(this);">
 
