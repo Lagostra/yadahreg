@@ -60,7 +60,7 @@
                                 <tr>
                                     <td class="member-last-name">{{ $member->last_name }}</td>
                                     <td class="member-first-name">{{ $member->first_name }}</td>
-                                    <td>{{ $member->email }}</td>
+                                    <td><a href="mailto:{{ $member->email }}">{{ $member->email }}</a></td>
                                     <td>{{ $member->phone }}</td>
                                     <td>{{ $member->preferred_voice == "null" ? "" : ucfirst($member->preferred_voice) }}</td>
                                     <td><a class="btn btn-primary btn-xs" href="{{ url('/members/edit/' . $member->id) }}">Rediger</a></td>
