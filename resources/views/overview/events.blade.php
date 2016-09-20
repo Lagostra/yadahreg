@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.overview')
 
 @section('head')
     <link rel="stylesheet" href="{{ url('/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" />

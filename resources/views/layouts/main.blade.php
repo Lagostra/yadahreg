@@ -93,7 +93,7 @@
         </nav>
 
         <div class="container">
-
+            @yield('submenu')
             @yield('content')
 
         </div><!-- /.container -->
