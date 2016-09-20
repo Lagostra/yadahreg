@@ -73,7 +73,7 @@
 
                             <div class="col-md-6">
                                 <div id="datepicker" class="input-group date" data-provide="datepicker">
-                                    <input type="text" class="form-control datepicker" name="birthday" value="{{ date("d.m.Y", strtotime($member->birthday)) }}" required>
+                                    <input type="text" class="form-control datepicker" name="birthday" value="{{ date("d.m.Y", strtotime($member->birthday)) }}">
                                     <div class="input-group-addon">
                                         <span class="glyphicon glyphicon-th"></span>
                                     </div>
