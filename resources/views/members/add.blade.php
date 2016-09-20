@@ -41,12 +41,37 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('gender') ? ' has-error' : '' }}">
+                            <label for="gender" class="col-md-4 control-label">Kjønn</label>
+
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="radio" name="gender" id="gender1" value="kvinne">
+                                        Kvinne
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="radio" name="gender" id="gender2" value="mann">
+                                        Mann
+                                    </label>
+                                </div>
+
+                                @if ($errors->has('gender'))
+                                    <span class="help-block">
+                                    <strong>{{ $errors->first('gender') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group{{ $errors->has('birthday') ? ' has-error' : '' }}">
                             <label for="birthday" class="col-md-4 control-label">Fødselsdato</label>
 
                             <div class="col-md-6">
                                 <div id="datepicker" class="input-group date" data-provide="datepicker">
-                                    <input type="text" class="form-control datepicker" name="birthday" placeholder="dd.mm.YYYY" value="{{ old('date') }}" required>
+                                    <input type="text" class="form-control datepicker" name="birthday" placeholder="dd.mm.YYYY" value="{{ old('date') }}">
                                     <div class="input-group-addon">
                                         <span class="glyphicon glyphicon-th"></span>
                                     </div>

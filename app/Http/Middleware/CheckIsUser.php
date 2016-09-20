@@ -15,7 +15,8 @@ class CheckIsUser
      * @return mixed
      */
     public function handle($request, Closure $next) {
-        if(!(Auth::user()->role == 'admin' || Auth::user()->role == 'user') ) {
+        $user = $request->user();
+        if(! $user || !($user->role == 'admin' || $user->role == 'user') ) {
             return redirect(url('/home'));
         }
 

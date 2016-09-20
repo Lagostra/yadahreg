@@ -3,10 +3,10 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Support\Facades\Auth;
 
-class CheckIsAdmin
-{
+class CheckIsAdmin {
     /**
      * Handle an incoming request.
      *
@@ -14,8 +14,9 @@ class CheckIsAdmin
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next) {
-        if(Auth::user()->role != 'admin') {
+    public function handle($request, Closure $next, ...$guards) {
+        $user = $request->user();
+        if(!$user || $user->role != 'admin') {
             return redirect(url('/home'));
         }
 
