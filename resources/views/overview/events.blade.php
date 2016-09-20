@@ -34,7 +34,7 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group date my-datepicker" data-provide="datepicker">
-                                        <input type="text" class="form-control datepicker" name="start_date" value="{{ $start_date }}" required>
+                                        <input type="text" class="form-control datepicker" name="start_date" value="{{ date("d.m.Y", strtotime($start_date)) }}">
                                         <div class="input-group-addon">
                                             <span class="glyphicon glyphicon-th"></span>
                                         </div>
@@ -47,7 +47,7 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group date my-datepicker" data-provide="datepicker">
-                                        <input type="text" class="form-control datepicker" name="end_date" value="{{ $end_date }}" required>
+                                        <input type="text" class="form-control datepicker" name="end_date" value="{{ date("d.m.Y", strtotime($end_date)) }}">
                                         <div class="input-group-addon">
                                             <span class="glyphicon glyphicon-th"></span>
                                         </div>
@@ -91,8 +91,8 @@
                                             }
                                         }
                                         ?>
-                                        <td>
-                                            {{ $present ? 'Y' : 'N' }}
+                                        <td class="text-center">
+                                            {{ $present ? 'Y' : '' }}
                                         </td>
                                     @endforeach
                                 </tr>

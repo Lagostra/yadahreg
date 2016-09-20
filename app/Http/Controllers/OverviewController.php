@@ -15,8 +15,28 @@ class OverviewController extends Controller {
     }
 
     public function list_events(Request $request, $show_inactive = 0) {
-        $start_date = date("Y-m-d", strtotime($request->get('start_date')));
-        $end_date = date("Y-m-d", strtotime($request->get('end_date')));
+        $start_date = $request->get('start_date');
+        $end_date = $request->get('end_date');
+
+
+        /*
+         * Selects last 8 weeks if no dates are set, 8 weeks before end if only end is set,
+         * and 8 weeks after start if only start is set.
+         * Otherwise, uses provided dates.
+         * */
+        if($start_date == "" && $end_date == "") {
+            $end_date = date("Y-m-d");
+            $start_date = date("Y-m-d", strtotime("-" . 8 * 7 . "days")); // Date 8 weeks before today
+        } else if($start_date == "") {
+            $start_date = date("Y-m-d", strtotime($end_date . " -" . 8 * 7 . "days")); // Date 8 weeks before end
+            $end_date = date("Y-m-d", strtotime($end_date));
+        } else if($end_date == "") {
+            $end_date = date("Y-m-d", strtotime($start_date . " +" . 8 * 7 . "days")); // Date 8 weeks after start
+            $start_date = date("Y-m-d", strtotime($start_date));
+        } else {
+            $end_date = date("Y-m-d", strtotime($end_date));
+            $start_date = date("Y-m-d", strtotime($start_date));
+        }
 
         if($show_inactive)
             $members = Member::orderBy('first_name')->get();
@@ -26,8 +46,8 @@ class OverviewController extends Controller {
         $events = Event::whereBetween('date', array($start_date, $end_date))->orderBy('date')->get();
 
         return view('overview.events', array('members' => $members, 'events' => $events,
-                                        'start_date' => $request->get('start_date'),
-                                        'end_date' => $request->get('end_date')));
+                                        'start_date' => $start_date,
+                                        'end_date' => $end_date));
     }
 
 }
