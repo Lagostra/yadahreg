@@ -29,12 +29,13 @@ Route::get('/users/edit/{id}', 'UserController@edit');
 Route::post('/users/edit', 'UserController@save');
 Route::post('/users/delete', 'UserController@delete');
 
-Route::post('/registration/delete', 'RegistrationController@delete');
-Route::get('/registration/addevent', 'RegistrationController@add');
-Route::post('/registration/addevent', 'RegistrationController@do_add');
-Route::post('/registration/editevent', 'RegistrationController@do_edit');
-Route::get('/registration/editevent/{id}', 'RegistrationController@edit');
-Route::post('/registration/today', 'RegistrationController@add_today');
+Route::post('/events/delete', 'EventController@delete');
+Route::get('/events/add', 'EventController@add');
+Route::post('/events/add', 'EventController@do_add');
+Route::post('/events/edit', 'EventController@do_edit');
+Route::get('/events/edit/{id}', 'EventController@edit');
+Route::post('/events/addtoday', 'EventController@add_today');
+
 Route::post('/registration', 'RegistrationController@set_present');
 Route::get('/registration/{event_id?}', 'RegistrationController@index');
 

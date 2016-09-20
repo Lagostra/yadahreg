@@ -63,16 +63,16 @@
                         </div>
                     </div>
 
-                    <form class="form-inline" role="form" method="POST" action="{{ url('/registration/today') }}">
+                    <form class="form-inline" role="form" method="POST" action="{{ url('/events/addtoday') }}">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <button type="submit" class="btn btn-primary margin-bottom-fix">
                             Ny hendelse i dag
                         </button>
                     </form>
-                    <a class="btn btn-primary margin-bottom-fix" href="{{ url('/registration/addevent') }}">Ny hendelse</a>
+                    <a class="btn btn-primary margin-bottom-fix" href="{{ url('/events/add') }}">Ny hendelse</a>
 
                     @if($chosen_event != null)
-                    <a class="btn btn-primary margin-bottom-fix" href="{{ url('/registration/editevent/'.$chosen_event->id) }}">Rediger hendelse</a>
+                    <a class="btn btn-primary margin-bottom-fix" href="{{ url('/events/edit/'.$chosen_event->id) }}">Rediger hendelse</a>
 
                     <input id="search" type="text" class="form-control" placeholder="Søk her" name="title" oninput="search(this);">
 
