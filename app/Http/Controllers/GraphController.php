@@ -30,7 +30,7 @@ class GraphController extends Controller {
 
         Lava::AreaChart('attendance', $datatable);
 
-        return view('graphs.attendance');
+        return view('graphs.attendance', $dates);
     }
 
     public function attendance_by_gender(Request $request){
@@ -63,7 +63,7 @@ class GraphController extends Controller {
         }
 
         Lava::LineChart('attendance', $datatable);
-        return view('graphs.attendance-gender');
+        return view('graphs.attendance-gender', $dates);
     }
 
     public function attendance_by_voice(Request $request){
@@ -104,7 +104,7 @@ class GraphController extends Controller {
         }
 
         Lava::LineChart('attendance', $datatable);
-        return view('graphs.attendance-voice');
+        return view('graphs.attendance-voice', $dates);
     }
 
     /*
