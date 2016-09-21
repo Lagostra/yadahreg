@@ -89,7 +89,7 @@ class GraphController extends Controller {
 
         $datatable = Lava::DataTable();
         $datatable  ->addStringColumn('Gruppe')
-                    ->addNumberColumn('')
+                    ->addNumberColumn('Antall')
                     ->addRow(['Menn',$male])
                     ->addRow(['Kvinner', $female])
                     ->addRow(['Udefinert', $undef]);
@@ -99,6 +99,49 @@ class GraphController extends Controller {
             ]);
 
         return view('graphs.gender');
+    }
+
+    public function voice(Request $request) {
+        if($request->get('include_inactive')) {
+            $members = Member::get();
+        } else {
+            $members = Member::where('active', true)->get();
+        }
+
+        $soprano = 0;
+        $alto = 0;
+        $tenor = 0;
+        $basso = 0;
+        $undef = 0;
+
+        foreach($members as $member) {
+            if($member->preferred_voice == 'sopran') {
+                $soprano++;
+            } else if($member->preferred_voice == 'alt') {
+                $alto++;
+            } else if($member->preferred_voice == 'tenor') {
+                $tenor++;
+            } else if($member->preferred_voice == 'bass') {
+                $basso++;
+            } else {
+                $undef++;
+            }
+        }
+
+        $datatable = Lava::DataTable();
+        $datatable  ->addStringColumn('Gruppe')
+            ->addNumberColumn('Antall')
+            ->addRow(['Sopran',$soprano])
+            ->addRow(['Alt', $alto])
+            ->addRow(['Tenor', $tenor])
+            ->addRow(['Bass', $basso])
+            ->addRow(['Udefinert', $undef]);
+
+        Lava::ColumnChart('voice', $datatable, [
+            'legend' => 'none',
+        ]);
+
+        return view('graphs.voice');
     }
 
 }

@@ -60,6 +60,7 @@ Route::get('/overview/payment', 'OverviewController@payment');
 
 Route::get('/graphs/attendance', 'GraphController@attendance');
 Route::get('/graphs/gender', 'GraphController@gender');
+Route::get('/graphs/voice', 'GraphController@voice');
 
 // Google Auth
 Route::get('/redirect', 'SocialAuthController@redirect');
