@@ -21,6 +21,8 @@ class GraphController extends Controller {
 
         $events = Event::whereBetween('date', $dates)->orderBy('date')->get();
 
+        $dates['show_inactive'] = $request->get('show_inactive');
+
         $datatable = Lava::DataTable();
         $datatable->addDateColumn('Dato')->addNumberColumn('Antall oppmøtte');
 
@@ -30,13 +32,15 @@ class GraphController extends Controller {
 
         Lava::AreaChart('attendance', $datatable);
 
-        return view('graphs.attendance');
+        return view('graphs.attendance', $dates);
     }
 
     public function attendance_by_gender(Request $request){
         $dates = $this->attendance_dates($request->get('start_date'), $request->get('end_date'));
 
         $events = Event::whereBetween('date', $dates)->orderBy('date')->get();
+
+        $dates['show_inactive'] = $request->get('show_inactive');
 
         $datatable = Lava::DataTable();
         $datatable  ->addDateColumn('Dato')
@@ -63,13 +67,15 @@ class GraphController extends Controller {
         }
 
         Lava::LineChart('attendance', $datatable);
-        return view('graphs.attendance-gender');
+        return view('graphs.attendance-gender', $dates);
     }
 
     public function attendance_by_voice(Request $request){
         $dates = $this->attendance_dates($request->get('start_date'), $request->get('end_date'));
 
         $events = Event::whereBetween('date', $dates)->orderBy('date')->get();
+
+        $dates['show_inactive'] = $request->get('show_inactive');
 
         $datatable = Lava::DataTable();
         $datatable  ->addDateColumn('Dato')
@@ -104,7 +110,7 @@ class GraphController extends Controller {
         }
 
         Lava::LineChart('attendance', $datatable);
-        return view('graphs.attendance-voice');
+        return view('graphs.attendance-voice', $dates);
     }
 
     /*
