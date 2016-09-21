@@ -57,6 +57,8 @@
                                 <li><a href="{{ url('/registration') }}">Registrering</a></li>
                                 <li><a href="{{ url('/members') }}">Medlemmer</a></li>
                                 <li><a href="{{ url('/payment') }}">Betaling</a></li>
+                                <li><a href="{{ url('/overview/attendance') }}">Oversikt</a></li>
+                                <li><a href="{{ url('/graphs/attendance') }}">Grafer</a></li>
                             @endif
                         @endif
                     </ul>
@@ -92,7 +94,7 @@
         </nav>
 
         <div class="container">
-
+            @yield('submenu')
             @yield('content')
 
         </div><!-- /.container -->

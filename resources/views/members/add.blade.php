@@ -71,7 +71,7 @@
 
                             <div class="col-md-6">
                                 <div id="datepicker" class="input-group date" data-provide="datepicker">
-                                    <input type="text" class="form-control datepicker" name="birthday" placeholder="dd.mm.YYYY" value="{{ old('date') }}" required>
+                                    <input type="text" class="form-control datepicker" name="birthday" placeholder="dd.mm.YYYY" value="{{ old('date') }}">
                                     <div class="input-group-addon">
                                         <span class="glyphicon glyphicon-th"></span>
                                     </div>
