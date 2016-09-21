@@ -17,14 +17,102 @@ class GraphController extends Controller {
     }
 
     public function attendance(Request $request) {
-        $start_date = $request->get('start_date');
-        $end_date = $request->get('end_date');
+        $dates = $this->attendance_dates($request->get('start_date'), $request->get('end_date'));
 
-        /*
+        $events = Event::whereBetween('date', $dates)->orderBy('date')->get();
+
+        $datatable = Lava::DataTable();
+        $datatable->addDateColumn('Dato')->addNumberColumn('Antall oppmøtte');
+
+        foreach($events as $event) {
+            $datatable->addRow([date("Y-m-d", strtotime($event->date)), $event->participants->count()]);
+        }
+
+        Lava::AreaChart('attendance', $datatable);
+
+        return view('graphs.attendance');
+    }
+
+    public function attendance_by_gender(Request $request){
+        $dates = $this->attendance_dates($request->get('start_date'), $request->get('end_date'));
+
+        $events = Event::whereBetween('date', $dates)->orderBy('date')->get();
+
+        $datatable = Lava::DataTable();
+        $datatable  ->addDateColumn('Dato')
+                    ->addNumberColumn('Kvinner')
+                    ->addNumberColumn('Menn')
+                    ->addNumberColumn('Udefinert');
+
+        foreach($events as $event) {
+            $men = 0;
+            $women = 0;
+            $undef = 0;
+
+            foreach ($event->participants as $member) {
+                if ($member->gender == 'mann') {
+                    $men++;
+                } else if ($member->gender == 'kvinne') {
+                    $women++;
+                } else {
+                    $undef++;
+                }
+            }
+
+            $datatable->addRow([date("Y-m-d", strtotime($event->date)), $women, $men, $undef]);
+        }
+
+        Lava::LineChart('attendance', $datatable);
+        return view('graphs.attendance-gender');
+    }
+
+    public function attendance_by_voice(Request $request){
+        $dates = $this->attendance_dates($request->get('start_date'), $request->get('end_date'));
+
+        $events = Event::whereBetween('date', $dates)->orderBy('date')->get();
+
+        $datatable = Lava::DataTable();
+        $datatable  ->addDateColumn('Dato')
+            ->addNumberColumn('Sopran')
+            ->addNumberColumn('Alt')
+            ->addNumberColumn('Tenor')
+            ->addNumberColumn('Bass')
+            ->addNumberColumn('Udefinert');
+
+        foreach($events as $event) {
+            $soprano = 0;
+            $alto = 0;
+            $tenor = 0;
+            $basso = 0;
+            $undef = 0;
+
+            foreach ($event->participants as $member) {
+                if ($member->preferred_voice == 'sopran') {
+                    $soprano++;
+                } else if ($member->preferred_voice == 'alt') {
+                    $alto++;
+                } else if ($member->preferred_voice == 'tenor') {
+                    $tenor++;
+                } else if ($member->preferred_voice == 'bass') {
+                    $basso++;
+                }  else {
+                    $undef++;
+                }
+            }
+
+            $datatable->addRow([date("Y-m-d", strtotime($event->date)), $soprano, $alto, $tenor, $basso, $undef]);
+        }
+
+        Lava::LineChart('attendance', $datatable);
+        return view('graphs.attendance-voice');
+    }
+
+    /*
          * Selects last 8 weeks if no dates are set, 8 weeks before end if only end is set,
          * and 8 weeks after start if only start is set.
          * Otherwise, uses provided dates.
          * */
+    private function attendance_dates($start_date, $end_date) {
         if($start_date == "" && $end_date == "") {
             $end_date = date("Y-m-d");
             $start_date = date("Y-m-d", strtotime("-" . 8 * 7 . "days")); // Date 8 weeks before today
@@ -39,31 +127,7 @@ class GraphController extends Controller {
             $start_date = date("Y-m-d", strtotime($start_date));
         }
 
-        $events = Event::whereBetween('date', array($start_date, $end_date))->orderBy('date')->get();
-
-        $counts = DB::table('event_member')
-            ->select(['event_id'])
-            ->addSelect([DB::raw('count(*) as count')])
-            ->groupBy('event_id')->get();
-
-        $datatable = Lava::DataTable();
-        $datatable->addDateColumn('Dato')->addNumberColumn('Antall oppmøtte');
-
-        foreach($events as $event) {
-            $cur_count = 0;
-
-            foreach($counts as $count) {
-                if($count->event_id == $event->id) {
-                    $cur_count = $count->count;
-                    break;
-                }
-            }
-            $datatable->addRow([date("Y-m-d", strtotime($event->date)), $cur_count]);
-        }
-
-        Lava::AreaChart('attendance', $datatable);
-
-        return view('graphs.attendance');
+        return array('start_date' => $start_date, 'end_date' => $end_date);
     }
 
     public function gender(Request $request) {
