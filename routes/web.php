@@ -59,6 +59,7 @@ Route::get('/overview/attendance', 'OverviewController@list_events');
 Route::get('/overview/payment', 'OverviewController@payment');
 
 Route::get('/graphs/attendance', 'GraphController@attendance');
+Route::get('/graphs/gender', 'GraphController@gender');
 
 // Google Auth
 Route::get('/redirect', 'SocialAuthController@redirect');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Event;
+use App\Member;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -63,6 +64,41 @@ class GraphController extends Controller {
         Lava::AreaChart('attendance', $datatable);
 
         return view('graphs.attendance');
+    }
+
+    public function gender(Request $request) {
+        if($request->get('include_inactive')) {
+            $members = Member::get();
+        } else {
+            $members = Member::where('active', true)->get();
+        }
+
+        $male = 0;
+        $female = 0;
+        $undef = 0;
+
+        foreach($members as $member) {
+            if($member->gender == 'mann') {
+                $male++;
+            } else if($member->gender == 'kvinne') {
+                $female++;
+            } else {
+                $undef++;
+            }
+        }
+
+        $datatable = Lava::DataTable();
+        $datatable  ->addStringColumn('Gruppe')
+                    ->addNumberColumn('')
+                    ->addRow(['Menn',$male])
+                    ->addRow(['Kvinner', $female])
+                    ->addRow(['Udefinert', $undef]);
+
+        Lava::ColumnChart('gender', $datatable, [
+                'legend' => 'none',
+            ]);
+
+        return view('graphs.gender');
     }
 
 }
