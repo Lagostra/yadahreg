@@ -8,7 +8,7 @@
                 <li class="disabled"><a href="{{ url('/graphs/voices') }}">Oppmøte - stemmer</a></li>
                 <li class="disabled"><a href="{{ url('/plot') }}">Oppmøte - kjønn</a></li>
                 <li class="disabled"><a href="#">Stemmer</a></li>
-                <li><a href="/graphs/gender">Kjønn</a></li>
+                <li><a href="{{ url('/graphs/gender') }}">Kjønn</a></li>
             </ul>
         </div>
     </div>
