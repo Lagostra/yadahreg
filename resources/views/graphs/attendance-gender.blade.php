@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="row">
-    <div class="col-md-10 col-md-offset-1">
+    <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">Oppmøte etter kjønn</div>
 
@@ -38,13 +38,14 @@
                         </div>
                     </div>
 
+
+
                     <div class="form-group">
                         <div class="col-md-6 col-md-offset-4">
                             <button type="submit" class="btn btn-primary">
                                 Generér
                             </button>
                         </div>
-
                     </div>
                 </form>
 

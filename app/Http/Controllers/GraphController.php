@@ -21,6 +21,8 @@ class GraphController extends Controller {
 
         $events = Event::whereBetween('date', $dates)->orderBy('date')->get();
 
+        $dates['show_inactive'] = $request->get('show_inactive');
+
         $datatable = Lava::DataTable();
         $datatable->addDateColumn('Dato')->addNumberColumn('Antall oppmøtte');
 
@@ -37,6 +39,8 @@ class GraphController extends Controller {
         $dates = $this->attendance_dates($request->get('start_date'), $request->get('end_date'));
 
         $events = Event::whereBetween('date', $dates)->orderBy('date')->get();
+
+        $dates['show_inactive'] = $request->get('show_inactive');
 
         $datatable = Lava::DataTable();
         $datatable  ->addDateColumn('Dato')
@@ -70,6 +74,8 @@ class GraphController extends Controller {
         $dates = $this->attendance_dates($request->get('start_date'), $request->get('end_date'));
 
         $events = Event::whereBetween('date', $dates)->orderBy('date')->get();
+
+        $dates['show_inactive'] = $request->get('show_inactive');
 
         $datatable = Lava::DataTable();
         $datatable  ->addDateColumn('Dato')
