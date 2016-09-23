@@ -73,7 +73,7 @@
 
                             <div class="col-md-6">
                                 <div id="datepicker" class="input-group date" data-provide="datepicker">
-                                    <input type="text" class="form-control datepicker" name="birthday" value="{{ date("d.m.Y", strtotime($member->birthday)) }}">
+                                    <input type="text" class="form-control datepicker" name="birthday" value="{{ $member->birthday == "" ? '' : date("d.m.Y", strtotime($member->birthday)) }}">
                                     <div class="input-group-addon">
                                         <span class="glyphicon glyphicon-th"></span>
                                     </div>
@@ -193,13 +193,13 @@
                             <div class="col-md-6">
                                 <div class="form-check">
                                     <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="active" id="active1" value="true" checked>
+                                        <input class="form-check-input" type="radio" name="active" id="active1" value="true" {{ $member->active ? 'checked' : '' }}>
                                         Ja
                                     </label>
                                 </div>
                                 <div class="form-check">
                                     <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="active" id="active2" value="false">
+                                        <input class="form-check-input" type="radio" name="active" id="active2" value="false" {{ $member->active ? '' : 'checked' }}>
                                         Nei
                                     </label>
                                 </div>

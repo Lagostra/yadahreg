@@ -60,7 +60,7 @@ class MemberController extends Controller {
         $member->phone = $phone;
         $member->preferred_voice = $request->get('preferred_voice');
         $member->active = $this->toBool($request->get('active'));
-        $member->birthday = date("Y-m-d", strtotime($request->get('birthday')));
+        $member->birthday = ($request->get('birthday') == "") ? null : date("Y-m-d", strtotime($request->get('birthday')));
         $member->address = $request->get('address');
         $member->allergies = $request->get('allergies');
         $member->gender = $request->get('gender');
@@ -122,7 +122,7 @@ class MemberController extends Controller {
         $member->phone = $phone;
         $member->preferred_voice = $request->get('preferred_voice');
         $member->active = $this->toBool($request->get('active'));
-        $member->birthday = date("Y-m-d", strtotime($request->get('birthday')));
+        $member->birthday = ($request->get('birthday') == "") ? null : date("Y-m-d", strtotime($request->get('birthday')));
         $member->address = $request->get('address');
         $member->allergies = $request->get('allergies');
         $member->gender = $request->get('gender');
