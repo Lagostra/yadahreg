@@ -15,7 +15,7 @@
                 <p>
                     Du er nå logget inn!
                 </p>
-
+                
                 <p>
                     Bruk menyen over for å navigere.
                     Dersom du ser få/ingen lenker i menyen, kan det tyde på at brukeren din ikke er aktivert.
