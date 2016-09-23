@@ -102,7 +102,7 @@
                         </div>
                     @else
                         <p>
-                            Fant ingen hendelser! Opprett en før du kan registrere oppmøte.
+                            Fant ingen semestere! Opprett en før du kan registrere betaling.
                         </p>
                     @endif
                 </div>
