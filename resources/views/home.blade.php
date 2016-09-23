@@ -8,6 +8,14 @@
                 <p>
                     Du er nå logget inn!
                 </p>
+
+                <noscript>
+                    <div class="alert alert-danger">
+                        <strong>Advarsel!</strong> Javascript er ikke aktivert i din nettleser. Denne siden benytter
+                        Javascript aktivt for å tilby funksjonalitet, og vil ikke fungere som forventet uten.
+                    </div>
+                </noscript>
+
                 <p>
                     Bruk menyen over for å navigere.
                     Dersom du ser få/ingen lenker i menyen, kan det tyde på at brukeren din ikke er aktivert.
