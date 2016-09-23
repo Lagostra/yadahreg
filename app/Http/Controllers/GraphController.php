@@ -145,15 +145,12 @@ class GraphController extends Controller {
 
         $male = 0;
         $female = 0;
-        $undef = 0;
 
         foreach($members as $member) {
             if($member->gender == 'mann') {
                 $male++;
             } else if($member->gender == 'kvinne') {
                 $female++;
-            } else {
-                $undef++;
             }
         }
 
@@ -161,8 +158,7 @@ class GraphController extends Controller {
         $datatable  ->addStringColumn('Gruppe')
                     ->addNumberColumn('Antall')
                     ->addRow(['Menn',$male])
-                    ->addRow(['Kvinner', $female])
-                    ->addRow(['Udefinert', $undef]);
+                    ->addRow(['Kvinner', $female]);
 
         Lava::ColumnChart('gender', $datatable, [
                 'legend' => 'none',
