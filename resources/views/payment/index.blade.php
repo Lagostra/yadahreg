@@ -102,7 +102,7 @@
                         </div>
                     @else
                         <p>
-                            Fant ingen semestere! Opprett en før du kan registrere betaling.
+                            Fant ingen semestere! Opprett et før du kan registrere betaling.
                         </p>
                     @endif
                 </div>
