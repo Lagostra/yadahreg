@@ -193,13 +193,13 @@
                             <div class="col-md-6">
                                 <div class="form-check">
                                     <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="active" id="active1" value="true" checked>
+                                        <input class="form-check-input" type="radio" name="active" id="active1" value="true" {{ $member->active ? 'checked' : '' }}>
                                         Ja
                                     </label>
                                 </div>
                                 <div class="form-check">
                                     <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="active" id="active2" value="false">
+                                        <input class="form-check-input" type="radio" name="active" id="active2" value="false" {{ $member->active ? '' : 'checked' }}>
                                         Nei
                                     </label>
                                 </div>
