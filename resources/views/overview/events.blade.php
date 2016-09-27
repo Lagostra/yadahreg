@@ -77,7 +77,7 @@
                         <table id="member-table" class="table">
                             <thead>
                                 <tr>
-                                    <th>Dato</th>
+                                    <th></th>
                                     @foreach($events as $event)
                                         <th class="text-center">{{ date("d.m.Y", strtotime($event->date)) }}</th>
                                     @endforeach

@@ -1,7 +1,9 @@
 @extends('layouts.main')
 
 @section('head')
+    <link rel="stylesheet" href="{{ url('/plugins/bootstrap-sortable/bootstrap-sortable.css') }}" />
     <script>
+
         function onChooseActive(e) {
             if(e.checked)
                 window.location = '{{ url('/members') }}';
@@ -48,7 +50,7 @@
                         <table id="member-table" class="table sortable" id="member_table">
                             <thead>
                             <tr>
-                                <th>Etternavn</th>
+                                <th data-defaultsort="asc">Etternavn</th>
                                 <th>Fornavn</th>
                                 <th>E-post</th>
                                 <th>Telefon</th>
@@ -73,4 +75,9 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('foot')
+    <script src="{{ url('/plugins/bootstrap-sortable/moment.min.js') }}"></script>
+    <script src="{{ url('/plugins/bootstrap-sortable/bootstrap-sortable.js') }}"></script>
 @endsection

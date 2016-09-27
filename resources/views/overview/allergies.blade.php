@@ -1,6 +1,7 @@
 @extends('layouts.overview')
 
 @section('head')
+    <link rel="stylesheet" href="{{ url('/plugins/bootstrap-sortable/bootstrap-sortable.css') }}" />
     <script>
         function onChooseActive(e) {
             if(e.checked)
@@ -28,10 +29,10 @@
                     </div>
 
                     <div class="table-responsive">
-                        <table id="member-table" class="table">
+                        <table id="member-table" class="table sortable">
                             <thead>
                             <tr>
-                                <th>Navn</th>
+                                <th data-defaultsort="asc">Navn</th>
                                 <th>Allergier</th>
                             </tr>
                             </thead>
@@ -50,4 +51,9 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('foot')
+    <script src="{{ url('/plugins/bootstrap-sortable/moment.min.js') }}"></script>
+    <script src="{{ url('/plugins/bootstrap-sortable/bootstrap-sortable.js') }}"></script>
 @endsection
