@@ -79,7 +79,7 @@
                                 <tr>
                                     <th>Dato</th>
                                     @foreach($events as $event)
-                                        <th>{{ date("d.m.Y", strtotime($event->date)) }}</th>
+                                        <th class="text-center">{{ date("d.m.Y", strtotime($event->date)) }}</th>
                                     @endforeach
                                 </tr>
                             </thead>
@@ -87,7 +87,7 @@
                                 <tr>
                                     <td><em>Totalt antall oppmøtte</em></td>
                                     @foreach($events as $event)
-                                        <td class="td-padding-fix"><em>{{ $event->participants->count() }}</em></td>
+                                        <td class="text-center"><em>{{ $event->participants->count() }}</em></td>
                                     @endforeach
                                 </tr>
                             @foreach($members as $member)
@@ -103,7 +103,7 @@
                                             }
                                         }
                                         ?>
-                                        <td class="td-padding-fix">
+                                        <td class="text-center">
                                             {{ $present ? 'Y' : '' }}
                                         </td>
                                     @endforeach
