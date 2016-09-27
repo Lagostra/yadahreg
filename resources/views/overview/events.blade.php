@@ -8,7 +8,7 @@
             var string = field.value;
             var regex = new RegExp("(.*)" + string + "(.*)","i");
 
-            var $rows = $('#member-table').find("tbody").find('tr');
+            var $rows = $('#member-table').find("tbody").find('.member');
             $.each($rows, function(i, row) {
                 var name = $(row).find('.member-name').html();
                 if(regex.test(name)) {
@@ -76,16 +76,22 @@
                     <div class="table-responsive">
                         <table id="member-table" class="table">
                             <thead>
-                            <tr>
-                                <th>Navn</th>
-                                @foreach($events as $event)
-                                    <th>{{ date("d.m.Y", strtotime($event->date)) }}</th>
-                                @endforeach
-                            </tr>
+                                <tr>
+                                    <th>Dato</th>
+                                    @foreach($events as $event)
+                                        <th>{{ date("d.m.Y", strtotime($event->date)) }}</th>
+                                    @endforeach
+                                </tr>
                             </thead>
                             <tbody>
-                            @foreach($members as $member)
                                 <tr>
+                                    <td><em>Totalt antall oppmøtte</em></td>
+                                    @foreach($events as $event)
+                                        <td class="td-padding-fix"><em>{{ $event->participants->count() }}</em></td>
+                                    @endforeach
+                                </tr>
+                            @foreach($members as $member)
+                                <tr class="member">
                                     <td class="member-name">{{ $member->first_name . " " . $member->last_name}}</td>
                                     @foreach($events as $event)
                                         <?php
