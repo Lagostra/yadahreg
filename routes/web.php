@@ -59,6 +59,7 @@ Route::get('/overview/attendance', 'OverviewController@list_events');
 Route::get('/overview/payment', 'OverviewController@payment');
 Route::get('/overview/mailing-list', 'OverviewController@mail_list');
 Route::get('/overview/allergies', 'OverviewController@allergies');
+Route::get('/overview/contact', 'OverviewController@contact_information');
 
 Route::get('/graphs/attendance', 'GraphController@attendance');
 Route::get('/graphs/attendance-by-gender', 'GraphController@attendance_by_gender');

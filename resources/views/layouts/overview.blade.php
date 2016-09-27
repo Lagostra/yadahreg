@@ -6,6 +6,7 @@
             <ul class="nav navbar-nav navbar-left">
                 <li><a href="{{ url('/overview/attendance') }}">Oppmøte</a></li>
                 <li><a href="{{ url('/overview/payment') }}">Betaling</a></li>
+                <li><a href="{{ url('/overview/contact') }}">Kontaktinformasjon</a></li>
                 <li><a href="{{ url('/overview/allergies') }}">Allergier</a></li>
                 <li><a href="{{ url('/overview/mailing-list') }}">E-postliste</a></li>
             </ul>
