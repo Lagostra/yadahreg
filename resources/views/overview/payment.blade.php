@@ -8,7 +8,7 @@
             var string = field.value;
             var regex = new RegExp("(.*)" + string + "(.*)","i");
 
-            var $rows = $('#member-table').find("tbody").find('tr');
+            var $rows = $('#member-table').find("tbody").find('.member');
             $.each($rows, function(i, row) {
                 var name = $(row).find('.member-name').html();
                 if(regex.test(name)) {
@@ -76,16 +76,22 @@
                     <div class="table-responsive">
                         <table id="member-table" class="table">
                             <thead>
-                            <tr>
-                                <th>Navn</th>
-                                @foreach($semesters as $semester)
-                                    <th>{{ $semester->title }}</th>
-                                @endforeach
-                            </tr>
+                                <tr>
+                                    <th>Navn</th>
+                                    @foreach($semesters as $semester)
+                                        <th class="text-center">{{ $semester->title }}</th>
+                                    @endforeach
+                                </tr>
                             </thead>
                             <tbody>
-                            @foreach($members as $member)
                                 <tr>
+                                    <td><em>Antall som har betalt</em></td>
+                                    @foreach($semesters as $semester)
+                                        <td class="text-center"><em>{{ $semester->paid_members->count() }}</em></td>
+                                    @endforeach
+                                </tr>
+                            @foreach($members as $member)
+                                <tr class="member">
                                     <td class="member-name">{{ $member->first_name . " " . $member->last_name}}</td>
                                     @foreach($semesters as $semester)
                                         <?php
@@ -97,7 +103,7 @@
                                             }
                                         }
                                         ?>
-                                        <td class="td-padding-fix">
+                                        <td class="text-center">
                                             {{ $paid ? 'Y' : '' }}
                                         </td>
                                     @endforeach
