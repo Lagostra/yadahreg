@@ -82,4 +82,14 @@ class OverviewController extends Controller {
             'end_date' => $end_date));
     }
 
+    public function mail_list(Request $request) {
+        if($request->get('include_inactive')) {
+            $members = Member::orderBy('first_name')->get();
+        } else {
+            $members = Member::where('active', true)->orderBy('first_name')->get();
+        }
+
+        return view('overview.maillist', array('members' => $members));
+    }
+
 }
