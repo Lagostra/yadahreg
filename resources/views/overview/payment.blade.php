@@ -77,7 +77,7 @@
                         <table id="member-table" class="table">
                             <thead>
                                 <tr>
-                                    <th>Navn</th>
+                                    <th></th>
                                     @foreach($semesters as $semester)
                                         <th class="text-center">{{ $semester->title }}</th>
                                     @endforeach

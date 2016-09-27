@@ -1,6 +1,7 @@
 @extends('layouts.overview')
 
 @section('head')
+    <link rel="stylesheet" href="{{ url('/plugins/bootstrap-sortable/bootstrap-sortable.css') }}" />
     <script>
         function onChooseActive(e) {
             if(e.checked)
@@ -45,10 +46,10 @@
                     <input id="search" type="text" class="form-control" placeholder="Søk her" name="title" oninput="search(this);">
 
                     <div class="table-responsive">
-                        <table id="member-table" class="table">
+                        <table id="member-table" class="table sortable">
                             <thead>
                             <tr>
-                                <th>Navn</th>
+                                <th data-defaultsort="asc">Navn</th>
                                 <th>Telefon</th>
                                 <th>E-post</th>
                             </tr>
@@ -67,4 +68,9 @@
                 </div>
             </div>
         </div>
+@endsection
+
+@section('foot')
+    <script src="{{ url('/plugins/bootstrap-sortable/moment.min.js') }}"></script>
+    <script src="{{ url('/plugins/bootstrap-sortable/bootstrap-sortable.js') }}"></script>
 @endsection
