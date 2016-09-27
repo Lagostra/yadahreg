@@ -89,7 +89,7 @@ class OverviewController extends Controller {
             $members = Member::where('active', true)->orderBy('first_name')->get();
         }
 
-        return view('overview.maillist', array('members' => $members));
+        return view('overview.maillist', array('members' => $members, 'include_inactive' => $request->get('include_inactive')));
     }
 
 }
