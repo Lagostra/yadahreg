@@ -97,14 +97,14 @@
                                         <?php
                                         $unpresent = false;
                                         $present = false;
-                                        foreach($member->not_present_events as $event2) {
+                                        foreach($member->not_present_events()->whereBetween('date', array($start_date, $end_date))->get() as $event2) {
                                             if($event->id == $event2->id) {
                                                 $unpresent = true;
                                                 break;
                                             }
                                         }
                                         if(!$unpresent) {
-                                            foreach($member->events as $event2) {
+                                            foreach($member->events()->whereBetween('date', array($start_date, $end_date))->get() as $event2) {
                                                 if($event->id == $event2->id) {
                                                     $present = true;
                                                     break;
