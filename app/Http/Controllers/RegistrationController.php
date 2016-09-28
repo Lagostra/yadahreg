@@ -32,10 +32,18 @@ class RegistrationController extends Controller {
         }
 
         foreach($members as $member) {
-            foreach($member->events as $event) {
+            foreach($member->not_present_events as $event) {
                 if($event->id == $chosen_event->id) {
-                    $member->present = true;
+                    $member->unpresent = true;
                     break;
+                }
+            }
+            if(!$member->unpresent) {
+                foreach($member->events as $event) {
+                    if($event->id == $chosen_event->id) {
+                        $member->present = true;
+                        break;
+                    }
                 }
             }
         }
@@ -65,6 +73,32 @@ class RegistrationController extends Controller {
             $member->events()->attach($event);
         } else {
             $member->events()->detach($event);
+        }
+    }
+
+    public function set_unpresent(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'member_id' => 'numeric|required',
+            'event_id' => 'numeric|required',
+            'status' => 'boolean|required',
+        ]);
+
+        if ($validator->fails()) {
+            if($validator)
+                echo "Validation error:";
+            foreach ($validator->errors()->all() as $error) {
+                echo $error;
+            }
+            return;
+        }
+
+        $member = Member::find($request->get('member_id'));
+        $event = Event::find($request->get('event_id'));
+        if($request->get('status')) {
+            $member->events()->detach($event);
+            $member->not_present_events()->attach($event);
+        } else {
+            $member->not_present_events()->detach($event);
         }
     }
 }

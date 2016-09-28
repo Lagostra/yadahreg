@@ -95,16 +95,25 @@
                                     <td class="member-name">{{ $member->first_name . " " . $member->last_name}}</td>
                                     @foreach($events as $event)
                                         <?php
+                                        $unpresent = false;
                                         $present = false;
-                                        foreach($member->events as $event2) {
+                                        foreach($member->not_present_events as $event2) {
                                             if($event->id == $event2->id) {
-                                                $present = true;
+                                                $unpresent = true;
                                                 break;
+                                            }
+                                        }
+                                        if(!$unpresent) {
+                                            foreach($member->events as $event2) {
+                                                if($event->id == $event2->id) {
+                                                    $present = true;
+                                                    break;
+                                                }
                                             }
                                         }
                                         ?>
                                         <td class="text-center">
-                                            {{ $present ? 'Y' : '' }}
+                                            {{ $unpresent ? 'N' : ($present ? 'Y' : '') }}
                                         </td>
                                     @endforeach
                                 </tr>

@@ -37,6 +37,7 @@ Route::get('/events/edit/{id}', 'EventController@edit');
 Route::post('/events/addtoday', 'EventController@add_today');
 
 Route::post('/registration', 'RegistrationController@set_present');
+Route::post('/registration/unpresent', 'RegistrationController@set_unpresent');
 Route::get('/registration/{event_id?}', 'RegistrationController@index');
 
 Route::get('/members/add', 'MemberController@add');

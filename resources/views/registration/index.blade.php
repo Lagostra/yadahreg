@@ -3,10 +3,42 @@
 @if($chosen_event != null)
 @section('head')
     <script>
-        function setStatus(member_id, status) {
-            status = (status) ? 1 : 0;
+        function checkbox_click(e) {
+            if($(e.target).hasClass("disable")) {
+                e.preventDefault();
+                return false;
+            }
+            setStatus(e.target.getAttribute("member_id"), e.target);
+        }
+
+        function setStatus(member_id, src) {
+            if($(src).hasClass('disable'))
+                return;
+
+            var status = (src.checked) ? 1 : 0;
+            do_post(member_id, status, "{{ url('/registration') }}");
+        }
+
+        function set_unpresent(member_id, src) {
+            var status = !$(src).hasClass('disable');
+
+            if(status && src.checked) {
+                setStatus(member_id, false);
+                src.checked = false;
+            }
+
+            if(status) {
+                $(src).addClass("disable");
+            } else {
+                $(src).removeClass("disable");
+            }
+
+            do_post(member_id, status ? 1 : 0, "{{ url('/registration/unpresent') }}");
+        }
+
+        function do_post(member_id, status, url) {
             $.ajax({
-                url: '{{ url('/registration') }}',
+                url: url,
                 type: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}',
@@ -14,7 +46,7 @@
                     event_id: {{ $chosen_event->id }},
                     status: status,
                 }
-            }).fail(function(data, status) {
+            }).fail(function (data, status) {
                 window.alert("Noe gikk galt. Vennligst last siden på nytt.");
             });
         }
@@ -89,8 +121,12 @@
                                 <tr>
                                     <td class="member-name">{{ $member->first_name . " " . $member->last_name}}</td>
                                     <td>
-                                        <input type="checkbox" value="{{ $member->id }}" {{ $member->present ? 'checked' : '' }}
-                                                onclick="setStatus({{ $member->id }}, this.checked);"/>
+                                        <input type="checkbox" value="{{ $member->id }}"
+                                                member_id="{{ $member->id }}"
+                                                {{ $member->unpresent ? 'class=disable' : "" }}
+                                                oncontextmenu="set_unpresent({{ $member->id }}, this); return false;"
+                                                onclick="checkbox_click(event)"
+                                                {{ $member->present ? 'checked' : '' }} />
                                     </td>
                                 </tr>
                             @endforeach

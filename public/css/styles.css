@@ -18,3 +18,9 @@
     left: 0;
     right: 0;
 }
+
+input.disable {
+    opacity: .50;
+    filter: alpha(opacity=50); /* IE<9 */
+    cursor: default;
+}
