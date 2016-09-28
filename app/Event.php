@@ -10,4 +10,8 @@ class Event extends Model {
         return $this->belongsToMany('App\Member');
     }
 
+    public function confirmed_not_present() {
+        return $this->belongsToMany('App\Member', 'confirmed_not_present');
+    }
+
 }
