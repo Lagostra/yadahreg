@@ -113,7 +113,7 @@
                             <thead>
                             <tr>
                                 <th>Navn</th>
-                                <th class="col-md-2">Tilstede</th>
+                                <th class="col-md-2">Til stede</th>
                             </tr>
                             </thead>
                             <tbody>
