@@ -51,6 +51,32 @@ class OverviewController extends Controller {
                                         'end_date' => $end_date));
     }
 
+    public function inactive_members(Request $request) {
+        $members = Member::where('active', true)->get();
+        $inactive_members = array();
+        $events = Event::orderBy('date', 'desc')->take(6)->get();
+        foreach($members as $member) {
+            $points = 0;
+            foreach($events as $event) {
+                if($member->events->contains($event)) {
+                    break;
+                } else {
+                    if($member->not_present_events->contains($event)) {
+                        $points += 0.5;
+                    } else {
+                        $points += 1.0;
+                    }
+                    if($points >= 3.0) {
+                        array_push($inactive_members, $member);
+                        break;
+                    }
+                }
+            }
+        }
+
+        return view('overview.inactive', array('members' => $inactive_members));
+    }
+
     public function payment(Request $request) {
         $show_inactive = $request->get('show_inactive');
         $start_date = $request->get('start_date');
