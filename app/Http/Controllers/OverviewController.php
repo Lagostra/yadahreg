@@ -110,9 +110,9 @@ class OverviewController extends Controller {
 
     public function allergies(Request $request) {
         if($request->get('include_inactive')) {
-            $members = Member::orderBy('first_name')->get();
+            $members = Member::where('allergies', '!=', '')->orderBy('first_name')->get();
         } else {
-            $members = Member::where('active', true)->orderBy('first_name')->get();
+            $members = Member::where('allergies', '!=', '')->where('active', true)->orderBy('first_name')->get();
         }
 
         return view('overview.allergies', array('members' => $members, 'include_inactive' => $request->get('include_inactive')));

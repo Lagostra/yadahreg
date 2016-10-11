@@ -38,12 +38,10 @@
                             </thead>
                             <tbody>
                             @foreach($members as $member)
-                                @if($member->allergies != "")
                                 <tr class="member">
                                     <td class="member-name">{{ $member->first_name . " " . $member->last_name}}</td>
                                     <td>{{ $member->allergies }}</td>
                                 </tr>
-                                @endif
                             @endforeach
                             </tbody>
                         </table>
