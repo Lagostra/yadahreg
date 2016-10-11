@@ -28,48 +28,54 @@
                 <div class="panel-heading">Oppmøte - oversikt</div>
 
                 <div class="panel-body">
-                        <form class="form-horizontal form-inline margin-bottom-fix" role="form" name="add_form" method="GET" action="{{ url('/overview/attendance') }}">
-                            <div class="form-group">
-                                <label for="start_date" class="col-md-4 control-label">Startdato</label>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a class="btn btn-primary pull-right" href="{{ url('/download/attendance?start_date=' . $start_date .
+                                                                        '&end_date=' . $end_date .
+                                                                       ($show_inactive ? '&show_inactive=true' : '')) }}">Last ned som CSV</a>
+                        </div>
+                    </div>
+                    <form class="form-horizontal form-inline margin-bottom-fix" role="form" name="add_form" method="GET" action="{{ url('/overview/attendance') }}">
+                        <div class="form-group">
+                            <label for="start_date" class="col-md-4 control-label">Startdato</label>
 
-                                <div class="col-md-6">
-                                    <div class="input-group date my-datepicker" data-provide="datepicker">
-                                        <input type="text" class="form-control datepicker" name="start_date" value="{{ date("d.m.Y", strtotime($start_date)) }}">
-                                        <div class="input-group-addon">
-                                            <span class="glyphicon glyphicon-th"></span>
-                                        </div>
+                            <div class="col-md-6">
+                                <div class="input-group date my-datepicker" data-provide="datepicker">
+                                    <input type="text" class="form-control datepicker" name="start_date" value="{{ date("d.m.Y", strtotime($start_date)) }}">
+                                    <div class="input-group-addon">
+                                        <span class="glyphicon glyphicon-th"></span>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="form-group">
-                                <label for="end_date" class="col-md-4 control-label">Sluttdato</label>
+                        <div class="form-group">
+                            <label for="end_date" class="col-md-4 control-label">Sluttdato</label>
 
-                                <div class="col-md-6">
-                                    <div class="input-group date my-datepicker" data-provide="datepicker">
-                                        <input type="text" class="form-control datepicker" name="end_date" value="{{ date("d.m.Y", strtotime($end_date)) }}">
-                                        <div class="input-group-addon">
-                                            <span class="glyphicon glyphicon-th"></span>
-                                        </div>
+                            <div class="col-md-6">
+                                <div class="input-group date my-datepicker" data-provide="datepicker">
+                                    <input type="text" class="form-control datepicker" name="end_date" value="{{ date("d.m.Y", strtotime($end_date)) }}">
+                                    <div class="input-group-addon">
+                                        <span class="glyphicon glyphicon-th"></span>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="form-group">
-                                <input name="show_inactive" type="checkbox" {{ $show_inactive ? 'checked' : '' }} onclick="onChooseActive(this);" />
-                                <label for="show_inactive">Vis inaktive medlemmer</label>
+                        <div class="form-group">
+                            <input name="show_inactive" type="checkbox" {{ $show_inactive ? 'checked' : '' }} onclick="onChooseActive(this);" />
+                            <label for="show_inactive">Vis inaktive medlemmer</label>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-md-6 col-md-offset-4">
+                                <button type="submit" class="btn btn-primary">
+                                    Generér
+                                </button>
                             </div>
-
-
-                            <div class="form-group">
-                                <div class="col-md-6 col-md-offset-4">
-                                    <button type="submit" class="btn btn-primary">
-                                        Generér
-                                    </button>
-                                </div>
-
-                            </div>
-                        </form>
+                        </div>
+                    </form>
 
                     <input id="search" type="text" class="form-control" placeholder="Søk her" name="title" oninput="search(this);">
 

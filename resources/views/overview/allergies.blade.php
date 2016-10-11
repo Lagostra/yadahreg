@@ -21,6 +21,11 @@
                 </div>
 
                 <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a class="btn btn-primary pull-right" href="{{ url('/download/allergies' . ($include_inactive ? '?include_inactive=true' : '')) }}">Last ned som CSV</a>
+                        </div>
+                    </div>
                     <div class="row margin-bottom-fix">
                         <div class="col-md-12">
                             <span class="margin-left-10px">Inkluder ikke-aktive medlemmer: </span>

@@ -28,6 +28,13 @@
                 <div class="panel-heading">Betaling - oversikt</div>
 
                 <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a class="btn btn-primary pull-right" href="{{ url('/download/payment?start_date=' . $start_date .
+                                                                        '&end_date=' . $end_date .
+                                                                       ($show_inactive ? '&show_inactive=true' : '')) }}">Last ned som CSV</a>
+                        </div>
+                    </div>
                     <form class="form-horizontal form-inline margin-bottom-fix" role="form" name="add_form" method="GET" action="{{ url('/overview/payment') }}">
                         <div class="form-group">
                             <label for="start_date" class="col-md-4 control-label">Startdato</label>
