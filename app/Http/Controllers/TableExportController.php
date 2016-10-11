@@ -16,6 +16,28 @@ class TableExportController extends Controller {
         $this->middleware('user');
     }
 
+    public function members(Request $request) {
+        $filename = "Yadah_Medlemsliste_" . date('Ymd') . ".csv";
+
+        if(!$request->get('include_inactive'))
+            $members = Member::where('active', true)->orderBy('last_name')->get();
+        else
+            $members = Member::orderBy('last_name')->get();
+
+        $result = array();
+        foreach($members as $member) {
+            array_push($result, array(
+                'Etternavn' => $member->last_name,
+                'Fornavn' => $member->first_name,
+                'E-post' => $member->email,
+                'Telefon' => $member->phone,
+                'Stemmegruppe' => ucfirst($member->preferred_voice),
+            ));
+        }
+
+        $this->array_to_csv($result, $filename);
+    }
+
     public function attendance(Request $request) {
         $show_inactive = $request->get('show_inactive');
         $start_date = $request->get('start_date');

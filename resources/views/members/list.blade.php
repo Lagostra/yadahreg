@@ -35,6 +35,12 @@
                 <div class="panel-heading">Medlemmer</div>
 
                 <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a class="btn btn-primary pull-right" href="{{ url('/download/members' . ($show_inactive ? '?include_inactive=true' : '')) }}">Last ned som CSV</a>
+                        </div>
+                    </div>
+
                     <div class="row margin-bottom-fix">
                         <div class="col-md-12">
                             <a class="btn btn-primary" href="{{ url('/members/add/') }}">Legg til medlem</a>
