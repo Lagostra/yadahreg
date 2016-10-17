@@ -232,7 +232,8 @@
     <script src="{{ url('/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
     <script>
         $('#datepicker').datepicker({
-            format: "dd.mm.yyyy"
+            format: "dd.mm.yyyy",
+            defaultViewDate: {year: 1990, month: 0, day: 1},
         });
     </script>
 @endsection
