@@ -52,7 +52,6 @@
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-left">
                         @if(Auth::check())
-                            <li><a href="{{ url('/home') }}">Hjem</a></li>
                             @if(Auth::user()->role == 'user' || Auth::user()->role == 'admin')
                                 <li><a href="{{ url('/registration') }}">Registrering</a></li>
                                 <li><a href="{{ url('/members') }}">Medlemmer</a></li>
