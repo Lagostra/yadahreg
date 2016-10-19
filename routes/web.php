@@ -69,6 +69,12 @@ Route::get('/graphs/attendance-by-voice', 'GraphController@attendance_by_voice')
 Route::get('/graphs/gender', 'GraphController@gender');
 Route::get('/graphs/voice', 'GraphController@voice');
 
+Route::get('/download/members', 'TableExportController@members');
+Route::get('/download/attendance', 'TableExportController@attendance');
+Route::get('/download/payment', 'TableExportController@payment');
+Route::get('/download/contact', 'TableExportController@contact_list');
+Route::get('/download/allergies', 'TableExportController@allergies');
+
 // Google Auth
 Route::get('/redirect', 'SocialAuthController@redirect');
 Route::get('/callback', 'SocialAuthController@callback');
