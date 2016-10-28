@@ -25,6 +25,11 @@ class RegistrationController extends Controller {
         $members = Member::where('active', true)->orderBy('first_name', 'ASC')->get();
         $events = Event::orderBy('date', 'desc')->get();
 
+        $birthdays = Member::where('active', true)
+                                ->whereMonth('birthday', '=', date('n'))
+                                ->whereDay('birthday', '=', date('d'))
+                                ->orderBy('first_name', 'ASC')->get();
+
         $chosen_event = Event::find($event_id);
 
         if($chosen_event == null) {
@@ -48,7 +53,8 @@ class RegistrationController extends Controller {
             }
         }
 
-        return view('registration.index', array('members' => $members, 'chosen_event' => $chosen_event, 'events' => $events));
+        return view('registration.index', array('members' => $members, 'birthdays' => $birthdays,
+                                                'chosen_event' => $chosen_event, 'events' => $events));
     }
 
     public function set_present(Request $request) {
