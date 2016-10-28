@@ -141,5 +141,26 @@
                 </div>
             </div>
         </div>
+        @if($birthdays->count() != 0)
+        <div class="col-md-2">
+            <div class="panel panel-default">
+                <div class="panel-heading">Bursdager</div>
+
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table id="member-table" class="table">
+                            <tbody>
+                            @foreach($birthdays as $member)
+                                <tr>
+                                    <td class="member-name">{{ $member->first_name . " " . $member->last_name}}</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
 @endsection
