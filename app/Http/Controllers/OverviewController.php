@@ -27,12 +27,12 @@ class OverviewController extends Controller {
          * */
         if($start_date == "" && $end_date == "") {
             $end_date = date("Y-m-d");
-            $start_date = date("Y-m-d", strtotime("-" . 8 * 7 . "days")); // Date 8 weeks before today
+            $start_date = date("Y-m-d", strtotime("-" . 4 * 7 . "days")); // Date 4 weeks before today
         } else if($start_date == "") {
-            $start_date = date("Y-m-d", strtotime($end_date . " -" . 8 * 7 . "days")); // Date 8 weeks before end
+            $start_date = date("Y-m-d", strtotime($end_date . " -" . 4 * 7 . "days")); // Date 4 weeks before end
             $end_date = date("Y-m-d", strtotime($end_date));
         } else if($end_date == "") {
-            $end_date = date("Y-m-d", strtotime($start_date . " +" . 8 * 7 . "days")); // Date 8 weeks after start
+            $end_date = date("Y-m-d", strtotime($start_date . " +" . 4 * 7 . "days")); // Date 4 weeks after start
             $start_date = date("Y-m-d", strtotime($start_date));
         } else {
             $end_date = date("Y-m-d", strtotime($end_date));
