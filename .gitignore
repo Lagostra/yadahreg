@@ -7,3 +7,4 @@ Homestead.yaml
 .env
 .env.local
 .env.pi03
+yarn.lock
