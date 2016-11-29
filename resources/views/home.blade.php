@@ -19,7 +19,7 @@
                 <p>
                     Bruk menyen over for å navigere.
                     Dersom du ser få/ingen lenker i menyen, kan det tyde på at brukeren din ikke er aktivert.
-                    Ta i så fall kontakt med administrator for å fikset dette.
+                    Ta i så fall kontakt med administrator for å få fikset dette.
                 </p>
 
             </div>
