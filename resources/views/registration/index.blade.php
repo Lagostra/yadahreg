@@ -119,7 +119,9 @@
                             <tbody>
                             @foreach($members as $member)
                                 <tr>
-                                    <td class="member-name">{{ $member->first_name . " " . $member->last_name}}</td>
+                                    <td class="member-name{{ $member->has_paid($last_semester) ? '' : ' red-text'}}">
+                                        {{ $member->first_name . " " . $member->last_name}}
+                                    </td>
                                     <td>
                                         <input type="checkbox" value="{{ $member->id }}"
                                                 member_id="{{ $member->id }}"

@@ -11,6 +11,7 @@ namespace App\Http\Controllers;
 
 use App\Event;
 use App\Member;
+use App\Semester;
 use Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -36,8 +37,11 @@ class RegistrationController extends Controller {
             $chosen_event = Event::orderBy('date', 'desc')->first();
         }
 
+        $last_semester = Semester::orderBy('date', 'desc')->first();
+
         return view('registration.index', array('members' => $members, 'birthdays' => $birthdays,
-                                                'chosen_event' => $chosen_event, 'events' => $events));
+                                                'chosen_event' => $chosen_event, 'events' => $events,
+                                                'last_semester' => $last_semester));
     }
 
     public function set_present(Request $request) {
