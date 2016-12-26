@@ -100,26 +100,8 @@
                                 <tr class="member">
                                     <td class="member-name">{{ $member->first_name . " " . $member->last_name}}</td>
                                     @foreach($events as $event)
-                                        <?php
-                                        $unpresent = false;
-                                        $present = false;
-                                        foreach($member->not_present_events()->whereBetween('date', array($start_date, $end_date))->get() as $event2) {
-                                            if($event->id == $event2->id) {
-                                                $unpresent = true;
-                                                break;
-                                            }
-                                        }
-                                        if(!$unpresent) {
-                                            foreach($member->events()->whereBetween('date', array($start_date, $end_date))->get() as $event2) {
-                                                if($event->id == $event2->id) {
-                                                    $present = true;
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                        ?>
                                         <td class="text-center">
-                                            {{ $unpresent ? 'N' : ($present ? 'Y' : '') }}
+                                            {{ $member->is_not_present($event) ? 'N' : ($member->is_present($event) ? 'Y' : '') }}
                                         </td>
                                     @endforeach
                                 </tr>

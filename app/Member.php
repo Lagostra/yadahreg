@@ -18,4 +18,16 @@ class Member extends Model{
         return $this->belongsToMany('App\Semester');
     }
 
+    public function is_present(Event $event) {
+        return $this->events->contains($event);
+    }
+
+    public function is_not_present(Event $event) {
+        return $this->not_present_events->contains($event);
+    }
+
+    public function has_paid(Semester $semester) {
+        return $this->paid_semesters->contains($semester);
+    }
+
 }

@@ -92,7 +92,7 @@
                                     <tr>
                                         <td class="member-name">{{ $member->first_name . " " . $member->last_name}}</td>
                                         <td>
-                                            <input type="checkbox" value="{{ $member->id }}" {{ $member->paid ? 'checked' : '' }}
+                                            <input type="checkbox" value="{{ $member->id }}" {{ $member->has_paid($chosen_semester) ? 'checked' : '' }}
                                             onclick="setStatus({{ $member->id }}, this.checked);"/>
                                         </td>
                                     </tr>

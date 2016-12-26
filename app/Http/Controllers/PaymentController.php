@@ -28,15 +28,6 @@ class PaymentController extends Controller {
             $chosen_semester = $semesters->first();
         }
 
-        foreach($members as $member) {
-            foreach($member->paid_semesters as $semester) {
-                if($semester->id == $chosen_semester->id) {
-                    $member->paid = true;
-                    break;
-                }
-            }
-        }
-
         return view('payment.index', array('members' => $members, 'chosen_semester' => $chosen_semester, 'semesters' => $semesters, 'show_inactive' => $show_inactive));
     }
 

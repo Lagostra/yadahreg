@@ -36,23 +36,6 @@ class RegistrationController extends Controller {
             $chosen_event = Event::orderBy('date', 'desc')->first();
         }
 
-        foreach($members as $member) {
-            foreach($member->not_present_events as $event) {
-                if($event->id == $chosen_event->id) {
-                    $member->unpresent = true;
-                    break;
-                }
-            }
-            if(!$member->unpresent) {
-                foreach($member->events as $event) {
-                    if($event->id == $chosen_event->id) {
-                        $member->present = true;
-                        break;
-                    }
-                }
-            }
-        }
-
         return view('registration.index', array('members' => $members, 'birthdays' => $birthdays,
                                                 'chosen_event' => $chosen_event, 'events' => $events));
     }

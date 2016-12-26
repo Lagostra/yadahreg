@@ -101,17 +101,8 @@
                                 <tr class="member">
                                     <td class="member-name">{{ $member->first_name . " " . $member->last_name}}</td>
                                     @foreach($semesters as $semester)
-                                        <?php
-                                        $paid = false;
-                                        foreach($member->paid_semesters as $semester2) {
-                                            if($semester->id == $semester2->id) {
-                                                $paid = true;
-                                                break;
-                                            }
-                                        }
-                                        ?>
                                         <td class="text-center">
-                                            {{ $paid ? 'Y' : '' }}
+                                            {{ $member->has_paid($semester) ? 'Y' : '' }}
                                         </td>
                                     @endforeach
                                 </tr>

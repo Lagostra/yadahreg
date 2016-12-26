@@ -58,10 +58,10 @@ class OverviewController extends Controller {
         foreach($members as $member) {
             $points = 0;
             foreach($events as $event) {
-                if($member->events->contains($event)) {
+                if($member->is_present($event)) {
                     break;
                 } else {
-                    if($member->not_present_events->contains($event)) {
+                    if($member->is_not_present($event)) {
                         $points += 0.5;
                     } else {
                         $points += 1.0;

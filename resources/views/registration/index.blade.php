@@ -123,10 +123,10 @@
                                     <td>
                                         <input type="checkbox" value="{{ $member->id }}"
                                                 member_id="{{ $member->id }}"
-                                                {{ $member->unpresent ? 'class=disable' : "" }}
+                                                {{ $member->is_not_present($chosen_event) ? 'class=disable' : "" }}
                                                 oncontextmenu="set_unpresent({{ $member->id }}, this); return false;"
                                                 onclick="checkbox_click(event)"
-                                                {{ $member->present ? 'checked' : '' }} />
+                                                {{ $member->is_present($chosen_event) ? 'checked' : '' }} />
                                     </td>
                                 </tr>
                             @endforeach
