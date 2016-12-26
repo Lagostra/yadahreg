@@ -119,8 +119,8 @@
                             <tbody>
                             @foreach($members as $member)
                                 <tr>
-                                    <td class="member-name{{ $member->has_paid($last_semester) ? '' : ' red-text'}}">
-                                        {{ $member->first_name . " " . $member->last_name}}
+                                    <td class="member-name">
+                                        {{ $member->first_name . " " . $member->last_name}}{{ $member->has_paid($last_semester) ? '' : '*'}}
                                     </td>
                                     <td>
                                         <input type="checkbox" value="{{ $member->id }}"
@@ -134,6 +134,7 @@
                             @endforeach
                             </tbody>
                         </table>
+                        * Har ikke betalt siste semesteravgift
                     </div>
                     @else
                         <p>
