@@ -37,7 +37,7 @@ class RegistrationController extends Controller {
             $chosen_event = Event::orderBy('date', 'desc')->first();
         }
 
-        $last_semester = Semester::orderBy('date', 'desc')->first();
+        $last_semester = Semester::orderBy('end_date', 'desc')->first();
 
         return view('registration.index', array('members' => $members, 'birthdays' => $birthdays,
                                                 'chosen_event' => $chosen_event, 'events' => $events,
