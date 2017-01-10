@@ -211,7 +211,7 @@ class GraphController extends Controller {
             $datatable->addRow([$indexes[$i], $results[$i]]);
         }
 
-        Lava::ColumnChart('gender', $datatable, [
+        Lava::ColumnChart('age', $datatable, [
             'legend' => 'none',
         ]);
 
