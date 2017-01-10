@@ -167,6 +167,57 @@ class GraphController extends Controller {
         return view('graphs.gender', array('include_inactive' => $request->get('include_inactive')));
     }
 
+    public function age(Request $request) {
+        if($request->get('include_inactive')) {
+            $members = Member::get();
+        } else {
+            $members = Member::where('active', true)->get();
+        }
+
+        $limits = array(20, 25, 30, 35);
+        $indexes = array();
+        $results = array();
+
+        for($i = 0; $i < count($limits) + 1; $i++) {
+            if($i == 0)
+                $indexes[$i] = "<=" . $limits[$i];
+            else if($i == count($limits))
+                $indexes[$i] = ">" . $limits[$i-1];
+            else if($limits[$i] - $limits[$i-1] == 1)
+                $indexes[$i] = $limits[$i];
+            else
+                $indexes[$i] = $limits[$i-1] + 1 . "-" . $limits[$i];
+
+            $result = 0;
+            foreach($members as $member) {
+                $age = $member->get_age();
+                if($i == 0) {
+                    if ($age <= $limits[$i])
+                        $result++;
+                } else {
+                    if ($age > $limits[$i - 1] && $age <= $limits[$i]
+                        || $i == count($limits) && $age > $limits[$i - 1]
+                    )
+                        $result++;
+                }
+            }
+            $results[$i] = $result;
+        }
+
+        $datatable = Lava::DataTable();
+        $datatable  ->addStringColumn('Gruppe')
+            ->addNumberColumn('Antall');
+        for($i = 0; $i < count($results); $i++) {
+            $datatable->addRow([$indexes[$i], $results[$i]]);
+        }
+
+        Lava::ColumnChart('gender', $datatable, [
+            'legend' => 'none',
+        ]);
+
+        return view('graphs.gender', array('include_inactive' => $request->get('include_inactive')));
+    }
+
     public function voice(Request $request) {
         if($request->get('include_inactive')) {
             $members = Member::get();
