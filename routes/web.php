@@ -67,6 +67,7 @@ Route::get('/graphs/attendance', 'GraphController@attendance');
 Route::get('/graphs/attendance-by-gender', 'GraphController@attendance_by_gender');
 Route::get('/graphs/attendance-by-voice', 'GraphController@attendance_by_voice');
 Route::get('/graphs/gender', 'GraphController@gender');
+Route::get('/graphs/age', 'GraphController@age');
 Route::get('/graphs/voice', 'GraphController@voice');
 
 Route::get('/download/members', 'TableExportController@members');
