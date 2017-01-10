@@ -215,7 +215,7 @@ class GraphController extends Controller {
             'legend' => 'none',
         ]);
 
-        return view('graphs.gender', array('include_inactive' => $request->get('include_inactive')));
+        return view('graphs.age', array('include_inactive' => $request->get('include_inactive')));
     }
 
     public function voice(Request $request) {
