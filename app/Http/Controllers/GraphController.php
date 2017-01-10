@@ -174,7 +174,7 @@ class GraphController extends Controller {
             $members = Member::where('active', true)->get();
         }
 
-        $limits = array(18, 20, 22, 24, 26, 28, 30, 35);
+        $limits = array(18, 20, 22, 24, 26, 30, 35);
         $indexes = array();
         $results = array();
 
