@@ -195,8 +195,8 @@ class GraphController extends Controller {
                     if ($age <= $limits[$i])
                         $result++;
                 } else {
-                    if ($age > $limits[$i - 1] && $age <= $limits[$i]
-                        || $i == count($limits) && $age > $limits[$i - 1]
+                    if ($i == count($limits) && $age > $limits[$i - 1]
+                        ||$age > $limits[$i - 1] && $age <= $limits[$i]
                     )
                         $result++;
                 }
