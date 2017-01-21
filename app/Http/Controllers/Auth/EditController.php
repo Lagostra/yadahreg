@@ -69,6 +69,8 @@ class EditController extends Controller {
     }
 
     public function token() {
+        if(!Auth::user()->is_user())
+            return redirect(url('/home'));
         return view('auth.token');
     }
 

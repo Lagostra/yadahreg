@@ -78,6 +78,15 @@ Route::get('/download/payment', 'TableExportController@payment');
 Route::get('/download/contact', 'TableExportController@contact_list');
 Route::get('/download/allergies', 'TableExportController@allergies');
 
+
+// API
+
+Route::get('/api/get_events', 'ApiController@get_events');
+Route::get('/api/get_members', 'ApiController@get_members');
+Route::post('/api/set_present_by_card', 'ApiController@set_present_by_card');
+Route::post('/api/register_card', 'ApiController@register_card');
+
+
 // Google Auth
 Route::get('/redirect', 'SocialAuthController@redirect');
 Route::get('/callback', 'SocialAuthController@callback');
