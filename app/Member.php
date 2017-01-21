@@ -28,15 +28,21 @@ class Member extends Model{
             ->y;
     }
 
-    public function is_present(Event $event) {
+    public function is_present(Event $event = null) {
+        if($event == null)
+            return false;
         return $this->events->contains($event);
     }
 
-    public function is_not_present(Event $event) {
+    public function is_not_present(Event $event = null) {
+        if($event == null)
+            return false;
         return $this->not_present_events->contains($event);
     }
 
-    public function has_paid(Semester $semester) {
+    public function has_paid(Semester $semester = null) {
+        if($semester == null)
+            return false;
         return $this->paid_semesters->contains($semester);
     }
 
