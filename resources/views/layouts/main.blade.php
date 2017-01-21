@@ -70,6 +70,9 @@
                             <ul class="dropdown-menu">
                                 <li><a href="{{ url('/profile/edit') }}">Rediger profil</a></li>
                                 <li><a href="{{ url('/profile/edit/password') }}">{{ Auth::user()->password == null ? 'Opprett passord' : 'Endre passord' }}</a></li>
+                                @if(Auth::user()->role == 'user' || Auth::user()->role == 'admin')
+                                <li><a href="{{ url('/profile/token') }}">Api Token</a></li>
+                                @endif
                                 @if(Auth::user()->role == 'admin')
                                 <li><a href="{{ url('/users') }}">Administrer brukere</a></li>
                                 @endif

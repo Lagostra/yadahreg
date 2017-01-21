@@ -23,6 +23,8 @@ Route::get('/profile/edit', 'Auth\EditController@index');
 Route::post('/profile/edit', 'Auth\EditController@update_profile');
 Route::get('/profile/edit/password', 'Auth\EditController@password');
 Route::post('/profile/edit/password', 'Auth\EditController@update_password');
+Route::get('/profile/token', 'Auth\EditController@token');
+Route::get('/profile/generate_token', 'Auth\EditController@generate_token');
 
 Route::get('/users', 'UserController@index');
 Route::get('/users/edit/{id}', 'UserController@edit');
