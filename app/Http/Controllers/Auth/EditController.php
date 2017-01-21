@@ -73,7 +73,7 @@ class EditController extends Controller {
     }
 
     public function generate_token() {
-        if(Auth::user()->role != 'user' && Auth::user()->role != 'admin')
+        if(!Auth::user()->is_user())
             return redirect(url('/home'));
 
         Auth::user()->api_token = str_random(60);

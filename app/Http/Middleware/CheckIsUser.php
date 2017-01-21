@@ -16,7 +16,7 @@ class CheckIsUser
      */
     public function handle($request, Closure $next) {
         $user = $request->user();
-        if(! $user || !($user->role == 'admin' || $user->role == 'user') ) {
+        if(! $user || !$user->is_user()) {
             return redirect(url('/home'));
         }
 

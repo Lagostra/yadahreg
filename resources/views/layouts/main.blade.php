@@ -52,7 +52,7 @@
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-left">
                         @if(Auth::check())
-                            @if(Auth::user()->role == 'user' || Auth::user()->role == 'admin')
+                            @if(Auth::user()->is_user())
                                 <li><a href="{{ url('/registration') }}">Registrering</a></li>
                                 <li><a href="{{ url('/members') }}">Medlemmer</a></li>
                                 <li><a href="{{ url('/payment') }}">Betaling</a></li>
@@ -70,10 +70,10 @@
                             <ul class="dropdown-menu">
                                 <li><a href="{{ url('/profile/edit') }}">Rediger profil</a></li>
                                 <li><a href="{{ url('/profile/edit/password') }}">{{ Auth::user()->password == null ? 'Opprett passord' : 'Endre passord' }}</a></li>
-                                @if(Auth::user()->role == 'user' || Auth::user()->role == 'admin')
+                                @if(Auth::user()->is_user())
                                 <li><a href="{{ url('/profile/token') }}">Api Token</a></li>
                                 @endif
-                                @if(Auth::user()->role == 'admin')
+                                @if(Auth::user()->is_admin())
                                 <li><a href="{{ url('/users') }}">Administrer brukere</a></li>
                                 @endif
                                 <li>
