@@ -19,6 +19,10 @@ class Member extends Model{
         return $this->belongsToMany('App\Semester');
     }
 
+    public function cards() {
+        return $this->hasMany('App\Card');
+    }
+
     /*
      *  Helper functions
      */
