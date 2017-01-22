@@ -16,7 +16,7 @@ class CheckIsAdmin {
      */
     public function handle($request, Closure $next, ...$guards) {
         $user = $request->user();
-        if(!$user || $user->is_admin()) {
+        if(!$user || !$user->is_admin()) {
             return redirect(url('/home'));
         }
 
