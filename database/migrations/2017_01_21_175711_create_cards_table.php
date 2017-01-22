@@ -16,6 +16,7 @@ class CreateCardsTable extends Migration
         Schema::create("cards", function(Blueprint $table) {
             $table->increments('id');
             $table->string("mifare")->unique();
+            $table->integer("member_id");
         });
     }
 
