@@ -17,6 +17,7 @@ class CreateCardsTable extends Migration
             $table->increments('id');
             $table->string("mifare")->unique();
             $table->integer("member_id");
+            $table->timestamps();
         });
     }
 

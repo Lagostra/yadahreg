@@ -97,8 +97,8 @@ class ApiController extends Controller {
 
         $card = new Card;
         $card->mifare = $mifare;
+        $card->owner()->associate($member);
         $card->save();
-        $member->cards()->attach($card);
         return $member->id;
     }
 
