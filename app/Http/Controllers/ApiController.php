@@ -54,21 +54,22 @@ class ApiController extends Controller {
         $card = $request->get('card');
         $event_id = $request->get('event_id');
 
-        if(!$card || $event_id)
+        if(!$card || !$event_id) {
             http_response_code(400);
-            return "Incorrectly formatted data.";
-
+            return "Incorrectly formatted data. Card=" . $card . " event_id=" . $event_id;
+        }
 
         $card = Card::where('mifare', $card)->first();
-        if($card == null)
+        if(!$card) {
             return "Card is not registered to any members";
-        $member = $card->owner();
+        }
+        $member = $card->owner;
 
         $event = Event::find($event_id);
 
         $member->events()->attach($event);
 
-        return $member->first_name + " " + $member->last_name;
+        return $member->first_name . " " . $member->last_name;
     }
 
     /**
