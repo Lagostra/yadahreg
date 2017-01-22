@@ -86,9 +86,10 @@ class ApiController extends Controller {
         }
 
         $card = Card::where('mifare', $mifare)->first();
-        if($card)
+        if($card) {
+            http_response_code(400);
             return 'Card already registered';
-
+        }
         $member = Member::find($request->get('member_id'));
         if(!$member) {
             http_response_code(400);
