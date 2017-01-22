@@ -68,4 +68,20 @@ class EditController extends Controller {
         return redirect('/home');
     }
 
+    public function token() {
+        if(!Auth::user()->is_user())
+            return redirect(url('/home'));
+        return view('auth.token');
+    }
+
+    public function generate_token() {
+        if(!Auth::user()->is_user())
+            return redirect(url('/home'));
+
+        Auth::user()->api_token = str_random(60);
+        Auth::user()->save();
+
+        return redirect(url('/profile/token'));
+    }
+
 }

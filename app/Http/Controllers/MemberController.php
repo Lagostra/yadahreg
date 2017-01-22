@@ -130,4 +130,8 @@ class MemberController extends Controller {
         return redirect(url('/members'));
     }
 
+    public function add_card() {
+
+    }
+
 }

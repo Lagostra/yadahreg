@@ -12,6 +12,7 @@ class VerifyCsrfToken extends BaseVerifier
      * @var array
      */
     protected $except = [
-        //
+        '/api/set_present_by_card',
+        '/api/register_card'
     ];
 }

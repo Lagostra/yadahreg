@@ -23,6 +23,8 @@ Route::get('/profile/edit', 'Auth\EditController@index');
 Route::post('/profile/edit', 'Auth\EditController@update_profile');
 Route::get('/profile/edit/password', 'Auth\EditController@password');
 Route::post('/profile/edit/password', 'Auth\EditController@update_password');
+Route::get('/profile/token', 'Auth\EditController@token');
+Route::get('/profile/generate_token', 'Auth\EditController@generate_token');
 
 Route::get('/users', 'UserController@index');
 Route::get('/users/edit/{id}', 'UserController@edit');
@@ -75,6 +77,15 @@ Route::get('/download/attendance', 'TableExportController@attendance');
 Route::get('/download/payment', 'TableExportController@payment');
 Route::get('/download/contact', 'TableExportController@contact_list');
 Route::get('/download/allergies', 'TableExportController@allergies');
+
+
+// API
+
+Route::get('/api/get_events', 'ApiController@get_events');
+Route::get('/api/get_members', 'ApiController@get_members');
+Route::post('/api/set_present_by_card', 'ApiController@set_present_by_card');
+Route::post('/api/register_card', 'ApiController@register_card');
+
 
 // Google Auth
 Route::get('/redirect', 'SocialAuthController@redirect');
