@@ -67,7 +67,7 @@ class ApiController extends Controller {
 
         $event = Event::find($event_id);
 
-        if(!$member->events()->contains($event))
+        if(!$member->events->contains($event))
             $member->events()->attach($event);
 
         return $member->first_name . " " . $member->last_name;
