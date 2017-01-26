@@ -62,7 +62,7 @@ class RegistrationController extends Controller {
 
         $member = Member::find($request->get('member_id'));
         $event = Event::find($request->get('event_id'));
-        if($request->get('status')) {
+        if($request->get('status') && !$member->events()->contains($event)) {
             $member->events()->attach($event);
         } else {
             $member->events()->detach($event);
@@ -87,7 +87,7 @@ class RegistrationController extends Controller {
 
         $member = Member::find($request->get('member_id'));
         $event = Event::find($request->get('event_id'));
-        if($request->get('status')) {
+        if($request->get('status') && !$member->not_present_events()->contains($event)) {
             $member->events()->detach($event);
             $member->not_present_events()->attach($event);
         } else {
