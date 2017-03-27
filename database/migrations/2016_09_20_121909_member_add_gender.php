@@ -23,6 +23,8 @@ class MemberAddGender extends Migration
      * @return void
      */
     public function down(){
-        $table->dropColumn('gender');
+		Schema::table('members', function($table) {
+            $table->dropColumn('gender');
+        });
     }
 }

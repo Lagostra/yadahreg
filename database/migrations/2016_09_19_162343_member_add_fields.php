@@ -27,7 +27,11 @@ class MemberAddFields extends Migration
     public function down() {
         Schema::table('members', function($table) {
             $table->dropColumn('birthday');
+        });
+		Schema::table('members', function($table) {
             $table->dropColumn('address');
+        });
+		Schema::table('members', function($table) {
             $table->dropColumn('allergies');
         });
     }
