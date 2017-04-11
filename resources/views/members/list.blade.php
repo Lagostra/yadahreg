@@ -18,7 +18,9 @@
             var $rows = $('#member-table').find("tbody").find('tr');
             $.each($rows, function(i, row) {
                 var name = $(row).find('.member-first-name').html() + " " + $(row).find('.member-last-name').html();
-                if(regex.test(name)) {
+                var mail = $(row).find('.member-email').html();
+                var phone = $(row).find('.member-phone').html();
+                if(regex.test(name) || regex.test(phone) || regex.test(mail)) {
                     $(row).show();
                 } else {
                     $(row).hide();
@@ -68,8 +70,8 @@
                                 <tr>
                                     <td class="member-last-name">{{ $member->last_name }}</td>
                                     <td class="member-first-name">{{ $member->first_name }}</td>
-                                    <td><a href="mailto:{{ $member->email }}">{{ $member->email }}</a></td>
-                                    <td>{{ $member->phone }}</td>
+                                    <td><a href="mailto:{{ $member->email }}" class="member-email">{{ $member->email }}</a></td>
+                                    <td class="member-phone">{{ $member->phone }}</td>
                                     <td>{{ $member->preferred_voice == "null" ? "" : ucfirst($member->preferred_voice) }}</td>
                                     <td><a class="btn btn-primary btn-xs" href="{{ url('/members/edit/' . $member->id) }}">Rediger</a></td>
                                 </tr>
