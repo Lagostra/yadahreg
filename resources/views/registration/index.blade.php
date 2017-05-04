@@ -95,12 +95,6 @@
                         </div>
                     </div>
 
-                    <form class="form-inline" role="form" method="POST" action="{{ url('/events/addtoday') }}">
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <button type="submit" class="btn btn-primary margin-bottom-fix">
-                            Ny hendelse i dag
-                        </button>
-                    </form>
                     <a class="btn btn-primary margin-bottom-fix" href="{{ url('/events/add') }}">Ny hendelse</a>
 
                     @if($chosen_event != null)
