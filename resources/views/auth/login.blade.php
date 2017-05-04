@@ -54,7 +54,7 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="col-md-8 col-md-offset-4">
+                            <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary margin-bottom-fix">
                                     Logg inn
                                 </button>
@@ -62,9 +62,16 @@
                                 <a class="btn btn-primary btn-social btn-google margin-bottom-fix" href="{{ url('/redirect') }}">
                                     <span class="fa fa-google"></span> Innlogging med Google
                                 </a>
+                            </div>
+                        </div>
 
-                                <a class="btn btn-link" href="{{ url('/password/reset') }}">
+                        <div class="form-group">
+                            <div class="col-sm-6 col-sm-offset-4">
+                                <a href="{{ url('/password/reset') }}">
                                     Glemt passord?
+                                </a>
+                                <a class="margin-left-10px" href="{{ url('/register') }}">
+                                    Registrer ny bruker
                                 </a>
                             </div>
                         </div>
