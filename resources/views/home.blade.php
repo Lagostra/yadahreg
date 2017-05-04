@@ -12,15 +12,20 @@
                     </div>
                 </noscript>
 
-                <p>
-                    Du er nå logget inn!
-                </p>
-                
+                <h3>
+                    Velkommen til YadahReg!
+                </h3>
+
+                @if(Auth::user()->is_user())
                 <p>
                     Bruk menyen over for å navigere.
-                    Dersom du ser få/ingen lenker i menyen, kan det tyde på at brukeren din ikke er aktivert.
-                    Ta i så fall kontakt med administrator for å få fikset dette.
                 </p>
+                @else
+                <div class="alert alert-warning">
+                    Brukeren din er opprettet, men den er ikke aktivert ennå.
+                    Ta kontakt med administrator for å fikset dette.
+                </div>
+                @endif
 
             </div>
         </div>
