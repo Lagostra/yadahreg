@@ -24,7 +24,7 @@ class AddEventTypeTable extends Migration
             ['name' => 'Annet']
         ]);
 
-        Schema::table('members', function(Blueprint $table) {
+        Schema::table('events', function(Blueprint $table) {
             $table->string('type')->default('Øvelse');
             $table  ->foreign('type')
                     ->references('event_types')->on('name')
@@ -39,7 +39,7 @@ class AddEventTypeTable extends Migration
      */
     public function down() {
         Schema::dropIfExists('event_types');
-        Schema::table('members', function($table) {
+        Schema::table('events', function($table) {
             $table->dropColumn('type');
         });
     }
