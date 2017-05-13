@@ -26,9 +26,6 @@ class AddEventTypeTable extends Migration
 
         Schema::table('events', function(Blueprint $table) {
             $table->string('type')->default('Øvelse');
-            $table  ->foreign('type')
-                    ->references('event_types')->on('name')
-                    ->onDelete('set null');
         });
     }
 
