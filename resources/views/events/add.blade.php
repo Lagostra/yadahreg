@@ -48,6 +48,24 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
+                            <label for="type" class="col-md-4 control-label">Type</label>
+
+                            <div class="col-md-6">
+                                <select id="type" class="form-control" name="type" required>
+                                    @foreach($types as $type)
+                                        <option value="{{ $type->name }}">{{ $type->name }}</option>
+                                    @endforeach
+                                </select>
+
+                                @if ($errors->has('type'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('type') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">

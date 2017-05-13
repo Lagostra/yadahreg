@@ -9,6 +9,7 @@
 namespace App\Http\Controllers;
 
 use App\Event;
+use App\EventType;
 use App\Member;
 use Validator;
 use Illuminate\Http\Request;
@@ -29,13 +30,16 @@ class EventController extends Controller {
     }
 
     public function add() {
-        return view('events.add');
+        $event_types = EventType::all();
+
+        return view('events.add', array('types' => $event_types));
     }
 
     public function do_add(Request $request) {
         $validator = Validator::make($request->all(), [
             'date' => 'date|required',
             'title' => 'string|max:50|required',
+            'type' => 'string|required'
         ]);
 
         if ($validator->fails()) {
@@ -50,6 +54,7 @@ class EventController extends Controller {
         $event = new Event();
         $event->date = date("Y-m-d", strtotime($request->get('date')));
         $event->title = $request->get('title');
+        $event->type = $request->get('type');
         $event->save();
 
         return redirect(url('/registration/'.$event->id));
@@ -57,17 +62,19 @@ class EventController extends Controller {
 
     public function edit($id) {
         $event = Event::find($id);
+        $event_types = EventType::all();
 
         if($event == null)
             return redirect(url('/registration'));
 
-        return view('events.edit', array('event' => $event));
+        return view('events.edit', array('event' => $event, 'types' => $event_types));
     }
 
     public function do_edit(Request $request) {
         $validator = Validator::make($request->all(), [
             'date' => 'date|required',
             'title' => 'string|max:50|required',
+            'type' => 'string|required'
         ]);
 
         if ($validator->fails()) {
@@ -82,6 +89,7 @@ class EventController extends Controller {
         $event = Event::find($request->get('id'));
         $event->date = date("Y-m-d", strtotime($request->get('date')));
         $event->title = $request->get('title');
+        $event->type = $request->get('type');
         $event->save();
 
         return redirect(url('/registration/'.$event->id));
