@@ -59,6 +59,7 @@ Route::post('/payment', 'PaymentController@set_paid');
 Route::get('/payment/{id?}/{show_inactive?}', 'PaymentController@index');
 
 Route::get('/overview/attendance', 'OverviewController@list_events');
+Route::get('/overview/toplist', 'OverviewController@top_members');
 Route::get('/overview/inactive-members', 'OverviewController@inactive_members');
 Route::get('/overview/payment', 'OverviewController@payment');
 Route::get('/overview/mailing-list', 'OverviewController@mail_list');

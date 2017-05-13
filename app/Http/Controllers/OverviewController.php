@@ -6,6 +6,7 @@ use App\Event;
 use App\Member;
 use App\Semester;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 use App\Http\Requests;
 
@@ -75,6 +76,37 @@ class OverviewController extends Controller {
         }
 
         return view('overview.inactive', array('members' => $inactive_members));
+    }
+
+    public function top_members(Request $request) {
+        if($request->has('semester')) {
+            $chosen_semester = Semester::find($request->semester);
+        } else {
+            $chosen_semester = Semester::first();
+        }
+
+        $event_types = ['Øvelse'];
+
+        $query = DB::table('members')
+                    ->select(DB::raw('first_name, last_name, COUNT(*) AS num_events'))
+                    ->join('event_member', 'members.id', '=', 'member_id')
+                    ->join('events', 'events.id', '=', 'event_id');
+
+        $query->where('events.type', $event_types[0]);
+        for($i = 1; $i < count($event_types); $i++) {
+            $query->orWhere('events.type', $event_types[$i]);
+        }
+
+        $query  ->groupBy('members.id')
+                ->having('num_events', '>', 0)
+                ->orderBy('num_events', 'desc');
+
+        $members = $query->get();
+
+        $semesters = Semester::all();
+
+        return view('overview.toplist',
+                    array('members' => $members, 'semesters' => $semesters, 'chosen_semester' => $chosen_semester));
     }
 
     public function payment(Request $request) {
