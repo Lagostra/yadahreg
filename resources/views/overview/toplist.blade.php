@@ -28,7 +28,7 @@
                 <div class="panel-heading">Toppliste - oppmøte</div>
 
                 <div class="panel-body">
-                    <form class="form-horizontal form-inline margin-bottom-fix" role="form" name="add_form" method="GET" action="{{ url('/overview/attendance') }}">
+                    <form class="form-horizontal form-inline margin-bottom-fix" role="form" name="add_form" method="GET" action="{{ url('/overview/toplist') }}">
                         <div class="form-group">
                             <label for="semester" class="col-md-4 control-label">Semester</label>
 

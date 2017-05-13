@@ -97,7 +97,7 @@ class OverviewController extends Controller {
             $query->orWhere('events.type', $event_types[$i]);
         }
 
-        $query  ->groupBy('members.id')
+        $query  ->groupBy('members.id', 'first_name', 'last_name')
                 ->having('num_events', '>', 0)
                 ->orderBy('num_events', 'desc');
 
