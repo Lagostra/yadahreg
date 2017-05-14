@@ -95,15 +95,14 @@ class OverviewController extends Controller {
         $query = DB::table('members')
                     ->select(DB::raw('first_name, last_name, COUNT(*) AS num_events'))
                     ->join('event_member', 'members.id', '=', 'member_id')
-                    ->join('events', 'events.id', '=', 'event_id');
+                    ->join('events', 'events.id', '=', 'event_id')
+                    ->where('events.date', '>=', $chosen_semester->start_date)
+                    ->where('events.date', '<=', $chosen_semester->end_date);
 
         $query->where('events.type', $event_types[0]);
         for($i = 1; $i < count($event_types); $i++) {
             $query->orWhere('events.type', $event_types[$i]);
         }
-
-        $query->where('date', '>=', $chosen_semester->start_date);
-        $query->where('date', '<=', $chosen_semester->end_date);
 
         $query  ->groupBy('members.id', 'first_name', 'last_name')
                 ->havingRaw('COUNT(*) > 0')
