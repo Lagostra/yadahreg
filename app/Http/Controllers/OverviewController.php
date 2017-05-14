@@ -85,7 +85,11 @@ class OverviewController extends Controller {
             $chosen_semester = Semester::first();
         }
 
-        $event_types = ['Øvelse'];
+        if($request->has('types')) {
+            $event_types = $request->types;
+        } else {
+            $event_types = ['Øvelse'];
+        }
 
         $query = DB::table('members')
                     ->select(DB::raw('first_name, last_name, COUNT(*) AS num_events'))
@@ -96,6 +100,9 @@ class OverviewController extends Controller {
         for($i = 1; $i < count($event_types); $i++) {
             $query->orWhere('events.type', $event_types[$i]);
         }
+
+        $query->where('date', '>=', $chosen_semester->start_date);
+        $query->where('date', '<=', $chosen_semester->end_date);
 
         $query  ->groupBy('members.id', 'first_name', 'last_name')
                 ->havingRaw('COUNT(*) > 0')
