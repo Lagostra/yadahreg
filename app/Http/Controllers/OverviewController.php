@@ -98,7 +98,7 @@ class OverviewController extends Controller {
         }
 
         $query  ->groupBy('members.id', 'first_name', 'last_name')
-                ->having('COUNT(*)', '>', 0)
+                ->havingRaw('COUNT(*) > 0')
                 ->orderBy('num_events', 'desc');
 
         $members = $query->get();
