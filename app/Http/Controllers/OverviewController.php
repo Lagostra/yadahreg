@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Event;
 use App\Member;
 use App\Semester;
+use App\EventType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -110,10 +111,12 @@ class OverviewController extends Controller {
 
         $members = $query->get();
 
-        $semesters = Semester::all();
+        $semesters = Semester::orderBy('end_date', 'desc')->get();
+        $types = EventType::all();
 
         return view('overview.toplist',
-                    array('members' => $members, 'semesters' => $semesters, 'chosen_semester' => $chosen_semester));
+                    array('members' => $members, 'semesters' => $semesters,
+                        'chosen_semester' => $chosen_semester, 'types' => $types, 'selected_types' => $event_types));
     }
 
     public function payment(Request $request) {

@@ -28,28 +28,31 @@
                 <div class="panel-heading">Toppliste - oppmøte</div>
 
                 <div class="panel-body">
-                    <form class="form-horizontal form-inline margin-bottom-fix" role="form" name="add_form" method="GET" action="{{ url('/overview/toplist') }}">
+                    <form class="form-horizontal form-inline margin-bottom-fix col-md-12" role="form" name="add_form" method="GET" action="{{ url('/overview/toplist') }}">
                         <div class="form-group">
-                            <label for="semester" class="col-md-4 control-label">Semester</label>
+                            <label for="semester" class="control-label">Semester</label>
 
-                            <div class="col-md-6">
-                                <select class="form-control" name="semester">
-                                    @foreach($semesters as $semester)
-                                        <option value="{{ $semester->id }}" {{ ($semester->id === $chosen_semester->id) ? 'selected' : '' }}>{{ $semester->title }}</option>
-                                    @endforeach
-                                    @if(count($semesters) == 0)
-                                        <option selected disabled>Ingen semestere</option>
-                                    @endif
-                                </select>
-                            </div>
+                            <select class="form-control" name="semester">
+                                @foreach($semesters as $semester)
+                                    <option value="{{ $semester->id }}" {{ ($semester->id === $chosen_semester->id) ? 'selected' : '' }}>{{ $semester->title }}</option>
+                                @endforeach
+                                @if(count($semesters) == 0)
+                                    <option selected disabled>Ingen semestere</option>
+                                @endif
+                            </select>
                         </div>
 
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Generér
-                                </button>
-                            </div>
+                        <div class="form-group" style="margin-left: 25px;">
+                            @foreach($types as $type)
+                                <label><input type="checkbox" name="types[]" value="{{ $type->name }}"
+                                            {{ (in_array($type->name, $selected_types)) ? "checked" : "" }} />{{ $type->name }}</label>
+                            @endforeach
+                        </div>
+
+                        <div class="form-group" style="margin-left: 25px;">
+                            <button type="submit" class="btn btn-primary">
+                                Generér
+                            </button>
                         </div>
                     </form>
 
