@@ -70,10 +70,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            @php($i = 0)
+                            @php($i = 1)
+                            @php($last_number = $members[0]->num_events)
                             @foreach($members as $member)
+                                @php
+                                    if($member->num_events != $last_number) {
+                                        $i++;
+                                        $last_number = $member->num_events;
+                                    }
+                                @endphp
                                 <tr class="member">
-                                    <td>{{ ++$i }}</td>
+                                    <td>{{ $i }}</td>
                                     <td class="member-name">{{ $member->first_name . " " . $member->last_name}}</td>
                                     <td>{{ $member->num_events }}</td>
                                 </tr>
