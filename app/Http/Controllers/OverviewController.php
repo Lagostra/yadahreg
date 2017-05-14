@@ -86,6 +86,8 @@ class OverviewController extends Controller {
             $chosen_semester = Semester::orderBy('end_date', 'desc')->first();
         }
 
+        global $event_types;
+
         if($request->has('types')) {
             $event_types = $request->types;
         } else {
@@ -99,16 +101,17 @@ class OverviewController extends Controller {
                     ->where('events.date', '>=', $chosen_semester->start_date)
                     ->where('events.date', '<=', $chosen_semester->end_date);
 
-        $query->where('events.type', $event_types[0]);
-        for($i = 1; $i < count($event_types); $i++) {
-            $query->orWhere('events.type', $event_types[$i]);
-        }
+        $query->where(function($query) {
+            global $event_types;
+            $query->where('events.type', $event_types[0]);
+            for($i = 1; $i < count($event_types); $i++) {
+                $query->orWhere('events.type', $event_types[$i]);
+            }
+        });
 
         $query  ->groupBy('members.id', 'first_name', 'last_name')
                 ->havingRaw('COUNT(*) > 0')
                 ->orderBy('num_events', 'desc');
-
-        echo $query->toSql();
 
         $members = $query->get();
 

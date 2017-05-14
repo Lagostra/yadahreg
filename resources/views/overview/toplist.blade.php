@@ -71,7 +71,7 @@
                             </thead>
                             <tbody>
                             @php($i = 1)
-                            @php($last_number = $members[0]->num_events)
+                            @php($last_number = (count($members) > 0) ? $members[0]->num_events : 0)
                             @foreach($members as $member)
                                 @php
                                     if($member->num_events != $last_number) {
