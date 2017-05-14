@@ -82,7 +82,7 @@ class OverviewController extends Controller {
         if($request->has('semester')) {
             $chosen_semester = Semester::find($request->semester);
         } else {
-            $chosen_semester = Semester::first();
+            $chosen_semester = Semester::orderBy('end_date', 'desc')->first();
         }
 
         if($request->has('types')) {
