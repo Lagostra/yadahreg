@@ -30,19 +30,21 @@
                 <div class="panel-body">
                     <form class="form-horizontal form-inline margin-bottom-fix col-md-12" role="form" name="add_form" method="GET" action="{{ url('/overview/toplist') }}">
                         <div class="form-group">
-                            <label for="semester" class="control-label">Semester</label>
+                            <label for="semester" class="control-label col-md-4">Semester</label>
 
-                            <select class="form-control" name="semester">
-                                @foreach($semesters as $semester)
-                                    <option value="{{ $semester->id }}" {{ ($semester->id === $chosen_semester->id) ? 'selected' : '' }}>{{ $semester->title }}</option>
-                                @endforeach
-                                @if(count($semesters) == 0)
-                                    <option selected disabled>Ingen semestere</option>
-                                @endif
-                            </select>
+                            <div class="col-md-6">
+                                <select class="form-control" name="semester">
+                                    @foreach($semesters as $semester)
+                                        <option value="{{ $semester->id }}" {{ ($semester->id === $chosen_semester->id) ? 'selected' : '' }}>{{ $semester->title }}</option>
+                                    @endforeach
+                                    @if(count($semesters) == 0)
+                                        <option selected disabled>Ingen semestere</option>
+                                    @endif
+                                </select>
+                            </div>
                         </div>
 
-                        <div class="form-group" style="margin-left: 25px;">
+                        <div class="form-group" style="margin-left: 0px;">
                             @foreach($types as $type)
                                 <label><input type="checkbox" name="types[]" value="{{ $type->name }}"
                                             {{ (in_array($type->name, $selected_types)) ? "checked" : "" }} />{{ $type->name }}</label>
