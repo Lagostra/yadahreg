@@ -54,7 +54,7 @@
                             <div class="col-md-6">
                                 <select id="type" class="form-control" name="type" required>
                                     @foreach($types as $type)
-                                        <option value="{{ $type->name }}">{{ $type->name }}</option>
+                                        <option value="{{ $type->name }}" {{ ($type->name == "Øvelse" ? "selected" : "") }}>{{ $type->name }}</option>
                                     @endforeach
                                 </select>
 
