@@ -108,6 +108,8 @@ class OverviewController extends Controller {
                 ->havingRaw('COUNT(*) > 0')
                 ->orderBy('num_events', 'desc');
 
+        echo $query->toSql();
+
         $members = $query->get();
 
         $semesters = Semester::orderBy('end_date', 'desc')->get();
