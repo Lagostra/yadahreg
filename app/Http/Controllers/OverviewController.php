@@ -204,6 +204,7 @@ class OverviewController extends Controller {
                               INNER JOIN event_member ON events.id = event_id
                               WHERE date >= ?
                               AND date <= ?
+                              AND type=\'Øvelse\'
                               GROUP BY events.id
                             ) AS T;'
                        , [$chosen_semester->start_date, $chosen_semester->end_date])[0]->average;
@@ -215,6 +216,7 @@ class OverviewController extends Controller {
                               INNER JOIN event_member ON events.id = event_id
                               WHERE date >= ?
                               AND date <= ?
+                              AND type=\'Øvelse\'
                               GROUP BY events.id
                             ) AS T;'
             , [$chosen_semester->start_date, $chosen_semester->end_date])[0]->max;
@@ -226,6 +228,7 @@ class OverviewController extends Controller {
                               INNER JOIN event_member ON events.id = event_id
                               WHERE date >= ?
                               AND date <= ?
+                              AND type=\'Øvelse\'
                               GROUP BY events.id
                             ) AS T;'
             , [$chosen_semester->start_date, $chosen_semester->end_date])[0]->min;
