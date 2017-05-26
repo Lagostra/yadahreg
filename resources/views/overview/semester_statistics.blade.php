@@ -9,7 +9,7 @@
                 </div>
 
                 <div class="panel-body">
-                    <form class="form-horizontal form-inline margin-bottom-fix col-md-12" role="form" name="add_form" method="GET" action="{{ url('/overview/toplist') }}">
+                    <form class="form-horizontal form-inline margin-bottom-fix col-md-12" role="form" name="add_form" method="GET" action="{{ url('/overview/statistics') }}">
                         <div class="form-group">
                             <label for="semester" class="control-label col-md-4">Semester</label>
 
