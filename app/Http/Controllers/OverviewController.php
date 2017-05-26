@@ -205,7 +205,7 @@ class OverviewController extends Controller {
                               WHERE date >= ?
                               AND date <= ?
                               GROUP BY events.id
-                            );'
+                            ) AS T;'
                        , [$chosen_semester->start_date, $chosen_semester->end_date])[0]->average;
 
         $max_attendance = DB::select('
@@ -216,7 +216,7 @@ class OverviewController extends Controller {
                               WHERE date >= ?
                               AND date <= ?
                               GROUP BY events.id
-                            );'
+                            ) AS T;'
             , [$chosen_semester->start_date, $chosen_semester->end_date])[0]->max;
 
         $min_attendance = DB::select('
@@ -227,7 +227,7 @@ class OverviewController extends Controller {
                               WHERE date >= ?
                               AND date <= ?
                               GROUP BY events.id
-                            );'
+                            ) AS T;'
             , [$chosen_semester->start_date, $chosen_semester->end_date])[0]->min;
 
         return view('overview.semester_statistics', array(
