@@ -8,6 +8,7 @@
                 <li><a href="{{ url('/overview/toplist') }}">Toppliste</a></li>
                 <li><a href="{{ url('/overview/inactive-members') }}">Inaktive medlemmer</a></li>
                 <li><a href="{{ url('/overview/payment') }}">Betaling</a></li>
+                <li><a href="{{ url('/overview/statistics') }}">Semesterstatistikk</a></li>
                 <!--<li><a href="{{ url('/overview/contact') }}">Kontaktinformasjon</a></li>-->
                 <li><a href="{{ url('/overview/allergies') }}">Allergier</a></li>
                 <li><a href="{{ url('/overview/mailing-list') }}">E-postliste</a></li>

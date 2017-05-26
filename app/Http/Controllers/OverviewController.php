@@ -185,4 +185,59 @@ class OverviewController extends Controller {
         return view('overview.contact', array('members' => $members, 'include_inactive' => $request->get('include_inactive')));
     }
 
+    public function statistics(Request $request) {
+        if($request->has('semester')) {
+            $chosen_semester = Semester::find($request->semester);
+        } else {
+            $chosen_semester = Semester::orderBy('end_date', 'desc')->first();
+        }
+
+        $semesters = Semester::orderBy('end_date', 'desc')->get();
+        $num_practices = Event::where('type', 'Øvelse')
+                            ->where('date', '>=', $chosen_semester->start_date)
+                            ->where('date', '<=', $chosen_semester->end_date)
+                            ->count();
+        $avg_attendance = DB::select('
+                            SELECT AVG(attendants) as average FROM (
+                              SELECT COUNT(*) as attendants
+                              FROM events
+                              INNER JOIN event_member ON events.id = event_id
+                              WHERE date >= ?
+                              AND date <= ?
+                              GROUP BY events.id
+                            );'
+                       , [$chosen_semester->start_date, $chosen_semester->end_date])[0]->average;
+
+        $max_attendance = DB::select('
+                            SELECT MAX(attendants) as max FROM (
+                              SELECT COUNT(*) as attendants
+                              FROM events
+                              INNER JOIN event_member ON events.id = event_id
+                              WHERE date >= ?
+                              AND date <= ?
+                              GROUP BY events.id
+                            );'
+            , [$chosen_semester->start_date, $chosen_semester->end_date])[0]->max;
+
+        $min_attendance = DB::select('
+                            SELECT MIN(attendants) as min FROM (
+                              SELECT COUNT(*) as attendants
+                              FROM events
+                              INNER JOIN event_member ON events.id = event_id
+                              WHERE date >= ?
+                              AND date <= ?
+                              GROUP BY events.id
+                            );'
+            , [$chosen_semester->start_date, $chosen_semester->end_date])[0]->min;
+
+        return view('overview.semester_statistics', array(
+            'chosen_semester' => $chosen_semester,
+            'semesters' => $semesters,
+            'num_practices' => $num_practices,
+            'avg_attendance' => $avg_attendance,
+            'max_attendance' => $max_attendance,
+            'min_attendance' => $min_attendance,
+        ));
+    }
+
 }
