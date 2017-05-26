@@ -202,6 +202,7 @@ class OverviewController extends Controller {
                               SELECT COUNT(*) as attendants
                               FROM events
                               INNER JOIN event_member ON events.id = event_id
+                              INNER JOIN members ON members.id = member_id
                               WHERE date >= ?
                               AND date <= ?
                               AND type=\'Øvelse\'
@@ -214,6 +215,7 @@ class OverviewController extends Controller {
                               SELECT COUNT(*) as attendants
                               FROM events
                               INNER JOIN event_member ON events.id = event_id
+                              INNER JOIN members ON members.id = member_id
                               WHERE date >= ?
                               AND date <= ?
                               AND type=\'Øvelse\'
@@ -226,6 +228,7 @@ class OverviewController extends Controller {
                               SELECT COUNT(*) as attendants
                               FROM events
                               INNER JOIN event_member ON events.id = event_id
+                              INNER JOIN members ON members.id = member_id
                               WHERE date >= ?
                               AND date <= ?
                               AND type=\'Øvelse\'
