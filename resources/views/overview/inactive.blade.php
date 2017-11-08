@@ -12,12 +12,16 @@
                             <thead>
                             <tr>
                                 <th>Navn</th>
+                                <th>Betalt semesteravgift</th>
+                                <th>Siste øvelse</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($members as $member)
                                 <tr class="member">
                                     <td class="member-name">{{ $member->first_name . " " . $member->last_name}}</td>
+                                    <td>{{ $member->paid ? 'Y' : 'N' }}</td>
+                                    <td>{{ date("d.m.Y", strtotime($member->last_practice)) }}</td>
                                 </tr>
                             @endforeach
                             </tbody>

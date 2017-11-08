@@ -75,6 +75,14 @@ class OverviewController extends Controller {
                 }
             }
         }
+        $last_semester = Semester::orderBy('end_date', 'desc')->first();
+        foreach($inactive_members as $member) {
+            $member->paid = $member->has_paid($last_semester);
+            $member->last_practice = $member->events()->where('type', 'Øvelse')
+                                                        ->orderBy('date', 'desc')
+                                                        ->first()->date;
+        }
+
 
         return view('overview.inactive', array('members' => $inactive_members));
     }
