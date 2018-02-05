@@ -21,7 +21,7 @@
                                 <tr class="member">
                                     <td class="member-name">{{ $member->first_name . " " . $member->last_name}}</td>
                                     <td>{{ $member->paid ? 'Y' : 'N' }}</td>
-                                    <td>{{ date("d.m.Y", strtotime($member->last_practice)) }}</td>
+                                    <td>{{ ($member->last_practice) ? date("d.m.Y", strtotime($member->last_practice)) : "Aldri"}}</td>
                                 </tr>
                             @endforeach
                             </tbody>

@@ -78,9 +78,11 @@ class OverviewController extends Controller {
         $last_semester = Semester::orderBy('end_date', 'desc')->first();
         foreach($inactive_members as $member) {
             $member->paid = $member->has_paid($last_semester);
-            $member->last_practice = $member->events()->where('type', 'Øvelse')
-                                                        ->orderBy('date', 'desc')
-                                                        ->first()->date;
+            $last_practice = $member->events()->where('type', 'Øvelse')
+                ->orderBy('date', 'desc')
+                ->first();
+            if($last_practice)
+                $member->last_practice = $last_practice->date;
         }
 
 
