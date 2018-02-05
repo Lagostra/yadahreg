@@ -33,12 +33,7 @@
                             <label for="start_date" class="col-md-4 control-label">Startdato</label>
 
                             <div class="col-md-6">
-                                <div class="input-group date my-datepicker" data-provide="datepicker">
-                                    <input type="text" class="form-control datepicker" name="start_date" value="{{ date("d.m.Y", strtotime($semester->start_date)) }}"required>
-                                    <div class="input-group-addon">
-                                        <span class="glyphicon glyphicon-th"></span>
-                                    </div>
-                                </div>
+                                <input type="date" class="form-control" name="start_date" value="{{ $semester->start_date }}"required>
 
                                 @if ($errors->has('start_date'))
                                     <span class="help-block">
@@ -52,12 +47,7 @@
                             <label for="end_date" class="col-md-4 control-label">Sluttdato</label>
 
                             <div class="col-md-6">
-                                <div class="input-group date my-datepicker" data-provide="datepicker">
-                                    <input type="text" class="form-control datepicker" name="end_date" value="{{ date("d.m.Y", strtotime($semester->end_date)) }}"required>
-                                    <div class="input-group-addon">
-                                        <span class="glyphicon glyphicon-th"></span>
-                                    </div>
-                                </div>
+                                <input type="date" class="form-control" name="end_date" value="{{ $semester->end_date }}"required>
 
                                 @if ($errors->has('end_date'))
                                     <span class="help-block">
@@ -90,13 +80,4 @@
             </div>
         </div>
     </div>
-@endsection
-
-@section('foot')
-    <script src="{{ url('/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
-    <script>
-        $('.my-datepicker').datepicker({
-            format: "dd.mm.yyyy"
-        });
-    </script>
 @endsection

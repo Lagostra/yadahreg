@@ -70,12 +70,7 @@
                             <label for="birthday" class="col-md-4 control-label">Fødselsdato</label>
 
                             <div class="col-md-6">
-                                <div id="datepicker" class="input-group date" data-provide="datepicker">
-                                    <input type="text" class="form-control datepicker" name="birthday" placeholder="dd.mm.YYYY" value="{{ old('date') }}">
-                                    <div class="input-group-addon">
-                                        <span class="glyphicon glyphicon-th"></span>
-                                    </div>
-                                </div>
+                                <input type="date" class="form-control" name="birthday" value="{{ old('date') }}">
 
                                 @if ($errors->has('birthday'))
                                     <span class="help-block">
@@ -226,14 +221,4 @@
             </div>
         </div>
     </div>
-@endsection
-
-@section('foot')
-    <script src="{{ url('/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
-    <script>
-        $('#datepicker').datepicker({
-            format: "dd.mm.yyyy",
-            defaultViewDate: {year: 1990, month: 0, day: 1},
-        });
-    </script>
 @endsection

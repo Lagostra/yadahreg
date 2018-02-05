@@ -19,12 +19,7 @@
                             <label for="date" class="col-md-4 control-label">Dato</label>
 
                             <div class="col-md-6">
-                                <div id="datepicker" class="input-group date" data-provide="datepicker">
-                                    <input type="text" class="form-control datepicker" name="date" value="{{ date("d.m.Y") }}" required>
-                                    <div class="input-group-addon">
-                                        <span class="glyphicon glyphicon-th"></span>
-                                    </div>
-                                </div>
+                                <input type="date" class="form-control" name="date" value="{{ date('Y-m-d') }}" required>
 
                                 @if ($errors->has('date'))
                                     <span class="help-block">
@@ -81,14 +76,4 @@
             </div>
         </div>
     </div>
-@endsection
-
-
-@section('foot')
-    <script src="{{ url('/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
-    <script>
-        $('#datepicker').datepicker({
-            format: "dd.mm.yyyy"
-        });
-    </script>
 @endsection
