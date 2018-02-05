@@ -3,37 +3,18 @@
 @if($chosen_event != null)
 @section('head')
     <script>
-        function checkbox_click(e) {
-            if($(e.target).hasClass("disable")) {
-                e.preventDefault();
-                return false;
+        function change_status(target) {
+            var member_id = target.getAttribute("member_id");
+            if(target.value == "unset") {
+                do_post(member_id, 0, "{{ url('/registration/unpresent') }}");
+                do_post(member_id, 0, "{{ url('/registration') }}");
+            } else if(target.value == "present") {
+                do_post(member_id, 0, "{{ url('/registration/unpresent') }}");
+                do_post(member_id, 1, "{{ url('/registration') }}");
+            } else if(target.value == "unpresent") {
+                do_post(member_id, 1, "{{ url('/registration/unpresent') }}");
+                do_post(member_id, 0, "{{ url('/registration') }}");
             }
-            setStatus(e.target.getAttribute("member_id"), e.target);
-        }
-
-        function setStatus(member_id, src) {
-            if($(src).hasClass('disable'))
-                return;
-
-            var status = (src.checked) ? 1 : 0;
-            do_post(member_id, status, "{{ url('/registration') }}");
-        }
-
-        function set_unpresent(member_id, src) {
-            var status = !$(src).hasClass('disable');
-
-            if(status && src.checked) {
-                setStatus(member_id, false);
-                src.checked = false;
-            }
-
-            if(status) {
-                $(src).addClass("disable");
-            } else {
-                $(src).removeClass("disable");
-            }
-
-            do_post(member_id, status ? 1 : 0, "{{ url('/registration/unpresent') }}");
         }
 
         function do_post(member_id, status, url) {
@@ -107,7 +88,9 @@
                             <thead>
                             <tr>
                                 <th>Navn</th>
+                                <th class="col-md-2">Ikke til stede</th>
                                 <th class="col-md-2">Til stede</th>
+                                <th class="col-md-2">Gitt beskjed</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -116,14 +99,17 @@
                                     <td class="member-name">
                                         {{ $member->first_name . " " . $member->last_name}}{{ $member->has_paid($last_semester) ? '' : '*'}}
                                     </td>
-                                    <td>
-                                        <input type="checkbox" value="{{ $member->id }}"
-                                                member_id="{{ $member->id }}"
-                                                {{ $member->is_not_present($chosen_event) ? 'class=disable' : "" }}
-                                                oncontextmenu="set_unpresent({{ $member->id }}, this); return false;"
-                                                onclick="checkbox_click(event)"
-                                                {{ $member->is_present($chosen_event) ? 'checked' : '' }} />
-                                    </td>
+                                    <form>
+                                        <td><input type="radio" name="status" value="unset" onchange="change_status(this);"
+                                               member_id="{{ $member->id }}" class="radio-not-present"
+                                                {{ (!$member->is_present($chosen_event) && !$member->is_not_present($chosen_event)) ? "checked" : "" }}/></td>
+                                        <td><input type="radio" name="status" value="present" onchange="change_status(this);"
+                                               member_id="{{ $member->id }}" class="radio-present"
+                                                {{ ($member->is_present($chosen_event)) ? "checked" : "" }}/></td>
+                                        <td><input type="radio" name="status" value="unpresent" onchange="change_status(this);"
+                                               member_id="{{ $member->id }}" class="radio-confirmed-not-present"
+                                                {{ ($member->is_not_present($chosen_event)) ? "checked" : "" }}/></td>
+                                    </form>
                                 </tr>
                             @endforeach
                             </tbody>

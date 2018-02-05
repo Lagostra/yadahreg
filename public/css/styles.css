@@ -28,3 +28,44 @@ input.disable {
     filter: alpha(opacity=50); /* IE<9 */
     cursor: default;
 }
+
+
+/* Radio buttons for registration page */
+.radio-present:checked::before {
+    width: 6px;
+    height: 6px;
+    border-radius: 15px;
+    top: -4px;
+    left: 3px;
+    position: relative;
+    background-color: #00ff00;
+    content: ' ';
+    display: inline-block;
+    visibility: visible;
+}
+
+.radio-not-present:checked::before {
+    width: 6px;
+    height: 6px;
+    border-radius: 15px;
+    top: -4px;
+    left: 3px;
+    position: relative;
+    background-color: #ffC000;
+    content: ' ';
+    display: inline-block;
+    visibility: visible;
+}
+
+.radio-confirmed-not-present:checked::before {
+    width: 6px;
+    height: 6px;
+    border-radius: 15px;
+    top: -4px;
+    left: 3px;
+    position: relative;
+    background-color: #ff0000;
+    content: ' ';
+    display: inline-block;
+    visibility: visible;
+}
