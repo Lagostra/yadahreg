@@ -15,6 +15,20 @@
                 do_post(member_id, 1, "{{ url('/registration/unpresent') }}");
                 do_post(member_id, 0, "{{ url('/registration') }}");
             }
+            update_participant_count();
+        }
+
+        function update_participant_count() {
+            var inputs = document.getElementsByClassName("radio-present");
+
+            var counter = 0;
+            for(var i = 0; i < inputs.length; i++) {
+                if(inputs[i].checked) {
+                    counter++;
+                }
+            }
+
+            document.getElementById("num-attendants").innerHTML = counter;
         }
 
         function do_post(member_id, status, url) {
@@ -83,6 +97,12 @@
 
                     <input id="search" type="text" class="form-control" placeholder="Søk her" name="title" oninput="search(this);">
 
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4 class="pull-right">Antall oppmøtte: <span id="num-attendants">{{ $chosen_event->participants->count() }}</span></h4>
+                        </div>
+                    </div>
+
                     <div class="table-responsive">
                         <table id="member-table" class="table">
                             <thead>
@@ -99,7 +119,7 @@
                                     <td class="member-name">
                                         {{ $member->first_name . " " . $member->last_name}}{{ $member->has_paid($last_semester) ? '' : '*'}}
                                     </td>
-                                    <form>
+                                    <form class="presence-form">
                                         <td><input type="radio" name="status" value="unset" onchange="change_status(this);"
                                                member_id="{{ $member->id }}" class="radio-not-present"
                                                 {{ (!$member->is_present($chosen_event) && !$member->is_not_present($chosen_event)) ? "checked" : "" }}/></td>
