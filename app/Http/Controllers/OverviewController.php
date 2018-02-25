@@ -201,17 +201,22 @@ class OverviewController extends Controller {
     }
 
     public function statistics(Request $request) {
-        if($request->has('semester')) {
+        if($request->has('total')) {
+            $chosen_semester = false;
+        } else if($request->has('semester')) {
             $chosen_semester = Semester::find($request->semester);
         } else {
             $chosen_semester = Semester::orderBy('end_date', 'desc')->first();
         }
 
         $semesters = Semester::orderBy('end_date', 'desc')->get();
-        $num_practices = Event::where('type', 'Øvelse')
-                            ->where('date', '>=', $chosen_semester->start_date)
-                            ->where('date', '<=', $chosen_semester->end_date)
-                            ->count();
+        $query = Event::where('type', 'Øvelse');
+        if ($chosen_semester) {
+            $query = $query ->where('date', '>=', $chosen_semester->start_date)
+                            ->where('date', '<=', $chosen_semester->end_date);
+        }
+        $inf_date = "9999-12-31";
+        $num_practices = $query->count();
         $avg_attendance = DB::select('
                             SELECT AVG(attendants) as average FROM (
                               SELECT COUNT(*) as attendants
@@ -223,7 +228,8 @@ class OverviewController extends Controller {
                               AND type=\'Øvelse\'
                               GROUP BY events.id
                             ) AS T;'
-                       , [$chosen_semester->start_date, $chosen_semester->end_date])[0]->average;
+                       , [  $chosen_semester ? $chosen_semester->start_date : 0,
+                            $chosen_semester ? $chosen_semester->end_date : $inf_date])[0]->average;
 
         $max_attendance = DB::select('
                             SELECT MAX(attendants) as max FROM (
@@ -236,7 +242,8 @@ class OverviewController extends Controller {
                               AND type=\'Øvelse\'
                               GROUP BY events.id
                             ) AS T;'
-            , [$chosen_semester->start_date, $chosen_semester->end_date])[0]->max;
+            , [  $chosen_semester ? $chosen_semester->start_date : 0,
+                $chosen_semester ? $chosen_semester->end_date : $inf_date])[0]->max;
 
         $min_attendance = DB::select('
                             SELECT MIN(attendants) as min FROM (
@@ -249,7 +256,8 @@ class OverviewController extends Controller {
                               AND type=\'Øvelse\'
                               GROUP BY events.id
                             ) AS T;'
-            , [$chosen_semester->start_date, $chosen_semester->end_date])[0]->min;
+            , [  $chosen_semester ? $chosen_semester->start_date : 0,
+                $chosen_semester ? $chosen_semester->end_date : $inf_date])[0]->min;
 
         return view('overview.semester_statistics', array(
             'chosen_semester' => $chosen_semester,
