@@ -90,7 +90,9 @@ class OverviewController extends Controller {
     }
 
     public function top_members(Request $request) {
-        if($request->has('semester')) {
+        if($request->has('total')) {
+            $chosen_semester = false;
+        } else if($request->has('semester')) {
             $chosen_semester = Semester::find($request->semester);
         } else {
             $chosen_semester = Semester::orderBy('end_date', 'desc')->first();
@@ -107,9 +109,12 @@ class OverviewController extends Controller {
         $query = DB::table('members')
                     ->select(DB::raw('first_name, last_name, COUNT(*) AS num_events'))
                     ->join('event_member', 'members.id', '=', 'member_id')
-                    ->join('events', 'events.id', '=', 'event_id')
-                    ->where('events.date', '>=', $chosen_semester->start_date)
-                    ->where('events.date', '<=', $chosen_semester->end_date);
+                    ->join('events', 'events.id', '=', 'event_id');
+
+        if($chosen_semester) {
+            $query->where('events.date', '>=', $chosen_semester->start_date)
+            ->where('events.date', '<=', $chosen_semester->end_date);
+        }
 
         $query->where(function($query) {
             global $event_types;

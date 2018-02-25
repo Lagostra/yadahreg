@@ -34,8 +34,9 @@
 
                             <div class="col-md-6">
                                 <select class="form-control" name="semester">
+                                    <option value="-1" {{ (!$chosen_semester) ? 'selected' : '' }}>Totalt</option>
                                     @foreach($semesters as $semester)
-                                        <option value="{{ $semester->id }}" {{ ($semester->id === $chosen_semester->id) ? 'selected' : '' }}>{{ $semester->title }}</option>
+                                        <option value="{{ $semester->id }}" {{ ($chosen_semester && $semester->id === $chosen_semester->id) ? 'selected' : '' }}>{{ $semester->title }}</option>
                                     @endforeach
                                     @if(count($semesters) == 0)
                                         <option selected disabled>Ingen semestere</option>
