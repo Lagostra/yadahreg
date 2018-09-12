@@ -181,13 +181,38 @@ class OverviewController extends Controller {
     }
 
     public function mail_list(Request $request) {
-        if($request->get('include_inactive')) {
+        $start_date = $request->get('start_date');
+        $end_date = $request->get('end_date');
+
+        if($start_date == "") {
+            $start_date = date("Y-m-d", 0);
+        } else {
+            $start_date = date("Y-m-d", strtotime($start_date));
+        }
+        if($end_date == "") {
+            $end_date = date("Y-m-d", strtotime('tomorrow'));
+        } else {
+            $end_date = date("Y-m-d", strtotime($end_date));
+        }
+
+
+        $members = Member::where('active', true)
+                            ->whereBetween('created_at', array($start_date, $end_date))
+                            ->orderBy('first_name')
+                            ->select('email')
+                            ->get();
+
+        /*if($request->get('include_inactive')) {
             $members = Member::orderBy('first_name')->get();
         } else {
             $members = Member::where('active', true)->orderBy('first_name')->get();
-        }
+        }*/
 
-        return view('overview.maillist', array('members' => $members, 'include_inactive' => $request->get('include_inactive')));
+        return view('overview.maillist', array( 'members' => $members,
+                                                //'include_inactive' => $request->get('include_inactive'),
+                                                'start_date' => $start_date,
+                                                'end_date' => $end_date,
+                                                ));
     }
 
     public function contact_information(Request $request) {

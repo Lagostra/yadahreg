@@ -20,12 +20,33 @@
                 </div>
 
                 <div class="panel-body">
-                    <div class="row margin-bottom-fix">
-                        <div class="col-md-12">
-                            <span class="margin-left-10px">Inkluder ikke-aktive medlemmer: </span>
-                            <input type="checkbox" onclick="onChooseActive(this);" {{ $include_inactive ? 'checked' : '' }} />
+                    <form class="form-horizontal form-inline margin-bottom-fix" role="form" name="add_form" method="GET" action="{{ url('/overview/mailing-list') }}">
+                        <div class="form-group">
+                            <label for="start_date" class="col-md-6 control-label">Opprettet etter</label>
+
+                            <div class="col-md-6">
+                                <input type="date" class="form-control" name="start_date" value="{{ $start_date }}">
+                            </div>
                         </div>
-                    </div>
+
+                        <div class="form-group">
+                            <label for="end_date" class="col-md-6 control-label">Opprettet før</label>
+
+                            <div class="col-md-6">
+                                <input type="date" class="form-control" name="end_date" value="{{ $end_date }}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-6 col-md-offset-2">
+                                <button type="submit" class="btn btn-primary">
+                                    Generér
+                                </button>
+                            </div>
+
+                        </div>
+                    </form>
+
                     <input type="text" class="mailing-list form-control" onclick="this.select();"
                            value="<?php
                             foreach($members as $member) {
