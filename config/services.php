@@ -36,8 +36,8 @@
      ],
  
      'google' => [
-         'client_id' => '81197200725-f8jkqatcd1cj1lv6e12g04cj3mm5gdd8.apps.googleusercontent.com',
-         'client_secret' => 'ZwGxDpyOCdbnZC_Z4plR243L',
+         'client_id' => env('GOOGLE_AUTH_CLIENT_ID'),
+         'client_secret' => env('GOOGLE_AUTH_CLIENT_SECRET'),
          'redirect' => env('APP_URL').'/callback',
      ],
  ];
