@@ -1,5 +1,6 @@
 # Introduction
 [<-- Back to index](index.md)
+
 YadahReg is a registration system made for Yadah Gospel, a choir based in Trondheim.
 
 The app is built on the [Laravel](http://laravel.com) PHP framework. Laravel employs the [MVC](mvc.md) design pattern.
