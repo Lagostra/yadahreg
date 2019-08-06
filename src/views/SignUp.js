@@ -28,6 +28,8 @@ class SignUpFormBase extends Component {
     }
 
     onSubmit = event => {
+        event.preventDefault();
+
         const { name, email, passwordOne } = this.state;
         this.props.firebase
             .doCreateUserWithEmailAndPassword(email, passwordOne)
@@ -38,8 +40,6 @@ class SignUpFormBase extends Component {
             .catch(error => {
                 this.setState({ error });
             });
-
-        event.preventDefault();
     };
 
     onChange = event => {
