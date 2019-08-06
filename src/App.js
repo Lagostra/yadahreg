@@ -10,6 +10,7 @@ import SignIn from './views/SignIn';
 import SignUp from './views/SignUp';
 import PasswordForget from './views/PasswordForget';
 import PasswordChange from './views/PasswordChange';
+import Admin from './views/Admin';
 
 const App = () => (
     <Router>
@@ -28,6 +29,7 @@ const App = () => (
             path={ROUTES.PASSWORD_CHANGE}
             component={PasswordChange}
         />
+        <Route path={ROUTES.ADMIN} component={Admin} />
     </Router>
 );
 
