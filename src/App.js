@@ -7,14 +7,14 @@ import LandingPage from './views/LandingPage';
 import SignIn from './views/SignIn';
 
 const App = () => (
-  <Router>
-    <Navigation />
+    <Router>
+        <Navigation />
 
-    <hr />
+        <hr />
 
-    <Route exact path={ROUTES.LANDING} component={LandingPage} />
-    <Route path={ROUTES.SIGN_IN} component={SignIn} />
-  </Router>
+        <Route exact path={ROUTES.LANDING} component={LandingPage} />
+        <Route path={ROUTES.SIGN_IN} component={SignIn} />
+    </Router>
 );
 
 export default App;
