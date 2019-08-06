@@ -9,6 +9,7 @@ import LandingPage from './views/LandingPage';
 import SignIn from './views/SignIn';
 import SignUp from './views/SignUp';
 import PasswordForget from './views/PasswordForget';
+import PasswordChange from './views/PasswordChange';
 
 const App = () => (
     <Router>
@@ -22,6 +23,10 @@ const App = () => (
         <Route
             path={ROUTES.PASSWORD_FORGET}
             component={PasswordForget}
+        />
+        <Route
+            path={ROUTES.PASSWORD_CHANGE}
+            component={PasswordChange}
         />
     </Router>
 );

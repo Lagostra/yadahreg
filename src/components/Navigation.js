@@ -22,6 +22,11 @@ const NavigationAuth = () => (
                 <Link to={ROUTES.LANDING}>Landing</Link>
             </li>
             <li>
+                <Link to={ROUTES.PASSWORD_CHANGE}>
+                    Change Password
+                </Link>
+            </li>
+            <li>
                 <SignOutButton />
             </li>
         </ul>
