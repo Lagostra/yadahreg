@@ -8,6 +8,7 @@ import Navigation from './components/Navigation';
 import LandingPage from './views/LandingPage';
 import SignIn from './views/SignIn';
 import SignUp from './views/SignUp';
+import PasswordForget from './views/PasswordForget';
 
 const App = () => (
     <Router>
@@ -18,6 +19,10 @@ const App = () => (
         <Route exact path={ROUTES.LANDING} component={LandingPage} />
         <Route path={ROUTES.SIGN_IN} component={SignIn} />
         <Route path={ROUTES.SIGN_UP} component={SignUp} />
+        <Route
+            path={ROUTES.PASSWORD_FORGET}
+            component={PasswordForget}
+        />
     </Router>
 );
 
