@@ -32,7 +32,7 @@ class SignInFormBase extends Component {
 
         const { email, password } = this.state;
 
-        this.props.withFirebase
+        this.props.firebase
             .doSignInWithEmailAndPassword(email, password)
             .then(() => {
                 this.setState({ ...INITIAL_STATE });
