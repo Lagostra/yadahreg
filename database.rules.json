@@ -5,7 +5,15 @@
     ".write": false,
     "users": {
       "$uid": {
-       	".read": "$uid === auth.uid"
+         ".read": "$uid === auth.uid || root.child('users').child(auth.uid).child('roles/admin').exists() === true",
+         ".write": "root.child('users').child(auth.uid).child('roles/admin').exists() === true",
+
+         "email": {
+           ".write": "$uid === auth.uid"
+         },
+         "name": {
+           ".write": "$uid === auth.uid"
+         }
       }
     }
   }
