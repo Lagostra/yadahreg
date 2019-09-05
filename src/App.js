@@ -5,12 +5,12 @@ import * as ROUTES from './constants/routes';
 import { withAuthentication } from './components/Session';
 
 import Navigation from './components/Navigation';
-import LandingPage from './views/LandingPage';
-import SignIn from './views/SignIn';
-import SignUp from './views/SignUp';
-import PasswordForget from './views/PasswordForget';
-import PasswordChange from './views/PasswordChange';
-import Admin from './views/Admin';
+import LandingPage from './routes/LandingPage';
+import SignIn from './routes/SignIn';
+import SignUp from './routes/SignUp';
+import PasswordForget from './routes/PasswordForget';
+import PasswordChange from './routes/PasswordChange';
+import Admin from './routes/Admin';
 
 const App = () => (
     <Router>
