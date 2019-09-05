@@ -4,6 +4,9 @@
     ".read": false,
     ".write": false,
     "users": {
+      ".read": "root.child('users').child(auth.uid).child('roles/admin').exists() === true",
+      ".write": "root.child('users').child(auth.uid).child('roles/admin').exists() === true",
+
       "$uid": {
          ".read": "$uid === auth.uid || root.child('users').child(auth.uid).child('roles/admin').exists() === true",
          ".write": "root.child('users').child(auth.uid).child('roles/admin').exists() === true",
