@@ -70,8 +70,7 @@ const UsersList = ({ users }) => (
     </ul>
 );
 
-const authCondition = authUser =>
-    !!authUser && !!authUser.roles[ROLES.ADMIN];
+const authCondition = authUser => !!authUser;
 
 export default compose(
     withFirebase,

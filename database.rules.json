@@ -4,12 +4,11 @@
     ".read": false,
     ".write": false,
     "users": {
-      ".read": "root.child('users').child(auth.uid).child('roles/admin').exists() === true",
-      ".write": "root.child('users').child(auth.uid).child('roles/admin').exists() === true",
+      ".read": "root.child('roles').child(root.child('users').child(auth.uid).child('role').val()).child('permissions/users-read').exists()",
+      ".write": "root.child('roles').child(root.child('users').child(auth.uid).child('role').val()).child('permissions/users-write').exists()",
 
       "$uid": {
-         ".read": "$uid === auth.uid || root.child('users').child(auth.uid).child('roles/admin').exists() === true",
-         ".write": "root.child('users').child(auth.uid).child('roles/admin').exists() === true",
+         ".read": "$uid === auth.uid",
 
          "email": {
            ".write": "$uid === auth.uid"
