@@ -11,6 +11,7 @@ const SignInPage = () => (
     <div>
         <h1>Sign in</h1>
         <SignInForm />
+        <SignInGoogle />
         <PasswordForgetLink />
         <SignUpLink />
     </div>
@@ -86,6 +87,81 @@ const SignInForm = compose(
     withFirebase,
 )(SignInFormBase);
 
+class SignInGoogleBase extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = { error: null };
+    }
+
+    componentDidMount() {
+        this.props.firebase.auth
+            .getRedirectResult()
+            .then(result => {
+                if (!result.user) {
+                    return Promise.reject('User is null');
+                }
+
+                /*const socialAuthUser = result.user;
+
+                return this.props.firebase
+                    .user(socialAuthUser.uid)
+                    .set({
+                        name: socialAuthUser.displayName,
+                        email: socialAuthUser.email,
+                    });*/
+            })
+            .then(() => {
+                this.setState({ error: null });
+                this.props.history.push(ROUTES.HOME);
+            })
+            .catch(error => {
+                if (error === 'User is null') {
+                    return;
+                }
+                this.setState({ error });
+            });
+    }
+
+    onSubmit = event => {
+        this.props.firebase.doSignInWithGoogle();
+        /*.then(socialAuthUser => {
+                return this.props.firebase
+                    .user(socialAuthUser.uid)
+                    .set({
+                        username: socialAuthUser.user.displayName,
+                        email: socialAuthUser.user.email,
+                    });
+            })
+            .then(() => {
+                this.setState({ error: null });
+                this.props.history.push(ROUTES.HOME);
+            })
+            .catch(error => {
+                this.setState({ error });
+            });*/
+
+        event.preventDefault();
+    };
+
+    render() {
+        const { error } = this.state;
+
+        return (
+            <form onSubmit={this.onSubmit}>
+                <button type="submit">Sign In with Google</button>
+
+                {error && <p>{error.message}</p>}
+            </form>
+        );
+    }
+}
+
+const SignInGoogle = compose(
+    withRouter,
+    withFirebase,
+)(SignInGoogleBase);
+
 export default SignInPage;
 
-export { SignInForm };
+export { SignInForm, SignInGoogle };

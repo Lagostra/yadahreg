@@ -30,7 +30,7 @@ const NavigationAuth = ({ authUser }) => (
                 <Link to={ROUTES.USER_LIST}>Administrate Users</Link>
             </li>
             <li>
-                <Link to={ROUTES.ROLES}>Mange Roles</Link>
+                <Link to={ROUTES.ROLES}>Manage Roles</Link>
             </li>
             <li>
                 <Link to={ROUTES.USER_INFO}>User Info</Link>
