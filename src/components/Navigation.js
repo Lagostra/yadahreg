@@ -27,11 +27,9 @@ const NavigationAuth = ({ authUser }) => (
                     Change Password
                 </Link>
             </li>
-            {!!authUser.roles[ROLES.ADMIN] && (
-                <li>
-                    <Link to={ROUTES.ADMIN}>Admin</Link>
-                </li>
-            )}
+            <li>
+                <Link to={ROUTES.ADMIN}>Admin</Link>
+            </li>
             <li>
                 <Link to={ROUTES.USER_INFO}>User Info</Link>
             </li>

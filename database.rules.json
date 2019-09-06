@@ -17,6 +17,13 @@
            ".write": "$uid === auth.uid"
          }
       }
+    },
+    "permissions": {
+      ".read": "auth.uid != null",
+      ".write": false
+    },
+    "roles": {
+      ".read": "auth.uid != null"
     }
   }
 }

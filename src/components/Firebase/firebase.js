@@ -44,17 +44,20 @@ class Firebase {
                     .once('value')
                     .then(snapshot => {
                         const dbUser = snapshot.val();
-                        // default empty roles
-                        if (!dbUser.roles) {
-                            dbUser.roles = {};
-                        }
-                        // merge auth and db user
-                        authUser = {
-                            uid: authUser.uid,
-                            email: authUser.email,
-                            ...dbUser,
-                        };
-                        next(authUser);
+
+                        this.permissionsOfRole(dbUser.role)
+                            .once('value')
+                            .then(snapshot2 => {
+                                const permissions = snapshot2.val();
+                                // merge auth and db user
+                                authUser = {
+                                    uid: authUser.uid,
+                                    email: authUser.email,
+                                    permissions,
+                                    ...dbUser,
+                                };
+                                next(authUser);
+                            });
                     });
             } else {
                 fallback();
@@ -64,6 +67,12 @@ class Firebase {
     // ******* User API *********
     user = uid => this.db.ref(`users/${uid}`);
     users = () => this.db.ref('users');
+
+    // ****** Role and Permissions API
+    roles = () => this.db.ref('roles');
+    permissions = () => this.db.ref('permissions');
+    permissionsOfRole = role =>
+        this.db.ref(`roles/${role}/permissions`);
 }
 
 export default Firebase;
