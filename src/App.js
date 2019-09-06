@@ -11,6 +11,7 @@ import SignUp from './routes/SignUp';
 import PasswordForget from './routes/PasswordForget';
 import PasswordChange from './routes/PasswordChange';
 import Admin from './routes/Admin';
+import UserInfo from './routes/UserInfo';
 
 const App = () => (
     <Router>
@@ -30,6 +31,7 @@ const App = () => (
             component={PasswordChange}
         />
         <Route path={ROUTES.ADMIN} component={Admin} />
+        <Route path={ROUTES.USER_INFO} component={UserInfo} />
     </Router>
 );
 
