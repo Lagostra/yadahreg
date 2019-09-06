@@ -7,3 +7,4 @@ export const PASSWORD_CHANGE = '/change-password';
 export const USER_INFO = '/user-info';
 export const USER_EDIT = '/users/edit';
 export const USER_LIST = '/users';
+export const ROLES = '/roles';

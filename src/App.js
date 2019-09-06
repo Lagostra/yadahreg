@@ -6,13 +6,16 @@ import { withAuthentication } from './components/Session';
 
 import Navigation from './components/Navigation';
 import LandingPage from './routes/LandingPage';
+
 import SignIn from './routes/auth/SignIn';
 import SignUp from './routes/auth/SignUp';
 import PasswordForget from './routes/auth/PasswordForget';
 import PasswordChange from './routes/auth/PasswordChange';
-import UserList from './routes/admin/UserList';
 import UserInfo from './routes/UserInfo';
+
+import UserList from './routes/admin/UserList';
 import EditUser from './routes/admin/EditUser';
+import Roles from './routes/admin/Roles';
 
 const App = () => (
     <Router>
@@ -42,6 +45,7 @@ const App = () => (
             )}
         />
         <Route path={ROUTES.USER_INFO} component={UserInfo} />
+        <Route path={ROUTES.ROLES} component={Roles} />
     </Router>
 );
 
