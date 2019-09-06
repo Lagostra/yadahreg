@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { compose } from 'recompose';
 
-import * as ROLES from '../constants/roles';
+import * as PERMISSIONS from '../constants/permissions';
 import { withFirebase } from '../components/Firebase';
 import { withAuthorization } from '../components/Session';
 
@@ -70,7 +70,8 @@ const UsersList = ({ users }) => (
     </ul>
 );
 
-const authCondition = authUser => !!authUser;
+const authCondition = authUser =>
+    !!authUser && !!authUser.permissions[PERMISSIONS.USERS_READ];
 
 export default compose(
     withFirebase,
