@@ -12,6 +12,7 @@ const SignInPage = () => (
         <h1>Sign in</h1>
         <SignInForm />
         <SignInGoogle />
+        <SignInFacebook />
         <PasswordForgetLink />
         <SignUpLink />
     </div>
@@ -162,6 +163,35 @@ const SignInGoogle = compose(
     withFirebase,
 )(SignInGoogleBase);
 
+class SignInFacebookBase extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = { error: null };
+    }
+
+    onSubmit = event => {
+        this.props.firebase.doSignInWithFacebook();
+        event.preventDefault();
+    };
+
+    render() {
+        const { error } = this.state;
+
+        return (
+            <form onSubmit={this.onSubmit}>
+                <button type="submit">Sign In with Facebook</button>
+                {error && <p>{error.message}</p>}
+            </form>
+        );
+    }
+}
+
+const SignInFacebook = compose(
+    withRouter,
+    withFirebase,
+)(SignInFacebookBase);
+
 export default SignInPage;
 
-export { SignInForm, SignInGoogle };
+export { SignInForm, SignInGoogle, SignInFacebook };
