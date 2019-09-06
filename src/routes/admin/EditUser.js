@@ -2,6 +2,9 @@ import React from 'react';
 import { withFirebase } from '../../components/Firebase';
 
 import * as ROUTES from '../../constants/routes';
+import * as PERMISSIONS from '../../constants/permissions';
+import { compose } from 'recompose';
+import { withAuthorization } from '../../components/Session';
 
 const INITIAL_STATE = {
     name: '',
@@ -105,4 +108,10 @@ class EditUser extends React.Component {
     }
 }
 
-export default withFirebase(EditUser);
+const authCondition = authUser =>
+    !!authUser && !!authUser.permissions[PERMISSIONS.USERS_WRITE];
+
+export default compose(
+    withFirebase,
+    withAuthorization(authCondition),
+)(EditUser);

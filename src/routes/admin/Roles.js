@@ -1,5 +1,9 @@
 import React from 'react';
 import { withFirebase } from '../../components/Firebase';
+import { compose } from 'recompose';
+import { withAuthorization } from '../../components/Session';
+
+import * as PERMISSIONS from './../../constants/permissions';
 
 class RolesList extends React.Component {
     constructor(props) {
@@ -136,6 +140,12 @@ class RoleEditorBase extends React.Component {
     }
 }
 
+const authCondition = authUser =>
+    !!authUser && !!authUser.permissions[PERMISSIONS.ROLES_WRITE];
+
 const RoleEditor = withFirebase(RoleEditorBase);
 
-export default withFirebase(RolesList);
+export default compose(
+    withFirebase,
+    withAuthorization(authCondition),
+)(RolesList);
