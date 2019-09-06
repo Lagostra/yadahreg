@@ -53,7 +53,10 @@ class Firebase {
                         this.permissionsOfRole(dbUser.role)
                             .once('value')
                             .then(snapshot2 => {
-                                const permissions = snapshot2.val();
+                                let permissions = snapshot2.val();
+                                if (!permissions) {
+                                    permissions = {};
+                                }
                                 // merge auth and db user
                                 authUser = {
                                     uid: authUser.uid,
