@@ -6,11 +6,11 @@ import { withAuthentication } from './components/Session';
 
 import Navigation from './components/Navigation';
 import LandingPage from './routes/LandingPage';
-import SignIn from './routes/SignIn';
-import SignUp from './routes/SignUp';
-import PasswordForget from './routes/PasswordForget';
-import PasswordChange from './routes/PasswordChange';
-import Admin from './routes/Admin';
+import SignIn from './routes/auth/SignIn';
+import SignUp from './routes/auth/SignUp';
+import PasswordForget from './routes/auth/PasswordForget';
+import PasswordChange from './routes/auth/PasswordChange';
+import UserList from './routes/admin/UserList';
 import UserInfo from './routes/UserInfo';
 
 const App = () => (
@@ -30,7 +30,7 @@ const App = () => (
             path={ROUTES.PASSWORD_CHANGE}
             component={PasswordChange}
         />
-        <Route path={ROUTES.ADMIN} component={Admin} />
+        <Route path={ROUTES.ADMIN} component={UserList} />
         <Route path={ROUTES.USER_INFO} component={UserInfo} />
     </Router>
 );

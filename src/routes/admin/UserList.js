@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { compose } from 'recompose';
 
-import * as PERMISSIONS from '../constants/permissions';
-import { withFirebase } from '../components/Firebase';
-import { withAuthorization } from '../components/Session';
+import * as PERMISSIONS from '../../constants/permissions';
+import { withFirebase } from '../../components/Firebase';
+import { withAuthorization } from '../../components/Session';
 
 class AdminPage extends Component {
     constructor(props) {

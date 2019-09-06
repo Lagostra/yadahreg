@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { compose } from 'recompose';
 
-import { withFirebase } from '../components/Firebase';
-import { withAuthorization } from '../components/Session';
+import { withFirebase } from '../../components/Firebase';
+import { withAuthorization } from '../../components/Session';
 
 const INITIAL_STATE = {
     passwordOne: '',
