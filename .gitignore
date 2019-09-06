@@ -24,3 +24,5 @@ yarn-error.log*
 
 # Editor files
 .vscode/launch.json
+.firebase
+.idea

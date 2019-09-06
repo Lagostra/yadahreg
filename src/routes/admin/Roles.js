@@ -49,7 +49,11 @@ class RolesList extends React.Component {
                 {roles.map(role => (
                     <li
                         key={role.name}
-                        onClick={() => this.selectRole(role)}
+                        onClick={e =>
+                            e.currentTarget === e.target
+                                ? this.selectRole(role)
+                                : null
+                        }
                     >
                         {role.name}
                         {selectedRole === role && (
@@ -69,9 +73,14 @@ class RoleEditorBase extends React.Component {
     constructor(props) {
         super(props);
 
+        const role = props.role;
+        if (!role.permissions) {
+            role.permissions = {};
+        }
+
         this.state = {
             permissions: props.permissions,
-            role: props.role,
+            role,
         };
     }
 
@@ -79,34 +88,50 @@ class RoleEditorBase extends React.Component {
         const { role } = this.state;
 
         if (e.target.checked) {
+            role.permissions[e.target.name] = e.target.name;
+        } else {
+            if (role.permissions.hasOwnProperty(e.target.name)) {
+                delete role.permissions[e.target.name];
+            }
         }
+
+        this.setState({ role });
+    };
+
+    onSubmit = e => {
+        e.preventDefault();
+
+        const role = { ...this.state.role };
+        const name = role.name;
+        delete role.name;
+
+        this.props.firebase.role(name).set(role);
     };
 
     render() {
         const { role, permissions } = this.state;
 
         return (
-            <div>
-                <div>
-                    {permissions.map(permission => (
-                        <span key={permission}>
-                            <label>{permission}</label>
-                            <input
-                                type="checkbox"
-                                name={permission}
-                                key={permission}
-                                checked={
-                                    role.permissions &&
-                                    role.permissions.hasOwnProperty(
-                                        permission,
-                                    )
-                                }
-                                onChange={this.onChange}
-                            />
-                        </span>
-                    ))}
-                </div>
-            </div>
+            <form onSubmit={this.onSubmit}>
+                {permissions.map(permission => (
+                    <span key={permission}>
+                        <label>{permission}</label>
+                        <input
+                            type="checkbox"
+                            name={permission}
+                            key={permission}
+                            checked={
+                                role.permissions &&
+                                role.permissions.hasOwnProperty(
+                                    permission,
+                                )
+                            }
+                            onChange={this.onChange}
+                        />
+                    </span>
+                ))}
+                <button type="submit">Save</button>
+            </form>
         );
     }
 }

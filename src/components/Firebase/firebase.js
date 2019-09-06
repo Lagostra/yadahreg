@@ -70,6 +70,7 @@ class Firebase {
 
     // ****** Role and Permissions API
     roles = () => this.db.ref('roles');
+    role = uid => this.db.ref(`roles/${uid}`);
     permissions = () => this.db.ref('permissions');
     permissionsOfRole = role =>
         this.db.ref(`roles/${role}/permissions`);

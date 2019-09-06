@@ -23,7 +23,8 @@
       ".write": false
     },
     "roles": {
-      ".read": "auth.uid != null"
+      ".read": "auth.uid != null",
+      ".write": "root.child('roles').child(root.child('users').child(auth.uid).child('role').val()).child('permissions/roles-write').exists()"
     }
   }
 }
