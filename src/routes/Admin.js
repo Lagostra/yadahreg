@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { compose } from 'recompose';
 
+import * as ROLES from '../constants/roles';
 import { withFirebase } from '../components/Firebase';
 import { withAuthorization } from '../components/Session';
 
@@ -69,7 +70,8 @@ const UsersList = ({ users }) => (
     </ul>
 );
 
-const authCondition = authUser => !!authUser;
+const authCondition = authUser =>
+    !!authUser && !!authUser.roles[ROLES.ADMIN];
 
 export default compose(
     withFirebase,

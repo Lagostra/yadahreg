@@ -3,19 +3,20 @@ import { Link } from 'react-router-dom';
 
 import SignOutButton from './SignOutButton';
 import * as ROUTES from '../constants/routes';
-import { AuthUserContext } from './Session';
+import * as ROLES from '../constants/roles';
+import { withAuthUser } from './Session';
 
-const Navigation = () => (
+const Navigation = ({ authUser }) => (
     <div>
-        <AuthUserContext.Consumer>
-            {authUser =>
-                authUser ? <NavigationAuth /> : <NavigationNonAuth />
-            }
-        </AuthUserContext.Consumer>
+        {authUser ? (
+            <NavigationAuth authUser={authUser} />
+        ) : (
+            <NavigationNonAuth />
+        )}
     </div>
 );
 
-const NavigationAuth = () => (
+const NavigationAuth = ({ authUser }) => (
     <div>
         <ul>
             <li>
@@ -26,9 +27,11 @@ const NavigationAuth = () => (
                     Change Password
                 </Link>
             </li>
-            <li>
-                <Link to={ROUTES.ADMIN}>Admin</Link>
-            </li>
+            {!!authUser.roles[ROLES.ADMIN] && (
+                <li>
+                    <Link to={ROUTES.ADMIN}>Admin</Link>
+                </li>
+            )}
             <li>
                 <Link to={ROUTES.USER_INFO}>User Info</Link>
             </li>
@@ -52,4 +55,4 @@ const NavigationNonAuth = () => (
     </div>
 );
 
-export default Navigation;
+export default withAuthUser(Navigation);
