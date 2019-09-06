@@ -12,6 +12,7 @@ import PasswordForget from './routes/auth/PasswordForget';
 import PasswordChange from './routes/auth/PasswordChange';
 import UserList from './routes/admin/UserList';
 import UserInfo from './routes/UserInfo';
+import EditUser from './routes/admin/EditUser';
 
 const App = () => (
     <Router>
@@ -30,7 +31,16 @@ const App = () => (
             path={ROUTES.PASSWORD_CHANGE}
             component={PasswordChange}
         />
-        <Route path={ROUTES.ADMIN} component={UserList} />
+        <Route exact path={ROUTES.USER_LIST} component={UserList} />
+        <Route
+            path={ROUTES.USER_EDIT}
+            component={props => (
+                <EditUser
+                    userUid={props.match.params.userUid}
+                    {...props}
+                />
+            )}
+        />
         <Route path={ROUTES.USER_INFO} component={UserInfo} />
     </Router>
 );

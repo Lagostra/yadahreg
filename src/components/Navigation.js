@@ -27,7 +27,7 @@ const NavigationAuth = ({ authUser }) => (
                 </Link>
             </li>
             <li>
-                <Link to={ROUTES.ADMIN}>Admin</Link>
+                <Link to={ROUTES.USER_LIST}>Administrate Users</Link>
             </li>
             <li>
                 <Link to={ROUTES.USER_INFO}>User Info</Link>
