@@ -1,6 +1,8 @@
 import React from 'react';
 import { withFirebase } from '../../components/Firebase';
 
+import * as ROUTES from '../../constants/routes';
+
 const INITIAL_STATE = {
     name: '',
     email: '',
@@ -19,6 +21,7 @@ class EditUser extends React.Component {
     componentDidMount() {
         this._isMounted = true;
         const { userUid } = this.props;
+        this.userUid = userUid;
         this.props.firebase
             .user(userUid)
             .once('value')
@@ -44,7 +47,15 @@ class EditUser extends React.Component {
         this._isMounted = false;
     }
 
-    onSubmit() {}
+    onSubmit = e => {
+        e.preventDefault();
+
+        const { name, email, role } = this.state;
+        const user = { name, email, role };
+        this.props.firebase.user(this.userUid).set(user);
+
+        this.props.history.push(ROUTES.USER_LIST);
+    };
 
     onChange = event => {
         this.setState({ [event.target.name]: event.target.value });
@@ -87,6 +98,8 @@ class EditUser extends React.Component {
                         ))}
                     </select>
                 </label>
+
+                <button type="submit">Save</button>
             </form>
         );
     }

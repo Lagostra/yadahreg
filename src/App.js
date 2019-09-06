@@ -33,7 +33,7 @@ const App = () => (
         />
         <Route exact path={ROUTES.USER_LIST} component={UserList} />
         <Route
-            path={ROUTES.USER_EDIT}
+            path={ROUTES.USER_EDIT + '/:userUid'}
             component={props => (
                 <EditUser
                     userUid={props.match.params.userUid}

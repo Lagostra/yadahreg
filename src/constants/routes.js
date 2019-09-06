@@ -5,5 +5,5 @@ export const HOME = '/';
 export const PASSWORD_FORGET = '/forgotten-password';
 export const PASSWORD_CHANGE = '/change-password';
 export const USER_INFO = '/user-info';
-export const USER_EDIT = '/users/edit/:userUid';
+export const USER_EDIT = '/users/edit';
 export const USER_LIST = '/users';
