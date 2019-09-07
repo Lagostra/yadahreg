@@ -18,7 +18,9 @@ import Roles from './routes/admin/Roles';
 
 const App = () => (
     <Router>
-        <Navigation />
+        <div className="top-bar">
+            <Navigation />
+        </div>
 
         <div className="content-wrapper">
             <Route

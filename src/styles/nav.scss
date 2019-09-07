@@ -1,8 +1,6 @@
 @import '_variables.scss';
 
 .navbar {
-    background: $color2-darker;
-
     .navbar__top-wrapper {
         display: flex;
         justify-content: space-between;
@@ -51,11 +49,13 @@
 @media only screen and (min-width: 961px) {
     .navbar {
         display: flex;
+        max-width: 961px;
+        margin: 0 auto;
 
         .navbar__hamburger-menu {
             display: none;
         }
-
+        
         .navbar__drawer {
             max-height: auto;
             display: inline-block;
@@ -63,5 +63,11 @@
 
             display: flex;
         }
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    .navbar {
+        max-width: 1200px;
     }
 }
