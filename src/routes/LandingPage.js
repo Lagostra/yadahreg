@@ -1,4 +1,5 @@
 import React from 'react';
+import { withAuthorization } from '../components/Session';
 
 const LandingPage = () => (
     <div>
@@ -6,4 +7,4 @@ const LandingPage = () => (
     </div>
 );
 
-export default LandingPage;
+export default withAuthorization(authUser => !!authUser)(LandingPage);

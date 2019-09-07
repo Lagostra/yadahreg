@@ -16,42 +16,54 @@ import UserList from './routes/admin/UserList';
 import EditUser from './routes/admin/EditUser';
 import Roles from './routes/admin/Roles';
 
-const App = () => (
-    <Router>
-        <div className="top-bar">
-            <Navigation />
-        </div>
+const App = props => {
+    const showNavigation = ![ROUTES.SIGN_IN, ROUTES.SIGN_UP].includes(
+        window.location.pathname,
+    );
 
-        <div className="content-wrapper">
-            <Route
-                exact
-                path={ROUTES.LANDING}
-                component={LandingPage}
-            />
-            <Route path={ROUTES.SIGN_IN} component={SignIn} />
-            <Route path={ROUTES.SIGN_UP} component={SignUp} />
-            <Route
-                path={ROUTES.PASSWORD_FORGET}
-                component={PasswordForget}
-            />
-            <Route
-                exact
-                path={ROUTES.USER_LIST}
-                component={UserList}
-            />
-            <Route
-                path={ROUTES.USER_EDIT + '/:userUid'}
-                component={props => (
-                    <EditUser
-                        userUid={props.match.params.userUid}
-                        {...props}
-                    />
-                )}
-            />
-            <Route path={ROUTES.ACCOUNT} component={AccountPage} />
-            <Route path={ROUTES.ROLES} component={Roles} />
-        </div>
-    </Router>
-);
+    return (
+        <Router>
+            <div
+                className={`top-bar ${
+                    showNavigation ? '' : 'hidden'
+                }`}
+            >
+                <Navigation />
+            </div>
+            <div className="content-wrapper">
+                <Route
+                    exact
+                    path={ROUTES.LANDING}
+                    component={LandingPage}
+                />
+                <Route path={ROUTES.SIGN_IN} component={SignIn} />
+                <Route path={ROUTES.SIGN_UP} component={SignUp} />
+                <Route
+                    path={ROUTES.PASSWORD_FORGET}
+                    component={PasswordForget}
+                />
+                <Route
+                    exact
+                    path={ROUTES.USER_LIST}
+                    component={UserList}
+                />
+                <Route
+                    path={ROUTES.USER_EDIT + '/:userUid'}
+                    component={props => (
+                        <EditUser
+                            userUid={props.match.params.userUid}
+                            {...props}
+                        />
+                    )}
+                />
+                <Route
+                    path={ROUTES.ACCOUNT}
+                    component={AccountPage}
+                />
+                <Route path={ROUTES.ROLES} component={Roles} />
+            </div>
+        </Router>
+    );
+};
 
 export default withAuthentication(App);
