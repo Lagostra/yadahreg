@@ -10,8 +10,7 @@ import LandingPage from './routes/LandingPage';
 import SignIn from './routes/auth/SignIn';
 import SignUp from './routes/auth/SignUp';
 import PasswordForget from './routes/auth/PasswordForget';
-import PasswordChange from './routes/auth/PasswordChange';
-import UserInfo from './routes/UserInfo';
+import AccountPage from './routes/auth/Account';
 
 import UserList from './routes/admin/UserList';
 import EditUser from './routes/admin/EditUser';
@@ -30,10 +29,6 @@ const App = () => (
             path={ROUTES.PASSWORD_FORGET}
             component={PasswordForget}
         />
-        <Route
-            path={ROUTES.PASSWORD_CHANGE}
-            component={PasswordChange}
-        />
         <Route exact path={ROUTES.USER_LIST} component={UserList} />
         <Route
             path={ROUTES.USER_EDIT + '/:userUid'}
@@ -44,7 +39,7 @@ const App = () => (
                 />
             )}
         />
-        <Route path={ROUTES.USER_INFO} component={UserInfo} />
+        <Route path={ROUTES.ACCOUNT} component={AccountPage} />
         <Route path={ROUTES.ROLES} component={Roles} />
     </Router>
 );
