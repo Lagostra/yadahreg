@@ -6,6 +6,7 @@ import { SignUpLink } from './SignUp';
 import { PasswordForgetLink } from './PasswordForget';
 import { withFirebase } from '../../components/Firebase';
 import * as ROUTES from '../../constants/routes';
+import { withAuthUser } from '../../components/Session';
 
 const ERROR_CODE_ACCOUNT_EXISTS =
     'auth/account-exists-with-different-credential';
@@ -38,6 +39,10 @@ class SignInFormBase extends Component {
         super(props);
 
         this.state = { ...INITIAL_STATE };
+
+        if (this.props.authUser) {
+            this.props.history.push(ROUTES.HOME);
+        }
     }
 
     onSubmit = event => {
@@ -95,6 +100,7 @@ class SignInFormBase extends Component {
 const SignInForm = compose(
     withRouter,
     withFirebase,
+    withAuthUser,
 )(SignInFormBase);
 
 class SignInGoogleBase extends React.Component {

@@ -4,6 +4,7 @@ import { compose } from 'recompose';
 
 import { withFirebase } from '../../components/Firebase';
 import * as ROUTES from '../../constants/routes';
+import { withAuthUser } from '../../components/Session';
 
 const ERROR_CODE_ACCOUNT_EXISTS = 'auth/email-already-in-use';
 const ERROR_MSG_ACCOUNT_EXISTS = `
@@ -34,6 +35,10 @@ class SignUpFormBase extends Component {
         super(props);
 
         this.state = { ...INITIAL_STATE };
+
+        if (this.props.authUser) {
+            this.props.history.push(ROUTES.HOME);
+        }
     }
 
     onSubmit = event => {
@@ -132,6 +137,7 @@ const SignUpLink = () => (
 const SignUpForm = compose(
     withRouter,
     withFirebase,
+    withAuthUser,
 )(SignUpFormBase);
 
 export default SignUpPage;
