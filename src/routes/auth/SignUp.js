@@ -5,6 +5,7 @@ import { compose } from 'recompose';
 import { withFirebase } from '../../components/Firebase';
 import * as ROUTES from '../../constants/routes';
 import { withAuthUser } from '../../components/Session';
+import { SignInGoogle, SignInFacebook } from './SignIn';
 
 const ERROR_CODE_ACCOUNT_EXISTS = 'auth/email-already-in-use';
 const ERROR_MSG_ACCOUNT_EXISTS = `
@@ -19,6 +20,8 @@ const SignUpPage = () => (
     <div className="signup__container">
         <h1>Sign Up</h1>
         <SignUpForm />
+        <SignInGoogle />
+        <SignInFacebook />
     </div>
 );
 
