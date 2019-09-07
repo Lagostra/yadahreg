@@ -26,3 +26,6 @@ yarn-error.log*
 .vscode/launch.json
 .firebase
 .idea
+
+# Log files
+*.log
