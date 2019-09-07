@@ -18,7 +18,7 @@ const ERROR_MSG_ACCOUNT_EXISTS = `
 `;
 
 const SignInPage = () => (
-    <div>
+    <div className="signin__container">
         <h1>Sign in</h1>
         <SignInForm />
         <SignInGoogle />
@@ -87,7 +87,11 @@ class SignInFormBase extends Component {
                     placeholder="Password"
                 />
 
-                <button disabled={isInvalid} type="submit">
+                <button
+                    disabled={isInvalid}
+                    type="submit"
+                    className="signin__submit"
+                >
                     Sign In
                 </button>
 
@@ -132,7 +136,12 @@ class SignInGoogleBase extends React.Component {
 
         return (
             <form onSubmit={this.onSubmit}>
-                <button type="submit">Sign In with Google</button>
+                <button
+                    type="submit"
+                    className="signin__social signin__social-google"
+                >
+                    Sign In with Google
+                </button>
 
                 {error && <p>{error.message}</p>}
             </form>
@@ -173,7 +182,12 @@ class SignInFacebookBase extends React.Component {
 
         return (
             <form onSubmit={this.onSubmit}>
-                <button type="submit">Sign In with Facebook</button>
+                <button
+                    type="submit"
+                    className="signin__social signin__social-facebook"
+                >
+                    Sign In with Facebook
+                </button>
                 {error && <p>{error.message}</p>}
             </form>
         );
