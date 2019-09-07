@@ -16,7 +16,7 @@ const ERROR_MSG_ACCOUNT_EXISTS = `
 `;
 
 const SignUpPage = () => (
-    <div>
+    <div className="signup__container">
         <h1>Sign Up</h1>
         <SignUpForm />
     </div>
@@ -117,7 +117,11 @@ class SignUpFormBase extends Component {
                     placeholder="Confirm Password"
                 />
 
-                <button type="submit" disabled={isInvalid}>
+                <button
+                    type="submit"
+                    disabled={isInvalid}
+                    className="signup__submit"
+                >
                     Sign Up
                 </button>
 

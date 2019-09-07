@@ -1,7 +1,7 @@
 @import '_variables.scss';
 @import 'fb-login-button.scss';
 
-.signin__container {
+.signin__container, .signup__container {
     margin: 20px;
     margin-top: 150px;
     padding: 15px;
@@ -28,7 +28,7 @@
         margin-top: 15px;
     }
 
-    .signin__submit, .signin__social {
+    .signin__submit, .signin__social, .signup__submit {
         width: 100%;
         padding: 10px;
         margin-top: 20px;
@@ -39,16 +39,16 @@
         cursor: pointer;
     }
 
-    .signin__submit:hover, .signin__social:hover {
+    .signin__submit:hover, .signin__social:hover, signup__submit:hover {
         filter: brightness(80%);
         -webkit-filter: brightness(80%);
     }
 
-    .signin__submit:focus, .signin__social:focus {
+    .signin__submit:focus, .signin__social:focus, .signup__submit:focus {
         transform: translateY(3px);
     }
 
-    .signin__submit {
+    .signin__submit, .signup__submit {
         background: $color3;
         color: $color4;
     }
