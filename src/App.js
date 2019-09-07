@@ -2,7 +2,10 @@ import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import * as ROUTES from './constants/routes';
-import { withAuthentication } from './components/Session';
+import {
+    withAuthentication,
+    withAuthUser,
+} from './components/Session';
 
 import Navigation from './components/Navigation';
 import LandingPage from './routes/LandingPage';
@@ -15,11 +18,10 @@ import AccountPage from './routes/auth/Account';
 import UserList from './routes/admin/UserList';
 import EditUser from './routes/admin/EditUser';
 import Roles from './routes/admin/Roles';
+import { compose } from 'recompose';
 
 const App = props => {
-    const showNavigation = ![ROUTES.SIGN_IN, ROUTES.SIGN_UP].includes(
-        window.location.pathname,
-    );
+    const showNavigation = !!props.authUser;
 
     return (
         <Router>
@@ -66,4 +68,7 @@ const App = props => {
     );
 };
 
-export default withAuthentication(App);
+export default compose(
+    withAuthentication,
+    withAuthUser,
+)(App);
