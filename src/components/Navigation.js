@@ -73,8 +73,7 @@ const NavigationNonAuth = ({ active }) => (
             active ? 'navbar__drawer--active' : ''
         }`}
     >
-        <NavLink link={ROUTES.LANDING}>Landing</NavLink>
-        <NavLink link={ROUTES.SIGN_IN}>Sign In</NavLink>
+        {/*<NavLink link={ROUTES.SIGN_IN}>Sign In</NavLink>*/}
     </ul>
 );
 
