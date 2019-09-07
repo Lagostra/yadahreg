@@ -3,7 +3,7 @@
 
 .signin__container, .signup__container {
     margin: 20px;
-    margin-top: 150px;
+    margin-top: 30px;
     padding: 15px;
     text-align: center;
     
@@ -12,8 +12,13 @@
     box-shadow: 0 0 10px $color2-dark;*/
 
     h1 {
-        font-size: 1.7em;
+        font-size: 3.0em;
+        color: $color2-dark;
+    }
 
+    h2 {
+        font-size: 1.7em;
+        margin-top: 60px;
     }
 
     input {
@@ -115,6 +120,6 @@
     .signin__container, .signup__container {
         width: 500px;
         margin: 0 auto;
-        margin-top: 150px;
+        margin-top: 100px;
     }
 }

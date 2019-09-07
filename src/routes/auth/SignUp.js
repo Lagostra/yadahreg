@@ -18,7 +18,8 @@ const ERROR_MSG_ACCOUNT_EXISTS = `
 
 const SignUpPage = () => (
     <div className="signup__container">
-        <h1>Sign Up</h1>
+        <h1>YadahReg</h1>
+        <h2>Sign Up</h2>
         <SignUpForm />
         <SignInGoogle />
         <SignInFacebook />
