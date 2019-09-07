@@ -1,0 +1,22 @@
+@import '_variables.scss';
+
+.navbar {
+    background: $color2-dark;
+    padding: 0 15px;
+
+    display: flex;
+
+    .navbar__element {
+        display: inline-block;
+    }
+
+    .navbar__link {
+        color: $color4;
+        text-decoration: none;
+        display: inline-block;
+        padding: 15px;
+        background: none;
+        cursor: pointer;
+    }
+}
+
