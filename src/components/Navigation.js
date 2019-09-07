@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import SignOutButton from './SignOutButton';
 import * as ROUTES from '../constants/routes';
 import { withAuthUser } from './Session';
-import { renderComponent } from 'recompose';
 
 class Navigation extends React.Component {
     constructor(props) {
@@ -63,7 +62,7 @@ const NavigationAuth = ({ authUser, active }) => (
         <NavLink link={ROUTES.ROLES}>Manage Roles</NavLink>
         <NavLink link={ROUTES.ACCOUNT}>Account</NavLink>
         <li className="navbar__element">
-            <SignOutButton className="navbar__link" />
+            <SignOutButton buttonClass="navbar__link" />
         </li>
     </ul>
 );

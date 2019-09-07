@@ -20,25 +20,35 @@ const App = () => (
     <Router>
         <Navigation />
 
-        <Route exact path={ROUTES.LANDING} component={LandingPage} />
-        <Route path={ROUTES.SIGN_IN} component={SignIn} />
-        <Route path={ROUTES.SIGN_UP} component={SignUp} />
-        <Route
-            path={ROUTES.PASSWORD_FORGET}
-            component={PasswordForget}
-        />
-        <Route exact path={ROUTES.USER_LIST} component={UserList} />
-        <Route
-            path={ROUTES.USER_EDIT + '/:userUid'}
-            component={props => (
-                <EditUser
-                    userUid={props.match.params.userUid}
-                    {...props}
-                />
-            )}
-        />
-        <Route path={ROUTES.ACCOUNT} component={AccountPage} />
-        <Route path={ROUTES.ROLES} component={Roles} />
+        <div className="content-wrapper">
+            <Route
+                exact
+                path={ROUTES.LANDING}
+                component={LandingPage}
+            />
+            <Route path={ROUTES.SIGN_IN} component={SignIn} />
+            <Route path={ROUTES.SIGN_UP} component={SignUp} />
+            <Route
+                path={ROUTES.PASSWORD_FORGET}
+                component={PasswordForget}
+            />
+            <Route
+                exact
+                path={ROUTES.USER_LIST}
+                component={UserList}
+            />
+            <Route
+                path={ROUTES.USER_EDIT + '/:userUid'}
+                component={props => (
+                    <EditUser
+                        userUid={props.match.params.userUid}
+                        {...props}
+                    />
+                )}
+            />
+            <Route path={ROUTES.ACCOUNT} component={AccountPage} />
+            <Route path={ROUTES.ROLES} component={Roles} />
+        </div>
     </Router>
 );
 

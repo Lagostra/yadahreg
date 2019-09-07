@@ -23,8 +23,10 @@
 
 
     .navbar__drawer {
-        display: none;
+        max-height: 0;
         background: $color2-dark;
+
+        transition: max-height 0.5s ease-in-out;
 
         .navbar__element {
             display: block;
@@ -41,8 +43,25 @@
     }
 
     .navbar__drawer--active {
-        display: block;
+        max-height: 500px;
     }
 
 }
 
+@media only screen and (min-width: 961px) {
+    .navbar {
+        display: flex;
+
+        .navbar__hamburger-menu {
+            display: none;
+        }
+
+        .navbar__drawer {
+            max-height: auto;
+            display: inline-block;
+            background: transparent;
+
+            display: flex;
+        }
+    }
+}
