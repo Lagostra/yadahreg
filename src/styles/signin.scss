@@ -24,6 +24,10 @@
         border-bottom: 1px solid $color2;
     }
 
+    p {
+        margin-top: 15px;
+    }
+
     .signin__submit, .signin__social {
         width: 100%;
         padding: 10px;
@@ -83,6 +87,7 @@
     }
 
     .signin__social-google {
+        margin-top: 40px;
         background: #FFFFFF;
     }
 

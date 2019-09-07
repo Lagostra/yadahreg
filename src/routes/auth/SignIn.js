@@ -23,7 +23,6 @@ const SignInPage = () => (
         <SignInForm />
         <SignInGoogle />
         <SignInFacebook />
-        <PasswordForgetLink />
         <SignUpLink />
     </div>
 );
@@ -86,6 +85,8 @@ class SignInFormBase extends Component {
                     type="password"
                     placeholder="Password"
                 />
+
+                <PasswordForgetLink />
 
                 <button
                     disabled={isInvalid}
