@@ -1,22 +1,48 @@
 @import '_variables.scss';
 
 .navbar {
-    background: $color2-dark;
-    padding: 0 15px;
+    background: $color2-darker;
 
-    display: flex;
+    .navbar__top-wrapper {
+        display: flex;
+        justify-content: space-between;
 
-    .navbar__element {
-        display: inline-block;
+        .navbar__logo {
+            color: $color2-light;
+            text-decoration: none;
+            padding: 15px;
+            display: inline-block;
+        }
+
+        .navbar__hamburger-menu {
+            margin-right: 15px;
+            font-size: 1.25em;
+            cursor: pointer;
+        }
     }
 
-    .navbar__link {
-        color: $color4;
-        text-decoration: none;
-        display: inline-block;
-        padding: 15px;
-        background: none;
-        cursor: pointer;
+
+    .navbar__drawer {
+        display: none;
+        background: $color2-dark;
+
+        .navbar__element {
+            display: block;
+        }
+    
+        .navbar__link {
+            color: $color4;
+            text-decoration: none;
+            display: inline-block;
+            padding: 15px;
+            background: none;
+            cursor: pointer;
+        }
     }
+
+    .navbar__drawer--active {
+        display: block;
+    }
+
 }
 
