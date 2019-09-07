@@ -104,55 +104,19 @@ class SignInGoogleBase extends React.Component {
         this.state = { error: null };
     }
 
-    componentDidMount() {
-        this.props.firebase.auth
-            .getRedirectResult()
-            .then(result => {
-                if (!result.user) {
-                    return Promise.reject('User is null');
-                }
-
-                /*const socialAuthUser = result.user;
-
-                return this.props.firebase
-                    .user(socialAuthUser.uid)
-                    .set({
-                        name: socialAuthUser.displayName,
-                        email: socialAuthUser.email,
-                    });*/
-            })
+    onSubmit = event => {
+        this.props.firebase
+            .doSignInWithGoogle()
             .then(() => {
                 this.setState({ error: null });
                 this.props.history.push(ROUTES.HOME);
             })
             .catch(error => {
-                if (error === 'User is null') {
-                    return;
-                }
                 if (error.code === ERROR_CODE_ACCOUNT_EXISTS) {
                     error.message = ERROR_MSG_ACCOUNT_EXISTS;
                 }
                 this.setState({ error });
             });
-    }
-
-    onSubmit = event => {
-        this.props.firebase.doSignInWithGoogle();
-        /*.then(socialAuthUser => {
-                return this.props.firebase
-                    .user(socialAuthUser.uid)
-                    .set({
-                        username: socialAuthUser.user.displayName,
-                        email: socialAuthUser.user.email,
-                    });
-            })
-            .then(() => {
-                this.setState({ error: null });
-                this.props.history.push(ROUTES.HOME);
-            })
-            .catch(error => {
-                this.setState({ error });
-            });*/
 
         event.preventDefault();
     };
@@ -183,7 +147,18 @@ class SignInFacebookBase extends React.Component {
     }
 
     onSubmit = event => {
-        this.props.firebase.doSignInWithFacebook();
+        this.props.firebase
+            .doSignInWithFacebook()
+            .then(() => {
+                this.setState({ error: null });
+                this.props.history.push(ROUTES.HOME);
+            })
+            .catch(error => {
+                if (error.code === ERROR_CODE_ACCOUNT_EXISTS) {
+                    error.message = ERROR_MSG_ACCOUNT_EXISTS;
+                }
+                this.setState({ error });
+            });
         event.preventDefault();
     };
 
