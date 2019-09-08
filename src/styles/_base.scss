@@ -32,6 +32,41 @@ h1 {
     }
 }
 
+input {
+    display: block;
+    font-size: 1.2em;
+    width: 100%;
+    margin-top: 5px;
+
+    border: none;
+    border-bottom: 1px solid $color1-light;
+}
+
+label {
+    font-size: 1.1em;
+    margin-top: 20px;
+    display: block;
+}
+
+select {
+    font-size: 1.1em;
+    width: 100%;
+    margin-top: 5px;
+}
+
+.button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+    font-size: 1.2em;
+    border-radius: 5px;
+    box-shadow: 0 5px 3px 0 $color2;
+    text-align: center;
+    cursor: pointer;
+    background: $color3;
+    color: $color4;
+}
+
 @media only screen and (min-width: 961px) {
     .content-wrapper {
         width: 961px;

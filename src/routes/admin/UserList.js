@@ -7,7 +7,7 @@ import * as ROUTES from '../../constants/routes';
 import { withFirebase } from '../../components/Firebase';
 import { withAuthorization } from '../../components/Session';
 
-class AdminPage extends Component {
+class UsersPage extends Component {
     constructor(props) {
         super(props);
 
@@ -43,8 +43,8 @@ class AdminPage extends Component {
         const { users, loading } = this.state;
 
         return (
-            <div>
-                <h1>Admin</h1>
+            <div className="content">
+                <h1>Brukere</h1>
 
                 {loading && <div>Loading...</div>}
 
@@ -83,4 +83,4 @@ const authCondition = authUser =>
 export default compose(
     withFirebase,
     withAuthorization(authCondition),
-)(AdminPage);
+)(UsersPage);

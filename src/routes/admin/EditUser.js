@@ -68,27 +68,28 @@ class EditUser extends React.Component {
         const { name, email, role, availableRoles } = this.state;
 
         return (
-            <form onSubmit={this.onSubmit}>
-                <h2>Edit User</h2>
-                <label htmlFor="name">Name</label>
-                <input
-                    name="name"
-                    value={name}
-                    onChange={this.onChange}
-                    type="text"
-                    placeholder="Full Name"
-                />
+            <div className="content">
+                <form onSubmit={this.onSubmit}>
+                    <h1>Endre bruker</h1>
+                    <label htmlFor="name">Navn</label>
+                    <input
+                        name="name"
+                        value={name}
+                        onChange={this.onChange}
+                        type="text"
+                        placeholder="Full Name"
+                    />
 
-                <label htmlFor="email">Email</label>
-                <input
-                    name="email"
-                    value={email}
-                    onChange={this.onChange}
-                    type="text"
-                    placeholder="Email Address"
-                />
+                    <label htmlFor="email">E-post</label>
+                    <input
+                        name="email"
+                        value={email}
+                        onChange={this.onChange}
+                        type="text"
+                        placeholder="Email Address"
+                    />
 
-                <label htmlFor="role">
+                    <label htmlFor="role">Rolle</label>
                     <select
                         value={role}
                         onChange={this.onChange}
@@ -100,10 +101,12 @@ class EditUser extends React.Component {
                             </option>
                         ))}
                     </select>
-                </label>
 
-                <button type="submit">Save</button>
-            </form>
+                    <button className="button" type="submit">
+                        Lagre
+                    </button>
+                </form>
+            </div>
         );
     }
 }

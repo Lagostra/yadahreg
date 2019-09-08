@@ -5,7 +5,7 @@ import { withAuthorization } from '../../components/Session';
 
 import * as PERMISSIONS from './../../constants/permissions';
 
-class RolesList extends React.Component {
+class RolesListBase extends React.Component {
     constructor(props) {
         super(props);
         this.state = { roles: [], permissions: [], selectedRole: '' };
@@ -50,6 +50,9 @@ class RolesList extends React.Component {
 
         return (
             <ul>
+                {(!this.state.roles.length ||
+                    !this.state.permissions.length) &&
+                    'Loading...'}
                 {roles.map(role => (
                     <li
                         key={role.name}
@@ -72,6 +75,8 @@ class RolesList extends React.Component {
         );
     }
 }
+
+const RolesList = withFirebase(RolesListBase);
 
 class RoleEditorBase extends React.Component {
     constructor(props) {
@@ -140,12 +145,16 @@ class RoleEditorBase extends React.Component {
     }
 }
 
+const RolesPage = () => (
+    <div className="content">
+        <h1>Roller</h1>
+        <RolesList />
+    </div>
+);
+
 const authCondition = authUser =>
     !!authUser && !!authUser.permissions[PERMISSIONS.ROLES_WRITE];
 
 const RoleEditor = withFirebase(RoleEditorBase);
 
-export default compose(
-    withFirebase,
-    withAuthorization(authCondition),
-)(RolesList);
+export default compose(withAuthorization(authCondition))(RolesPage);

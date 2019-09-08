@@ -28,7 +28,7 @@ class Account extends React.Component {
         const { authUser } = this.props;
 
         return (
-            <div>
+            <div className="content">
                 <h1>{this.props.authUser.name}</h1>
                 <p>Email: {this.props.authUser.email}</p>
                 <PasswordChangeForm />
