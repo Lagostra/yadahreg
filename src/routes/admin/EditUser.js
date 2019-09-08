@@ -5,6 +5,7 @@ import * as ROUTES from '../../constants/routes';
 import * as PERMISSIONS from '../../constants/permissions';
 import { compose } from 'recompose';
 import { withAuthorization } from '../../components/Session';
+import { Link } from 'react-router-dom';
 
 const INITIAL_STATE = {
     name: '',
@@ -69,6 +70,9 @@ class EditUser extends React.Component {
 
         return (
             <div className="content">
+                <Link to={ROUTES.USER_LIST} className="btn btn-back">
+                    Tilbake
+                </Link>
                 <form onSubmit={this.onSubmit}>
                     <h1>Endre bruker</h1>
                     <label htmlFor="name">Navn</label>
@@ -102,7 +106,7 @@ class EditUser extends React.Component {
                         ))}
                     </select>
 
-                    <button className="button" type="submit">
+                    <button className="btn" type="submit">
                         Lagre
                     </button>
                 </form>
