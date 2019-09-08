@@ -81,12 +81,16 @@ class Firebase {
     user = uid => this.db.ref(`users/${uid}`);
     users = () => this.db.ref('users');
 
-    // ****** Role and Permissions API
+    // ****** Role and Permissions API ********
     roles = () => this.db.ref('roles');
     role = uid => this.db.ref(`roles/${uid}`);
     permissions = () => this.db.ref('permissions');
     permissionsOfRole = role =>
         this.db.ref(`roles/${role}/permissions`);
+
+    // ******* Member API *********
+    member = id => this.db.ref(`members/${id}`);
+    members = () => this.db.ref('members');
 }
 
 export default Firebase;

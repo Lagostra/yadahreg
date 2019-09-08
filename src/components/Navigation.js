@@ -86,6 +86,7 @@ const NavigationAuth = ({
             active ? 'navbar__drawer--active' : ''
         }`}
     >
+        <NavLink link={ROUTES.MEMBERS}>Medlemmer</NavLink>
         <NavSubDrawer
             title="Admin"
             active={activeSubDrawer === 'Admin'}
