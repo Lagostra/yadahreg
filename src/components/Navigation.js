@@ -1,9 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 import SignOutButton from './SignOutButton';
 import * as ROUTES from '../constants/routes';
 import { withAuthUser } from './Session';
+import { compose } from 'recompose';
 
 class Navigation extends React.Component {
     constructor(props) {
@@ -12,6 +13,12 @@ class Navigation extends React.Component {
         this.state = {
             navDrawerActive: false,
         };
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.location !== prevProps.location) {
+            this.setState({ navDrawerActive: false });
+        }
     }
 
     render() {
@@ -85,4 +92,7 @@ const NavLink = props => (
     </li>
 );
 
-export default withAuthUser(Navigation);
+export default compose(
+    withAuthUser,
+    withRouter,
+)(Navigation);
