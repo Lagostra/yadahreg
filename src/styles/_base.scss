@@ -67,6 +67,10 @@ select {
     color: $color4;
 }
 
+.btn:focus {
+    transform: translateY(3px);
+}
+
 .btn-back {
     width: auto;
     background: none;
