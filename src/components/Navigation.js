@@ -12,14 +12,22 @@ class Navigation extends React.Component {
 
         this.state = {
             navDrawerActive: false,
+            activeSubDrawer: '',
         };
     }
 
     componentDidUpdate(prevProps) {
         if (this.props.location !== prevProps.location) {
-            this.setState({ navDrawerActive: false });
+            this.setState({
+                navDrawerActive: false,
+                activeSubDrawer: '',
+            });
         }
     }
+
+    handleActivateSubDrawer = name => {
+        this.setState({ activeSubDrawer: name });
+    };
 
     render() {
         return (
@@ -37,6 +45,7 @@ class Navigation extends React.Component {
                             this.setState({
                                 navDrawerActive: !this.state
                                     .navDrawerActive,
+                                activeSubDrawer: '',
                             })
                         }
                     >
@@ -47,10 +56,18 @@ class Navigation extends React.Component {
                     <NavigationAuth
                         authUser={this.props.authUser}
                         active={this.state.navDrawerActive}
+                        activeSubDrawer={this.state.activeSubDrawer}
+                        onActivateSubDrawer={
+                            this.handleActivateSubDrawer
+                        }
                     />
                 ) : (
                     <NavigationNonAuth
                         active={this.state.navDrawerActive}
+                        activeSubDrawer={this.state.activeSubDrawer}
+                        onActivateSubDrawer={
+                            this.handleActivateSubDrawer
+                        }
                     />
                 )}
             </nav>
@@ -58,15 +75,26 @@ class Navigation extends React.Component {
     }
 }
 
-const NavigationAuth = ({ authUser, active }) => (
+const NavigationAuth = ({
+    authUser,
+    active,
+    activeSubDrawer,
+    onActivateSubDrawer,
+}) => (
     <ul
         className={`navbar__drawer ${
             active ? 'navbar__drawer--active' : ''
         }`}
     >
-        <NavLink link={ROUTES.USER_LIST}>Administrate Users</NavLink>
-        <NavLink link={ROUTES.ROLES}>Manage Roles</NavLink>
-        <NavLink link={ROUTES.ACCOUNT}>Account</NavLink>
+        <NavSubDrawer
+            title="Admin"
+            active={activeSubDrawer === 'Admin'}
+            onActivateSubDrawer={onActivateSubDrawer}
+        >
+            <NavLink link={ROUTES.USER_LIST}>Brukere</NavLink>
+            <NavLink link={ROUTES.ROLES}>Roller</NavLink>
+        </NavSubDrawer>
+        <NavLink link={ROUTES.ACCOUNT}>Min Bruker</NavLink>
         <li className="navbar__element">
             <SignOutButton buttonClass="navbar__link" />
         </li>
@@ -90,6 +118,52 @@ const NavLink = props => (
         </Link>
     </li>
 );
+
+class NavSubDrawer extends React.Component {
+    handleClick = () => {
+        if (this.props.active) {
+            this.props.onActivateSubDrawer('');
+        } else {
+            this.props.onActivateSubDrawer(this.props.title);
+        }
+    };
+
+    render() {
+        return (
+            <li>
+                <span className="navbar__element">
+                    <button
+                        className={`navbar__link navbar__subdrawer-link ${
+                            this.props.active
+                                ? 'navbar__subdrawer-link--active'
+                                : ''
+                        }`}
+                        onClick={this.handleClick}
+                    >
+                        {this.props.title}
+                        <i
+                            className={`fas ${
+                                this.props.active
+                                    ? 'fa-caret-down'
+                                    : 'fa-caret-right'
+                            }`}
+                        />
+                    </button>
+                </span>
+
+                <ul
+                    className={`navbar__subdrawer ${
+                        this.props.active
+                            ? 'navbar__subdrawer--active'
+                            : ''
+                    }`}
+                >
+                    {this.props.children}
+                </ul>
+            </li>
+        );
+    }
+}
 
 export default compose(
     withAuthUser,

@@ -8,7 +8,7 @@ const SignOUtButton = ({ firebase, buttonClass }) => (
         onClick={firebase.doSignOut}
         className={buttonClass}
     >
-        Sign Out
+        Logg ut
     </button>
 );
 

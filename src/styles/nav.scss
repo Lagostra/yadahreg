@@ -23,6 +23,7 @@
 
     .navbar__drawer {
         max-height: 0;
+        overflow: hidden;
         background: $color1-lighter;
 
         transition: max-height 0.5s ease-in-out;
@@ -51,6 +52,31 @@
         max-height: 500px;
     }
 
+    .navbar__subdrawer {
+        max-height: 0px;
+        height: auto;
+        overflow: hidden;
+        transition: max-height 0.2s ease-in-out;
+
+        background: $color2-darker;
+
+        .navbar__element {
+            padding-left: 30px;
+        }
+    }
+
+    .navbar__subdrawer--active {
+        max-height: 100px;
+    }
+
+    .navbar__subdrawer-link {
+        position: relative;
+        i {
+            font-size: 1.3em;
+            position: absolute;
+            right: 20px;
+        }
+    }
 }
 
 @media only screen and (min-width: 961px) {
