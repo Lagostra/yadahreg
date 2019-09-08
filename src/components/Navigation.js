@@ -64,7 +64,6 @@ const NavigationAuth = ({ authUser, active }) => (
             active ? 'navbar__drawer--active' : ''
         }`}
     >
-        <NavLink link={ROUTES.LANDING}>Landing</NavLink>
         <NavLink link={ROUTES.USER_LIST}>Administrate Users</NavLink>
         <NavLink link={ROUTES.ROLES}>Manage Roles</NavLink>
         <NavLink link={ROUTES.ACCOUNT}>Account</NavLink>

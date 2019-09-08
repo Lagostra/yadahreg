@@ -1,31 +1,6 @@
 @import '_variables.scss';
 @import '_reset.scss';
+@import '_base.scss';
 
 @import 'nav.scss';
 @import 'signin.scss';
-
-body {
-    font-family: 'Roboto', Helvetica, Arial, sans-serif;
-}
-
-.top-bar {
-    background: $color1-light;
-}
-
-.hidden {
-    display: none;
-}
-
-@media only screen and (min-width: 961px) {
-    .content-wrapper {
-        width: 961px;
-        margin: 0 auto;
-    }
-}
-
-@media only screen and (min-width: 1200px) {
-    .content-wrapper {
-        width: 1200px;
-        margin: 0 auto;
-    }
-}

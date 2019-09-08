@@ -1,0 +1,47 @@
+@import '_variables.scss';
+
+body {
+    font-family: 'Roboto', Helvetica, Arial, sans-serif;
+}
+
+.top-bar {
+    background: $color1-light;
+}
+
+.hidden {
+    display: none;
+}
+
+.content {
+    padding: 30px;
+}
+
+p {
+    margin-top: 10px;
+}
+
+h1 {
+    font-size: 1.6em;
+    color: $color1-lighter;
+    margin-bottom: 25px;
+    margin-top: 30px;
+
+    strong {
+        font-weight: bold;
+        color: $color3;
+    }
+}
+
+@media only screen and (min-width: 961px) {
+    .content-wrapper {
+        width: 961px;
+        margin: 0 auto;
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    .content-wrapper {
+        width: 1200px;
+        margin: 0 auto;
+    }
+}

@@ -8,7 +8,7 @@ import {
 } from './components/Session';
 
 import Navigation from './components/Navigation';
-import LandingPage from './routes/LandingPage';
+import Home from './routes/Home';
 
 import SignIn from './routes/auth/SignIn';
 import SignUp from './routes/auth/SignUp';
@@ -33,11 +33,7 @@ const App = props => {
                 <Navigation />
             </div>
             <div className="content-wrapper">
-                <Route
-                    exact
-                    path={ROUTES.LANDING}
-                    component={LandingPage}
-                />
+                <Route exact path={ROUTES.LANDING} component={Home} />
                 <Route path={ROUTES.SIGN_IN} component={SignIn} />
                 <Route path={ROUTES.SIGN_UP} component={SignUp} />
                 <Route
