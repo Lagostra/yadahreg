@@ -22,7 +22,7 @@
 
     .navbar__drawer {
         max-height: 0;
-        background: $color2-dark;
+        background: $color1-lighter;
 
         transition: max-height 0.5s ease-in-out;
 
@@ -37,6 +37,12 @@
             padding: 15px;
             background: none;
             cursor: pointer;
+            width: 100%;
+            text-align: left;
+        }
+
+        .navbar__link:hover, .navbar__link:active {
+            background: rgba(255, 255, 255, 0.05);
         }
     }
 
@@ -62,6 +68,10 @@
             background: transparent;
 
             display: flex;
+
+            .navbar__link {
+                width: auto;
+            }
         }
     }
 }
