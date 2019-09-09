@@ -131,7 +131,7 @@ class NavSubDrawer extends React.Component {
 
     render() {
         return (
-            <li>
+            <li className="navbar__subdrawer-container">
                 <span className="navbar__element">
                     <button
                         className={`navbar__link navbar__subdrawer-link ${
@@ -143,9 +143,16 @@ class NavSubDrawer extends React.Component {
                     >
                         {this.props.title}
                         <i
-                            className={`fas ${
+                            className={`navbar__subdrawer-caret-down fas ${
                                 this.props.active
                                     ? 'fa-caret-down'
+                                    : 'fa-caret-right'
+                            }`}
+                        />
+                        <i
+                            className={`navbar__subdrawer-caret-left fas ${
+                                this.props.active
+                                    ? 'fa-caret-left'
                                     : 'fa-caret-right'
                             }`}
                         />

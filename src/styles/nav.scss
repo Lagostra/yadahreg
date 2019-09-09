@@ -30,6 +30,7 @@
 
         .navbar__element {
             display: block;
+            width: 100%;
         }
     
         .navbar__link {
@@ -63,6 +64,16 @@
         .navbar__element {
             padding-left: 30px;
         }
+
+    }
+
+    .navbar__subdrawer-container {
+        display: flex; 
+        flex-direction: column;
+
+        .navbar__element {
+            flex-grow: 1;
+        }
     }
 
     .navbar__subdrawer--active {
@@ -72,11 +83,17 @@
     .navbar__subdrawer-link {
         position: relative;
         i {
+            display: inline-block;
             font-size: 1.3em;
             position: absolute;
             right: 20px;
         }
+
+        .navbar__subdrawer-caret-left {
+            display: none;
+        }
     }
+
 }
 
 @media only screen and (min-width: 961px) {
@@ -91,14 +108,59 @@
         
         .navbar__drawer {
             max-height: 500px;
-            display: inline-block;
             background: transparent;
 
             display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
 
-            .navbar__link {
+            .navbar__element, .navbar__link {
                 width: auto;
+                line-height: 1em;
             }
+        }
+
+        .navbar__subdrawer, .navbar__subdrawer--active {
+            max-height: none;
+        }
+
+        .navbar__subdrawer {
+            display: flex;
+            flex-direction: row;
+            max-width: 0;
+
+            transition: max-width 0.5s ease-in-out;
+
+            .navbar__element {
+                padding-left: 0;
+            }
+
+        }
+
+        .navbar__subdrawer-container {
+            flex-direction: row;
+        }
+
+        .navbar__subdrawer-link {
+            position: static;
+            line-height: 1em;
+            i {
+                font-size: 1em;
+                position: static;
+                margin-left: 10px;
+            }
+
+            .navbar__subdrawer-caret-left {
+                display: inline;
+            }
+    
+            .navbar__subdrawer-caret-down {
+                display: none;
+            }
+        }
+
+        .navbar__subdrawer--active {
+            max-width: 500px;
         }
     }
 }
