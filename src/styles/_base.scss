@@ -42,6 +42,11 @@ input {
     border-bottom: 1px solid $color1-light;
 }
 
+input[type="radio"], input[type="checkbox"] {
+    width: auto;
+    display: inline;
+}
+
 label {
     font-size: 1.1em;
     margin-top: 20px;
