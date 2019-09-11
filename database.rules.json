@@ -29,6 +29,10 @@
     "members": {
       ".read": "root.child('roles').child(root.child('users').child(auth.uid).child('role').val()).child('permissions/members-read').exists()",
       ".write": "root.child('roles').child(root.child('users').child(auth.uid).child('role').val()).child('permissions/members-write').exists()",
+    },
+    "events": {
+      ".read": "root.child('roles').child(root.child('users').child(auth.uid).child('role').val()).child('permissions/events-read').exists()",
+      ".write": "root.child('roles').child(root.child('users').child(auth.uid).child('role').val()).child('permissions/events-write').exists()",
     }
   }
 }

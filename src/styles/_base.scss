@@ -102,6 +102,15 @@ select {
     content: '< ';
 }
 
+.btn-link {
+    padding: 0;
+    display: inline;
+    background: transparent;
+    color: $color2-dark;
+    text-decoration: underline;
+    box-shadow: none;
+}
+
 
 @media only screen and (min-width: 961px) {
     .content-wrapper {
