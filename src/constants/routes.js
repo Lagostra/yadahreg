@@ -8,3 +8,4 @@ export const USER_EDIT = '/users/edit';
 export const USER_LIST = '/users';
 export const ROLES = '/roles';
 export const MEMBERS = '/members';
+export const REGISTRATION = '/registration';

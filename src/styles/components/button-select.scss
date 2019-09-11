@@ -1,0 +1,28 @@
+@import '../_variables.scss';
+.button-select {
+
+    button {
+        border-radius: 0;
+        margin: 0;
+
+        background: $color2-dark;
+    }
+
+    button[selected] {
+        background: $color2-darker;
+    }
+
+    button:first-child {
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+
+        border-right: 1px solid $color4;
+    }
+
+    button:last-child {
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        border-left: 1px solid $color4;
+    }
+
+}
