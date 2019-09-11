@@ -70,7 +70,7 @@ class MembersPage extends React.Component {
                         });
                     }}
                 >
-                    New member
+                    Nytt medlem
                 </button>
                 <MembersList
                     members={this.state.members}

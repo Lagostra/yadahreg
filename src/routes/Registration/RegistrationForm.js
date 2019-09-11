@@ -1,5 +1,6 @@
 import React from 'react';
 import ButtonSelect from '../../components/ButtonSelect';
+import moment from 'moment';
 
 class RegistrationForm extends React.Component {
     constructor(props) {
@@ -41,25 +42,42 @@ class RegistrationForm extends React.Component {
     };
 
     render() {
-        const { members } = this.props;
+        const { members, event, onChangeEvent } = this.props;
 
         return (
             <div className="registration-form">
-                {members.map(member => (
-                    <div key={member.id}>
-                        {member.first_name} {member.last_name}
-                        <ButtonSelect
-                            options={this.presenceOptions}
-                            onChange={value =>
-                                this.props.onRegistrationChange(
-                                    member,
-                                    value,
-                                )
-                            }
-                            value={this.getStatus(member)}
-                        />
-                    </div>
-                ))}
+                <h1>
+                    {moment(event.date).format('DD.MM.YYYY')} -{' '}
+                    {event.title}
+                </h1>
+
+                <button
+                    className="btn btn-link registration-form__change-event"
+                    onClick={onChangeEvent}
+                >
+                    Endre arrangement
+                </button>
+                <table className="table-full-width table-hor-lines-between">
+                    {members.map(member => (
+                        <tr key={member.id}>
+                            <td className="registration-form__member-name">
+                                {member.first_name} {member.last_name}
+                            </td>
+                            <td className="registration-form__buttons">
+                                <ButtonSelect
+                                    options={this.presenceOptions}
+                                    onChange={value =>
+                                        this.props.onRegistrationChange(
+                                            member,
+                                            value,
+                                        )
+                                    }
+                                    value={this.getStatus(member)}
+                                />
+                            </td>
+                        </tr>
+                    ))}
+                </table>
             </div>
         );
     }

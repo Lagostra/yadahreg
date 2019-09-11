@@ -1,0 +1,20 @@
+.registration-form {
+    h1 {
+        margin-bottom: 0;
+        text-align: center;
+    }
+
+    .registration-form__change-event {
+        margin-top: 10px;
+        margin-bottom: 40px;
+    }
+
+    .registration-form__member-name {
+        font-size: 1.2em;
+        word-wrap: break-word;
+    }
+
+    .registration-form__buttons {
+        white-space: nowrap;
+    }
+}

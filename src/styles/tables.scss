@@ -1,0 +1,27 @@
+@import '_variables.scss';
+
+.table-full-width {
+    width: 100%;
+
+    td {
+        margin: 0;
+        padding: 10px 0;
+        vertical-align: middle;
+    }
+
+    td:last-child {
+        text-align: right;
+    }
+}
+
+.table-hor-lines-between {
+
+    tr {
+        border-bottom: 1px solid $color2-dark;
+    }
+
+    tr:last-child {
+        border-bottom: none;
+    }
+
+}

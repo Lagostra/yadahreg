@@ -64,8 +64,8 @@ class EventFormBase extends React.Component {
             <form className="event-form" onSubmit={this.onSubmit}>
                 <h1>
                     {this.props.event
-                        ? 'Rediger medlem'
-                        : 'Nytt medlem'}
+                        ? 'Rediger arrangement'
+                        : 'Nytt arrangement'}
                 </h1>
                 <label htmlFor="title">Title</label>
                 <input

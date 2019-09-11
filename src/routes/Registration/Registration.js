@@ -1,8 +1,7 @@
 import React from 'react';
 import { withFirebase } from '../../components/Firebase';
-import Modal from '../../components/Modal';
-import EventForm from './EventForm';
 import RegistrationForm from './RegistrationForm';
+import EventSelector from './EventSelector';
 
 class RegistrationPage extends React.Component {
     constructor(props) {
@@ -26,8 +25,16 @@ class RegistrationPage extends React.Component {
         });
     }
 
+    componentWillUnmount() {
+        this.props.firebase.members().off();
+    }
+
     handleChange = (member, value) => {
         console.log(member.first_name, value);
+    };
+
+    handleChangeEvent = () => {
+        this.setState({ event: null });
     };
 
     handleEventSelect = event => {
@@ -44,74 +51,16 @@ class RegistrationPage extends React.Component {
                     />
                 )}
                 {event && (
-                    <button
-                        className="btn btn-link"
-                        onClick={() => {
-                            this.setState({ event: null });
-                        }}
-                    >
-                        Endre arrangement
-                    </button>
-                )}
-                {event && (
                     <RegistrationForm
                         onRegistrationChange={this.handleChange}
                         members={members}
                         event={event}
+                        onChangeEvent={this.handleChangeEvent}
                     />
                 )}
             </div>
         );
     }
 }
-
-const EventSelectorBase = ({ firebase, onEventSelect }) => {
-    const [modalActive, setModalActive] = React.useState(false);
-    const [editEvent, setEditEvent] = React.useState(null);
-
-    const createNewRehearsal = () => {
-        const event = {
-            title: 'Korøvelse',
-            type: 'Øvelse',
-            date: new Date().toISOString().split('T')[0],
-        };
-
-        const newRef = firebase.events().push(event);
-        event.id = newRef.getKey();
-
-        onEventSelect(event);
-    };
-
-    return (
-        <div className="event-selector">
-            <button className="btn" onClick={createNewRehearsal}>
-                Ny øvelse i dag
-            </button>
-            <button
-                className="btn"
-                onClick={() => {
-                    setModalActive(true);
-                    setEditEvent(null);
-                }}
-            >
-                Nytt arrangement
-            </button>
-            <Modal
-                active={modalActive}
-                onClose={() => setModalActive(false)}
-            >
-                <EventForm
-                    event={editEvent}
-                    onSubmit={event => {
-                        onEventSelect(event);
-                        setModalActive(false);
-                    }}
-                />
-            </Modal>
-        </div>
-    );
-};
-
-const EventSelector = withFirebase(EventSelectorBase);
 
 export default withFirebase(RegistrationPage);
