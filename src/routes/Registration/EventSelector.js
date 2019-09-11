@@ -92,29 +92,36 @@ const EventSelector = withFirebase(EventSelectorBase);
 
 const EventList = ({ events, onEventSelect }) => {
     return (
-        <ul>
-            {events.map(event => (
-                <EventListElement
-                    event={event}
-                    key={event.id}
-                    onEventSelect={onEventSelect}
-                />
-            ))}
-        </ul>
+        <table className="table-full-width table-hor-lines-between">
+            <tbody>
+                {events.map(event => (
+                    <EventListElement
+                        event={event}
+                        key={event.id}
+                        onEventSelect={onEventSelect}
+                    />
+                ))}
+            </tbody>
+        </table>
     );
 };
 
 const EventListElement = ({ event, onEventSelect }) => {
     return (
-        <li>
-            {moment(event.date).format('DD.MM.YYYY')} - {event.title}
-            <button
-                onClick={() => onEventSelect(event)}
-                className="btn btn-small"
-            >
-                Velg
-            </button>
-        </li>
+        <tr>
+            <td>
+                {moment(event.date).format('DD.MM.YYYY')} -{' '}
+                {event.title}
+            </td>
+            <td>
+                <button
+                    onClick={() => onEventSelect(event)}
+                    className="btn btn-small"
+                >
+                    Velg
+                </button>
+            </td>
+        </tr>
     );
 };
 
