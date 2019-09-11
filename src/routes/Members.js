@@ -1,4 +1,6 @@
 import React from 'react';
+import moment from 'moment';
+
 import { withFirebase } from '../components/Firebase';
 import { compose } from 'recompose';
 import { withAuthorization } from '../components/Session';
@@ -184,6 +186,19 @@ class MemberFormBase extends React.Component {
                         ? 'Rediger medlem'
                         : 'Nytt medlem'}
                 </h1>
+
+                {this.props.event && (
+                    <p>
+                        <i className="fas fa-exclamation-circle" />
+                        {'  '}
+                        Medlemmet vil automatisk bli registrert som
+                        til stede på {this.props.event.title}{' '}
+                        {moment(this.props.event.date).format(
+                            'DD.MM.YYYY',
+                        )}
+                    </p>
+                )}
+
                 <label htmlFor="first_name">Fornavn</label>
                 <input
                     name="first_name"

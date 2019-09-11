@@ -92,7 +92,10 @@ class RegistrationForm extends React.Component {
                     }
                     active={memberModalActive}
                 >
-                    <MemberForm onSubmit={this.handleAddMember} />
+                    <MemberForm
+                        onSubmit={this.handleAddMember}
+                        event={event}
+                    />
                 </Modal>
                 <h1>
                     {moment(event.date).format('DD.MM.YYYY')} -{' '}
