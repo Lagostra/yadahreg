@@ -158,17 +158,21 @@ class MemberFormBase extends React.Component {
 
     onSubmit = event => {
         event.preventDefault();
-
+        let memberId;
         if (this.props.member) {
             this.props.firebase
                 .member(this.props.member.id)
                 .set(this.state);
+            memberId = this.props.member.id;
         } else {
-            this.props.firebase.members().push(this.state);
+            const ref = this.props.firebase
+                .members()
+                .push(this.state);
+            memberId = ref.getKey();
         }
 
         if (this.props.onSubmit) {
-            this.props.onSubmit();
+            this.props.onSubmit(memberId);
         }
     };
 
@@ -285,6 +289,7 @@ class MemberFormBase extends React.Component {
 }
 
 const MemberForm = withFirebase(MemberFormBase);
+export { MemberForm };
 
 const authCondition = authUser =>
     !!authUser && !!authUser.permissions[PERMISSIONS.MEMBERS_WRITE];

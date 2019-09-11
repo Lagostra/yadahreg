@@ -1,6 +1,8 @@
 import React from 'react';
 import ButtonSelect from '../../components/ButtonSelect';
 import moment from 'moment';
+import Modal from '../../components/Modal';
+import { MemberForm } from '../Members';
 
 class RegistrationForm extends React.Component {
     constructor(props) {
@@ -24,7 +26,7 @@ class RegistrationForm extends React.Component {
             },
         ];
 
-        this.state = { filter: '' };
+        this.state = { filter: '', memberModalActive: false };
     }
 
     getStatus = member => {
@@ -73,12 +75,25 @@ class RegistrationForm extends React.Component {
         }
     };
 
+    handleAddMember = memberId => {
+        this.props.onRegistrationChange({ id: memberId }, 'present');
+        this.setState({ memberModalActive: false });
+    };
+
     render() {
         const { members, event, onChangeEvent } = this.props;
-        const { filter } = this.state;
+        const { filter, memberModalActive } = this.state;
 
         return (
             <div className="registration-form">
+                <Modal
+                    onClose={() =>
+                        this.setState({ memberModalActive: false })
+                    }
+                    active={memberModalActive}
+                >
+                    <MemberForm onSubmit={this.handleAddMember} />
+                </Modal>
                 <h1>
                     {moment(event.date).format('DD.MM.YYYY')} -{' '}
                     {event.title}
@@ -90,6 +105,19 @@ class RegistrationForm extends React.Component {
                 >
                     Endre arrangement
                 </button>
+
+                <div>
+                    <button
+                        onClick={() => {
+                            this.setState({
+                                memberModalActive: true,
+                            });
+                        }}
+                        className="btn"
+                    >
+                        Nytt medlem
+                    </button>
+                </div>
 
                 <div className="registration-form__num-attendants">
                     Antall oppmøtte:{' '}
