@@ -83,25 +83,31 @@ class MembersPage extends React.Component {
 }
 
 const MembersList = ({ members, onEditMember, onDeleteMember }) => (
-    <ul>
-        {members.map(member => (
-            <li key={member.id}>
-                {member.first_name} {member.last_name}
-                <button
-                    className="btn btn-small"
-                    onClick={() => onEditMember(member)}
-                >
-                    <i className="fas fa-edit" />
-                </button>
-                <button
-                    className="btn btn-small btn-danger"
-                    onClick={() => onDeleteMember(member)}
-                >
-                    <i className="fas fa-trash-alt" />
-                </button>
-            </li>
-        ))}
-    </ul>
+    <table className="table-full-width table-hor-lines-between">
+        <tbody>
+            {members.map(member => (
+                <tr key={member.id}>
+                    <td>
+                        {member.first_name} {member.last_name}
+                    </td>
+                    <td>
+                        <button
+                            className="btn btn-small"
+                            onClick={() => onEditMember(member)}
+                        >
+                            <i className="fas fa-edit" />
+                        </button>
+                        <button
+                            className="btn btn-small btn-danger"
+                            onClick={() => onDeleteMember(member)}
+                        >
+                            <i className="fas fa-trash-alt" />
+                        </button>
+                    </td>
+                </tr>
+            ))}
+        </tbody>
+    </table>
 );
 
 class MemberFormBase extends React.Component {
