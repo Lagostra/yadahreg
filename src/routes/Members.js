@@ -37,6 +37,16 @@ class MembersPage extends React.Component {
         this.setState({ editMember: member, modalActive: true });
     };
 
+    handleDeleteMember = member => {
+        if (
+            window.confirm(
+                `Er du sikker på at du vil slette ${member.first_name} ${member.last_name}?`,
+            )
+        ) {
+            this.props.firebase.member(member.id).remove();
+        }
+    };
+
     render() {
         return (
             <div className="content">
@@ -65,13 +75,14 @@ class MembersPage extends React.Component {
                 <MembersList
                     members={this.state.members}
                     onEditMember={this.handleEditMember}
+                    onDeleteMember={this.handleDeleteMember}
                 />
             </div>
         );
     }
 }
 
-const MembersList = ({ members, onEditMember }) => (
+const MembersList = ({ members, onEditMember, onDeleteMember }) => (
     <ul>
         {members.map(member => (
             <li key={member.id}>
@@ -81,6 +92,12 @@ const MembersList = ({ members, onEditMember }) => (
                     onClick={() => onEditMember(member)}
                 >
                     <i className="fas fa-edit" />
+                </button>
+                <button
+                    className="btn btn-small btn-danger"
+                    onClick={() => onDeleteMember(member)}
+                >
+                    <i className="fas fa-trash-alt" />
                 </button>
             </li>
         ))}
