@@ -4,6 +4,7 @@ import { compose } from 'recompose';
 import { withAuthorization } from '../components/Session';
 
 import * as PERMISSIONS from '../constants/permissions';
+import Modal from '../components/Modal';
 
 class MembersPage extends React.Component {
     constructor(props) {
@@ -11,6 +12,8 @@ class MembersPage extends React.Component {
 
         this.state = {
             members: [],
+            editMember: null,
+            modalActive: false,
         };
     }
 
@@ -26,27 +29,59 @@ class MembersPage extends React.Component {
         });
     }
 
+    handleModalClose = () => {
+        this.setState({ modalActive: false });
+    };
+
+    handleEditMember = member => {
+        this.setState({ editMember: member, modalActive: true });
+    };
+
     render() {
         return (
             <div className="content">
                 <h1>Medlemmer</h1>
-                <MemberForm />
+                <Modal
+                    active={this.state.modalActive}
+                    onClose={this.handleModalClose}
+                >
+                    <MemberForm
+                        member={this.state.editMember}
+                        onSubmit={this.handleModalClose}
+                    />
+                </Modal>
 
-                <br />
-                <br />
-                <br />
-                <br />
-                <MembersList members={this.state.members} />
+                <button
+                    className="btn"
+                    onClick={() => {
+                        this.setState({
+                            editMember: null,
+                            modalActive: true,
+                        });
+                    }}
+                >
+                    New member
+                </button>
+                <MembersList
+                    members={this.state.members}
+                    onEditMember={this.handleEditMember}
+                />
             </div>
         );
     }
 }
 
-const MembersList = ({ members }) => (
+const MembersList = ({ members, onEditMember }) => (
     <ul>
         {members.map(member => (
             <li key={member.id}>
                 {member.first_name} {member.last_name}
+                <button
+                    className="btn btn-small"
+                    onClick={() => onEditMember(member)}
+                >
+                    <i className="fas fa-edit" />
+                </button>
             </li>
         ))}
     </ul>

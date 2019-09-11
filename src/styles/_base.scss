@@ -32,6 +32,10 @@ h1 {
     }
 }
 
+h1:first-child {
+    margin-top: 0;
+}
+
 input {
     display: block;
     font-size: 1.2em;
@@ -76,6 +80,13 @@ select {
     transform: translateY(3px);
 }
 
+.btn-small {
+    width: auto;
+    font-size: 1em;
+    padding: 7px;
+}
+
+
 .btn-back {
     width: auto;
     background: none;
@@ -87,6 +98,7 @@ select {
 .btn-back:before {
     content: '< ';
 }
+
 
 @media only screen and (min-width: 961px) {
     .content-wrapper {
