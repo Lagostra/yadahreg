@@ -28,12 +28,12 @@ class RegistrationForm extends React.Component {
     getStatus = member => {
         const { event } = this.props;
         if (event) {
-            if (event.participants && event.participants[member.id]) {
+            if (event.attendants && !!event.attendants[member.id]) {
                 return 'present';
             }
             if (
-                event.non_participants &&
-                event.non_participants[member.id]
+                event.non_attendants &&
+                !!event.non_attendants[member.id]
             ) {
                 return 'notified';
             }
@@ -58,25 +58,28 @@ class RegistrationForm extends React.Component {
                     Endre arrangement
                 </button>
                 <table className="table-full-width table-hor-lines-between">
-                    {members.map(member => (
-                        <tr key={member.id}>
-                            <td className="registration-form__member-name">
-                                {member.first_name} {member.last_name}
-                            </td>
-                            <td className="registration-form__buttons">
-                                <ButtonSelect
-                                    options={this.presenceOptions}
-                                    onChange={value =>
-                                        this.props.onRegistrationChange(
-                                            member,
-                                            value,
-                                        )
-                                    }
-                                    value={this.getStatus(member)}
-                                />
-                            </td>
-                        </tr>
-                    ))}
+                    <tbody>
+                        {members.map(member => (
+                            <tr key={member.id}>
+                                <td className="registration-form__member-name">
+                                    {member.first_name}{' '}
+                                    {member.last_name}
+                                </td>
+                                <td className="registration-form__buttons">
+                                    <ButtonSelect
+                                        options={this.presenceOptions}
+                                        onChange={e =>
+                                            this.props.onRegistrationChange(
+                                                member,
+                                                e.value,
+                                            )
+                                        }
+                                        value={this.getStatus(member)}
+                                    />
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
                 </table>
             </div>
         );

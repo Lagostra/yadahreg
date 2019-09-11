@@ -9,9 +9,10 @@ const ButtonSelect = ({
         {options &&
             options.map(option => (
                 <button
-                    className="btn btn-small"
+                    className={`btn btn-small ${
+                        value === option.value ? 'selected' : ''
+                    }`}
                     onClick={() => onChange({ value: option.value })}
-                    selected={value === option.value}
                     title={option.tooltip ? option.tooltip : ''}
                     key={option.value}
                 >

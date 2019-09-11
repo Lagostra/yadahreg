@@ -29,8 +29,34 @@ class RegistrationPage extends React.Component {
         this.props.firebase.members().off();
     }
 
-    handleChange = (member, value) => {
-        console.log(member.first_name, value);
+    handleRegistrationChange = (member, value) => {
+        const { firebase } = this.props;
+        const { event } = this.state;
+
+        if (!event['attendants']) {
+            event.attendants = {};
+        }
+        if (!event['non_attendants']) {
+            event['non_attendants'] = {};
+        }
+
+        if (value === 'present') {
+            event.attendants[member.id] = member.id;
+            delete event.non_attendants[member.id];
+        } else if (value === 'notified') {
+            delete event.attendants[member.id];
+            event.non_attendants[member.id] = member.id;
+        } else if (value === 'not-present') {
+            delete event.attendants[member.id];
+            delete event.non_attendants[member.id];
+        }
+
+        const saveEvent = { ...event };
+        delete saveEvent['id'];
+
+        this.setState({ event });
+
+        firebase.event(event.id).set(saveEvent);
     };
 
     handleChangeEvent = () => {
@@ -38,7 +64,14 @@ class RegistrationPage extends React.Component {
     };
 
     handleEventSelect = event => {
-        this.setState({ event });
+        if (this.state.event) {
+            this.props.firebase.event(event.id).off();
+        }
+        this.props.firebase.event(event.id).on('value', snapshot => {
+            this.setState({
+                event: { ...snapshot.val(), id: event.id },
+            });
+        });
     };
 
     render() {
@@ -52,7 +85,9 @@ class RegistrationPage extends React.Component {
                 )}
                 {event && (
                     <RegistrationForm
-                        onRegistrationChange={this.handleChange}
+                        onRegistrationChange={
+                            this.handleRegistrationChange
+                        }
                         members={members}
                         event={event}
                         onChangeEvent={this.handleChangeEvent}
