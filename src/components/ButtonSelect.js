@@ -12,6 +12,7 @@ const ButtonSelect = ({
                     className="btn btn-small"
                     onClick={() => onChange({ value: option.value })}
                     selected={value === option.value}
+                    title={option.tooltip ? option.tooltip : ''}
                     key={option.value}
                 >
                     {option.text}

@@ -2,6 +2,28 @@ import React from 'react';
 import ButtonSelect from '../../components/ButtonSelect';
 
 class RegistrationForm extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.presenceOptions = [
+            {
+                value: 'present',
+                text: <i className="fas fa-check-circle" />,
+                tooltip: 'Til stede',
+            },
+            {
+                value: 'notified',
+                text: <i className="fas fa-comment" />,
+                tooltip: 'Gitt beskjed',
+            },
+            {
+                value: 'not-present',
+                text: <i className="fas fa-times-circle" />,
+                tooltip: 'Ikke til stede',
+            },
+        ];
+    }
+
     getStatus = member => {
         const { event } = this.props;
         if (event) {

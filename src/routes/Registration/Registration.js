@@ -12,21 +12,6 @@ class RegistrationPage extends React.Component {
             members: [],
             event: null,
         };
-
-        this.presenceOptions = [
-            {
-                value: 'present',
-                text: <i className="fas fa-check-circle" />,
-            },
-            {
-                value: 'notified',
-                text: <i className="fas fa-comment" />,
-            },
-            {
-                value: 'not-present',
-                text: <i className="fas fa-times-circle" />,
-            },
-        ];
     }
 
     componentDidMount() {
