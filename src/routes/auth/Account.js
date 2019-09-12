@@ -11,14 +11,17 @@ import { withFirebase } from '../../components/Firebase';
 const SIGN_IN_METHODS = [
     {
         id: 'password',
+        title: 'Passord',
         provider: null,
     },
     {
         id: 'google.com',
+        title: 'Google',
         provider: 'googleProvider',
     },
     {
         id: 'facebook.com',
+        title: 'Facebook',
         provider: 'facebookProvider',
     },
 ];
@@ -30,7 +33,10 @@ class Account extends React.Component {
         return (
             <div className="content">
                 <h1>{this.props.authUser.name}</h1>
-                <p>Email: {this.props.authUser.email}</p>
+                <p>
+                    <strong>E-post:</strong>{' '}
+                    {this.props.authUser.email}
+                </p>
                 <PasswordChangeForm />
                 <LoginManagement authUser={authUser} />
             </div>
@@ -92,7 +98,8 @@ class LoginManagementBase extends React.Component {
 
         return (
             <div>
-                Sign In Methods:
+                <br />
+                <h1>Innloggingsmetoder:</h1>
                 <ul>
                     {SIGN_IN_METHODS.map(signInMethod => {
                         const onlyOneLeft =
@@ -148,15 +155,17 @@ const SocialLoginToggle = ({
             type="button"
             onClick={() => onUnlink(signInMethod.id)}
             disabled={onlyOneLeft}
+            className="btn"
         >
-            Deactivate {signInMethod.id}
+            Deaktiver {signInMethod.title}
         </button>
     ) : (
         <button
             type="button"
             onClick={() => onLink(signInMethod.provider)}
+            className="btn"
         >
-            Link {signInMethod.id}
+            Link {signInMethod.title}
         </button>
     );
 
@@ -195,8 +204,9 @@ class DefaultLoginToggle extends React.Component {
                 type="button"
                 onClick={() => onUnlink(signInMethod.id)}
                 disabled={onlyOneLeft}
+                className="btn"
             >
-                Deactivate {signInMethod.id}
+                Deaktiver {signInMethod.title}
             </button>
         ) : (
             <form onSubmit={this.onSubmit}>
@@ -205,7 +215,7 @@ class DefaultLoginToggle extends React.Component {
                     value={passwordOne}
                     onChange={this.onChange}
                     type="password"
-                    placeholder="New Password"
+                    placeholder="Nytt passord"
                 />
 
                 <input
@@ -213,11 +223,15 @@ class DefaultLoginToggle extends React.Component {
                     value={passwordTwo}
                     onChange={this.onChange}
                     type="password"
-                    placeholder="Confirm New Password"
+                    placeholder="Bekreft nytt passord"
                 />
 
-                <button disabled={isInvalid} type="submit">
-                    Link {signInMethod.id}
+                <button
+                    disabled={isInvalid}
+                    type="submit"
+                    className="btn"
+                >
+                    Link {signInMethod.title}
                 </button>
             </form>
         );
