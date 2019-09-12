@@ -17,10 +17,12 @@ class EventSelectorBase extends React.Component {
     componentDidMount() {
         this.props.firebase.events().on('value', snapshot => {
             const eventsObject = snapshot.val();
-            const events = Object.keys(eventsObject).map(key => ({
+            let events = Object.keys(eventsObject).map(key => ({
                 ...eventsObject[key],
                 id: key,
             }));
+
+            events.sort((a, b) => moment(b.date) - moment(a.date));
 
             this.setState({ events });
         });
