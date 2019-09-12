@@ -22,10 +22,22 @@ class MembersPage extends React.Component {
     componentDidMount() {
         this.props.firebase.members().on('value', snapshot => {
             const membersObject = snapshot.val();
-            const members = Object.keys(membersObject).map(key => ({
-                ...membersObject[key],
-                id: key,
-            }));
+            const members = Object.keys(membersObject)
+                .map(key => ({
+                    ...membersObject[key],
+                    id: key,
+                }))
+                .sort((a, b) => {
+                    const a1 = (
+                        a.first_name + a.last_name
+                    ).toLowerCase();
+                    const b1 = (
+                        b.first_name + b.last_name
+                    ).toLowerCase();
+                    if (a1 < b1) return -1;
+                    if (b1 < a1) return 1;
+                    return 0;
+                });
 
             this.setState({ members });
         });
