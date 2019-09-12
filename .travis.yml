@@ -6,6 +6,7 @@ cache:
     - node_modules
 script:
   #- npm test
+  - cd functions && npm install && cd ..
   - npm run build
 deploy:
   provider: firebase
