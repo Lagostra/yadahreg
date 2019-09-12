@@ -1,3 +1,14 @@
+# Description
+
+A registration system developed for Yadah Gospel, a gospel choir based in Salem Menighet in Trondheim.
+
+For details about setup and usage, see the [documentation](docs/index.md).
+
+&copy; 2016 Eivind Lie Andreassen 
+
+___
+# React README
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
