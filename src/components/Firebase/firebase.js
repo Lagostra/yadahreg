@@ -95,6 +95,7 @@ class Firebase {
     // ****** Event API **********
     event = id => this.db.ref(`events/${id}`);
     events = () => this.db.ref('events');
+    eventTypes = () => this.db.ref('event_types');
 }
 
 export default Firebase;

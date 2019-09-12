@@ -15,7 +15,8 @@ class EventFormBase extends React.Component {
             this.state = {
                 title: '',
                 date: new Date().toISOString().split('T')[0],
-                type: 'Øvelse',
+                type: '',
+                eventTypes: [],
             };
         }
     }
@@ -27,6 +28,18 @@ class EventFormBase extends React.Component {
             this.setState({ ...event });
         }
     }
+
+    componentDidMount() {
+        this.props.firebase
+            .eventTypes()
+            .once('value')
+            .then(snapshot => {
+                const eventTypeObject = snapshot.val();
+                const eventTypes = Object.keys(eventTypeObject);
+                this.setState({ eventTypes });
+            });
+    }
+
     onChange = event => {
         this.setState({
             [event.currentTarget.name]: event.currentTarget.value,
@@ -81,8 +94,14 @@ class EventFormBase extends React.Component {
                     onChange={this.onChange}
                     name="type"
                 >
-                    <option value="Øvelse">Øvelse</option>
-                    <option value="Annet">Annet</option>
+                    <option value="" disabled>
+                        Velg type
+                    </option>
+                    {this.state.eventTypes.map(type => (
+                        <option value={type} key={type}>
+                            {type}
+                        </option>
+                    ))}
                 </select>
 
                 <label htmlFor="date">Dato</label>
