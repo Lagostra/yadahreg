@@ -39,11 +39,13 @@ h1:first-child {
 input {
     display: block;
     font-size: 1.2em;
-    width: 100%;
     margin-top: 5px;
+    width: calc(100% - 10px);
+    padding: 5px;
 
     border: none;
     border-bottom: 1px solid $color1-light;
+    background: $color2-light;
 }
 
 input[type="radio"], input[type="checkbox"] {
@@ -120,6 +122,7 @@ select {
 
     .btn {
         width: auto;
+        margin-right: 10px;
     }
 }
 

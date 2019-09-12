@@ -97,36 +97,39 @@ class RegistrationForm extends React.Component {
                         event={event}
                     />
                 </Modal>
-                <h1>
-                    {moment(event.date).format('DD.MM.YYYY')} -{' '}
-                    {event.title}
-                </h1>
+                <div className="registration-form__header">
+                    <h1>
+                        {moment(event.date).format('DD.MM.YYYY')} -{' '}
+                        {event.title}
+                    </h1>
 
-                <button
-                    className="btn btn-link registration-form__change-event"
-                    onClick={onChangeEvent}
-                >
-                    Endre arrangement
-                </button>
-
-                <div>
                     <button
-                        onClick={() => {
-                            this.setState({
-                                memberModalActive: true,
-                            });
-                        }}
-                        className="btn"
+                        className="btn btn-link registration-form__change-event"
+                        onClick={onChangeEvent}
                     >
-                        Nytt medlem
+                        Endre arrangement
                     </button>
                 </div>
+                <div className="registration-form__util-bar">
+                    <div>
+                        <button
+                            onClick={() => {
+                                this.setState({
+                                    memberModalActive: true,
+                                });
+                            }}
+                            className="btn"
+                        >
+                            Nytt medlem
+                        </button>
+                    </div>
 
-                <div className="registration-form__num-attendants">
-                    Antall oppmøtte:{' '}
-                    {event.attendants
-                        ? Object.keys(event.attendants).length
-                        : 0}
+                    <div className="registration-form__num-attendants">
+                        Antall oppmøtte:{' '}
+                        {event.attendants
+                            ? Object.keys(event.attendants).length
+                            : 0}
+                    </div>
                 </div>
 
                 <input
@@ -138,7 +141,7 @@ class RegistrationForm extends React.Component {
                     onKeyDown={this.handleFilterKeyDown}
                 />
 
-                <table className="table-full-width table-hor-lines-between">
+                <table className="registration-form__member-table table-full-width table-hor-lines-between">
                     <tbody>
                         {members.map(member => (
                             <React.Fragment key={member.id}>

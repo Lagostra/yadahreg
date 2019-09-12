@@ -1,12 +1,32 @@
 .registration-form {
-    h1 {
-        margin-bottom: 0;
+
+    .registration-form__header {
         text-align: center;
+
+        h1 {
+            margin-bottom: 0;
+        }
+    
+        .registration-form__change-event {
+            margin-top: 10px;
+        }
     }
 
-    .registration-form__change-event {
-        margin-top: 10px;
-        margin-bottom: 40px;
+    .registration-form__util-bar {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-end;
+        flex-wrap: wrap;
+        margin-bottom: 25px;
+
+        * {
+            width: 100%;
+        }
+
+        .registration-form__num-attendants {
+            margin-top: 15px;
+        }
     }
 
     .registration-form__member-name {
@@ -16,5 +36,29 @@
 
     .registration-form__buttons {
         white-space: nowrap;
+    }
+
+    .registration-form__member-table {
+        margin-top: 15px;
+    }
+}
+
+
+@media only screen and (min-width: 961px) {
+    .event-selector {
+        .event-selector__button-bar {
+            display: flex;
+            justify-content: center;
+        }
+    }
+    
+    .registration-form {
+        .registration-form__util-bar {
+            justify-content: space-between;
+            
+            * {
+                width: auto;
+            }
+        }
     }
 }

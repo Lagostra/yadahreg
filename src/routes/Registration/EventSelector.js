@@ -64,23 +64,25 @@ class EventSelectorBase extends React.Component {
                         }}
                     />
                 </Modal>
-                <button
-                    className="btn"
-                    onClick={this.createNewRehearsal}
-                >
-                    Ny øvelse i dag
-                </button>
-                <button
-                    className="btn"
-                    onClick={() =>
-                        this.setState({
-                            modalActive: true,
-                            editEvent: null,
-                        })
-                    }
-                >
-                    Nytt arrangement
-                </button>
+                <div className="event-selector__button-bar">
+                    <button
+                        className="btn"
+                        onClick={this.createNewRehearsal}
+                    >
+                        Ny øvelse i dag
+                    </button>
+                    <button
+                        className="btn"
+                        onClick={() =>
+                            this.setState({
+                                modalActive: true,
+                                editEvent: null,
+                            })
+                        }
+                    >
+                        Nytt arrangement
+                    </button>
+                </div>
                 <EventList
                     events={events}
                     onEventSelect={this.props.onEventSelect}
