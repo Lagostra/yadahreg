@@ -84,13 +84,18 @@ class UsersPage extends Component {
 
 const UsersList = ({ users, onEditUser }) => (
     <table className="table-full-width table-hor-lines-between">
+        <thead>
+            <tr>
+                <th>Navn</th>
+                <th>E-post</th>
+                <th></th>
+            </tr>
+        </thead>
         <tbody>
             {users.map(user => (
                 <tr key={user.uid}>
+                    <td>{user.name}</td>
                     <td>{user.email}</td>
-                    <td>
-                        <strong>Name:</strong> {user.name}
-                    </td>
                     <td>
                         <button
                             className="btn btn-small"

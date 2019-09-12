@@ -1,5 +1,12 @@
 @import '_variables.scss';
 
+table {
+    th {
+        text-align: left;
+        font-weight: bold;
+    }
+}
+
 .table-full-width {
     width: 100%;
 
