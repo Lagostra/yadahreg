@@ -6,7 +6,7 @@ cache:
     - node_modules
 script:
   #- npm test
-  - cd functions && yarn
+  - cd functions && npm install
   - cd $TRAVIS_BUILD_DIR && yarn run build
 deploy:
   provider: firebase
