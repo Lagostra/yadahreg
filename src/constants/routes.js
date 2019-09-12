@@ -4,7 +4,6 @@ export const SIGN_UP = '/sign-up';
 export const HOME = '/';
 export const PASSWORD_FORGET = '/forgotten-password';
 export const ACCOUNT = '/user-info';
-export const USER_EDIT = '/users/edit';
 export const USER_LIST = '/users';
 export const ROLES = '/roles';
 export const MEMBERS = '/members';

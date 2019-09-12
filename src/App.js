@@ -16,7 +16,6 @@ import PasswordForget from './routes/auth/PasswordForget';
 import AccountPage from './routes/auth/Account';
 
 import UserList from './routes/admin/UserList';
-import EditUser from './routes/admin/EditUser';
 import Roles from './routes/admin/Roles';
 import { compose } from 'recompose';
 import Members from './routes/Members';
@@ -46,15 +45,6 @@ const App = props => {
                     exact
                     path={ROUTES.USER_LIST}
                     component={UserList}
-                />
-                <Route
-                    path={ROUTES.USER_EDIT + '/:userUid'}
-                    component={props => (
-                        <EditUser
-                            userUid={props.match.params.userUid}
-                            {...props}
-                        />
-                    )}
                 />
                 <Route
                     path={ROUTES.ACCOUNT}
