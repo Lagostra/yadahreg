@@ -1,11 +1,7 @@
 import React from 'react';
 import { withFirebase } from '../../components/Firebase';
 
-import * as ROUTES from '../../constants/routes';
-import * as PERMISSIONS from '../../constants/permissions';
 import { compose } from 'recompose';
-import { withAuthorization } from '../../components/Session';
-import { Link } from 'react-router-dom';
 
 class UserForm extends React.Component {
     _isMounted = false;

@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { compose } from 'recompose';
 
 import * as PERMISSIONS from '../../constants/permissions';
-import * as ROUTES from '../../constants/routes';
 import { withFirebase } from '../../components/Firebase';
 import { withAuthorization } from '../../components/Session';
 import Modal from '../../components/Modal';
