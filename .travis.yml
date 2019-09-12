@@ -6,8 +6,8 @@ cache:
     - node_modules
 script:
   #- npm test
-  - cd functions && yarn && cd ..
-  - yarn run build
+  - cd functions && yarn
+  - cd $TRAVIS_BUILD_DIR && yarn run build
 deploy:
   provider: firebase
   skip_cleanup: true
