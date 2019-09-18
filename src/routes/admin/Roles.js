@@ -4,27 +4,30 @@ import { compose } from 'recompose';
 import { withAuthorization } from '../../components/Session';
 
 import * as PERMISSIONS from './../../constants/permissions';
+import Modal from '../../components/Modal';
 
 class RolesListBase extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { roles: [], permissions: [], selectedRole: '' };
+        this.state = {
+            roles: [],
+            permissions: [],
+            selectedRole: null,
+            modalActive: false,
+        };
     }
 
     componentDidMount() {
-        this.props.firebase
-            .roles()
-            .once('value')
-            .then(result => {
-                const rolesObject = result.val();
+        this.props.firebase.roles().on('value', result => {
+            const rolesObject = result.val();
 
-                const roles = Object.keys(rolesObject).map(key => ({
-                    ...rolesObject[key],
-                    name: key,
-                }));
+            const roles = Object.keys(rolesObject).map(key => ({
+                ...rolesObject[key],
+                name: key,
+            }));
 
-                this.setState({ roles });
-            });
+            this.setState({ roles });
+        });
 
         this.props.firebase
             .permissions()
@@ -37,92 +40,185 @@ class RolesListBase extends React.Component {
             });
     }
 
-    selectRole = role => {
-        if (this.state.selectedRole === role) {
-            this.setState({ selectedRole: '' });
-        } else {
-            this.setState({ selectedRole: role });
-        }
-    };
-
     render() {
-        const { roles, selectedRole, permissions } = this.state;
+        const {
+            roles,
+            selectedRole,
+            permissions,
+            modalActive,
+        } = this.state;
 
         return (
-            <ul>
-                {(!this.state.roles.length ||
-                    !this.state.permissions.length) &&
-                    'Loading...'}
-                {roles.map(role => (
-                    <li
-                        key={role.name}
-                        onClick={e =>
-                            e.currentTarget === e.target
-                                ? this.selectRole(role)
-                                : null
+            <React.Fragment>
+                <Modal
+                    active={modalActive}
+                    onClose={() =>
+                        this.setState({
+                            modalActive: false,
+                            selectedRole: null,
+                        })
+                    }
+                >
+                    <RoleForm
+                        role={selectedRole}
+                        permissions={permissions}
+                        onSubmit={() =>
+                            this.setState({
+                                selectedRole: null,
+                                modalActive: false,
+                            })
                         }
-                    >
-                        {role.name}
-                        {selectedRole === role && (
-                            <RoleEditor
-                                role={role}
-                                permissions={permissions}
-                            ></RoleEditor>
-                        )}
-                    </li>
-                ))}
-            </ul>
+                    />
+                </Modal>
+
+                <button
+                    className="btn"
+                    onClick={() =>
+                        this.setState({
+                            selectedRole: null,
+                            modalActive: true,
+                        })
+                    }
+                >
+                    Ny rolle
+                </button>
+
+                {!this.state.roles.length ||
+                !this.state.permissions.length ? (
+                    'Loading...'
+                ) : (
+                    <table className="table-full-width table-hor-lines-between">
+                        <thead>
+                            <tr>
+                                <th>Rolle</th>
+                                <th>Beskrivelse</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {roles.map(role => (
+                                <tr
+                                    key={role.name}
+                                    onClick={e =>
+                                        e.currentTarget === e.target
+                                            ? this.selectRole(role)
+                                            : null
+                                    }
+                                >
+                                    <td>{role.name}</td>
+                                    <td>{role.description}</td>
+                                    <td>
+                                        <button
+                                            className="btn btn-small"
+                                            onClick={() =>
+                                                this.setState({
+                                                    selectedRole: role,
+                                                    modalActive: true,
+                                                })
+                                            }
+                                        >
+                                            <i className="fas fa-edit" />
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                )}
+            </React.Fragment>
         );
     }
 }
 
 const RolesList = withFirebase(RolesListBase);
 
-class RoleEditorBase extends React.Component {
+class RoleFormBase extends React.Component {
     constructor(props) {
         super(props);
 
-        const role = props.role;
-        if (!role.permissions) {
-            role.permissions = {};
-        }
+        const role = {
+            name: '',
+            description: '',
+            permissions: {},
+            ...props.role,
+        };
 
         this.state = {
-            permissions: props.permissions,
-            role,
+            ...role,
         };
     }
 
     onChange = e => {
-        const { role } = this.state;
+        this.setState({
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    onPermissionChange = e => {
+        const { permissions } = this.state;
 
         if (e.target.checked) {
-            role.permissions[e.target.name] = e.target.name;
+            permissions[e.target.name] = e.target.name;
         } else {
-            if (role.permissions.hasOwnProperty(e.target.name)) {
-                delete role.permissions[e.target.name];
+            if (permissions[e.target.name]) {
+                delete permissions[e.target.name];
             }
         }
-
-        this.setState({ role });
     };
 
     onSubmit = e => {
         e.preventDefault();
+        const { name, description, permissions } = this.state;
 
-        const role = { ...this.state.role };
-        const name = role.name;
-        delete role.name;
+        /*
+        if (name !== this.props.name) {
+            if (
+                !window.confirm(
+                    'Du er i ferd med å endre navn på en rolle. Det betyr at brukere som har denne rollen, kan miste rettigheter. Vil du fortsette?',
+                )
+            ) {
+                return;
+            }
 
-        this.props.firebase.role(name).set(role);
+            this.props.firebase.role(this.props.name).remove();
+        }
+        */
+
+        this.props.firebase
+            .role(name)
+            .set({ description, permissions });
+
+        if (this.props.onSubmit) {
+            this.props.onSubmit();
+        }
     };
 
     render() {
-        const { role, permissions } = this.state;
+        const { name, description, permissions } = this.state;
 
         return (
             <form onSubmit={this.onSubmit}>
-                {permissions.map(permission => (
+                {!this.props.role && (
+                    <React.Fragment>
+                        <label htmlFor="name">Navn</label>
+                        <input
+                            type="text"
+                            name="name"
+                            value={name}
+                            onChange={this.onChange}
+                        />
+                    </React.Fragment>
+                )}
+
+                <label htmlFor="description">Beskrivelse</label>
+                <input
+                    type="text"
+                    name="description"
+                    value={description}
+                    onChange={this.onChange}
+                />
+
+                {this.props.permissions.map(permission => (
                     <span key={permission}>
                         <label>{permission}</label>
                         <input
@@ -130,16 +226,15 @@ class RoleEditorBase extends React.Component {
                             name={permission}
                             key={permission}
                             checked={
-                                role.permissions &&
-                                role.permissions.hasOwnProperty(
-                                    permission,
-                                )
+                                permissions && permissions[permission]
                             }
-                            onChange={this.onChange}
+                            onChange={this.onPermissionChange}
                         />
                     </span>
                 ))}
-                <button type="submit">Save</button>
+                <button type="submit" className="btn">
+                    Save
+                </button>
             </form>
         );
     }
@@ -155,6 +250,6 @@ const RolesPage = () => (
 const authCondition = authUser =>
     !!authUser && !!authUser.permissions[PERMISSIONS.ROLES_WRITE];
 
-const RoleEditor = withFirebase(RoleEditorBase);
+const RoleForm = withFirebase(RoleFormBase);
 
 export default compose(withAuthorization(authCondition))(RolesPage);
