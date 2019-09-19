@@ -3,6 +3,7 @@ import { Link, withRouter } from 'react-router-dom';
 
 import SignOutButton from './SignOutButton';
 import * as ROUTES from '../constants/routes';
+import * as PERMISSIONS from '../constants/permissions';
 import { withAuthUser } from './Session';
 import { compose } from 'recompose';
 
@@ -86,15 +87,23 @@ const NavigationAuth = ({
             active ? 'navbar__drawer--active' : ''
         }`}
     >
-        <NavLink link={ROUTES.REGISTRATION}>Registrering</NavLink>
-        <NavLink link={ROUTES.MEMBERS}>Medlemmer</NavLink>
+        {authUser.permissions[PERMISSIONS.EVENTS_WRITE] && (
+            <NavLink link={ROUTES.REGISTRATION}>Registrering</NavLink>
+        )}
+        {authUser.permissions[PERMISSIONS.MEMBERS_WRITE] && (
+            <NavLink link={ROUTES.MEMBERS}>Medlemmer</NavLink>
+        )}
         <NavSubDrawer
             title="Admin"
             active={activeSubDrawer === 'Admin'}
             onActivateSubDrawer={onActivateSubDrawer}
         >
-            <NavLink link={ROUTES.USER_LIST}>Brukere</NavLink>
-            <NavLink link={ROUTES.ROLES}>Roller</NavLink>
+            {authUser.permissions[PERMISSIONS.USERS_WRITE] && (
+                <NavLink link={ROUTES.USER_LIST}>Brukere</NavLink>
+            )}
+            {authUser.permissions[PERMISSIONS.ROLES_WRITE] && (
+                <NavLink link={ROUTES.ROLES}>Roller</NavLink>
+            )}
         </NavSubDrawer>
         <NavLink link={ROUTES.ACCOUNT}>Min Bruker</NavLink>
         <li className="navbar__element">
@@ -131,6 +140,14 @@ class NavSubDrawer extends React.Component {
     };
 
     render() {
+        const shouldRender =
+            this.props.children &&
+            this.props.children.reduce((prev, cur) => prev || cur);
+
+        if (!shouldRender) {
+            return null;
+        }
+
         return (
             <li className="navbar__subdrawer-container">
                 <span className="navbar__element">
