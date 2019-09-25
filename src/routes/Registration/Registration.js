@@ -40,6 +40,9 @@ class RegistrationPage extends React.Component {
 
     componentWillUnmount() {
         this.props.firebase.members().off();
+        if (this.state.event) {
+            this.props.firebase.event(this.state.event.id).off();
+        }
     }
 
     handleRegistrationChange = (member, value) => {
@@ -78,7 +81,7 @@ class RegistrationPage extends React.Component {
 
     handleEventSelect = event => {
         if (this.state.event) {
-            this.props.firebase.event(event.id).off();
+            this.props.firebase.event(this.state.event.id).off();
         }
         this.props.firebase.event(event.id).on('value', snapshot => {
             this.setState({

@@ -40,6 +40,10 @@ class RolesListBase extends React.Component {
             });
     }
 
+    componentWillUnmount() {
+        this.props.firebase.roles().off();
+    }
+
     render() {
         const {
             roles,

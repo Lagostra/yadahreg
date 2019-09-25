@@ -43,6 +43,10 @@ class MembersPage extends React.Component {
         });
     }
 
+    componentWillUnmount() {
+        this.props.firebase.members().off();
+    }
+
     handleModalClose = () => {
         this.setState({ modalActive: false });
     };
