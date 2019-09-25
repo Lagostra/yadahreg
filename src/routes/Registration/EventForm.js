@@ -55,15 +55,14 @@ class EventFormBase extends React.Component {
     onSubmit = e => {
         e.preventDefault();
 
-        const event = this.state;
+        const { title, date, type } = this.state;
+        const event = { title, date, type };
 
         if (this.props.event) {
-            this.props.firebase
-                .event(this.props.event.id)
-                .set(this.state);
+            this.props.firebase.event(this.props.event.id).set(event);
             event.id = this.props.event.id;
         } else {
-            const ref = this.props.firebase.events().push(this.state);
+            const ref = this.props.firebase.events().push(event);
             event.id = ref.getKey();
         }
 
