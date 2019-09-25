@@ -79,7 +79,7 @@ class EventFormBase extends React.Component {
                         ? 'Rediger arrangement'
                         : 'Nytt arrangement'}
                 </h1>
-                <label htmlFor="title">Title</label>
+                <label htmlFor="title">Tittel</label>
                 <input
                     name="title"
                     value={this.state.title}

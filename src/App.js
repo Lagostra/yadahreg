@@ -20,6 +20,7 @@ import Roles from './routes/admin/Roles';
 import { compose } from 'recompose';
 import Members from './routes/Members';
 import Registration from './routes/Registration';
+import Payment from './routes/Payment';
 
 const App = props => {
     const showNavigation = !!props.authUser;
@@ -56,6 +57,7 @@ const App = props => {
                     path={ROUTES.REGISTRATION}
                     component={Registration}
                 />
+                <Route path={ROUTES.PAYMENT} component={Payment} />
             </div>
         </Router>
     );

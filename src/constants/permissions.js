@@ -6,3 +6,5 @@ export const MEMBERS_WRITE = 'members-write';
 export const ROLES_WRITE = 'roles-write';
 export const USERS_READ = 'users-read';
 export const USERS_WRITE = 'users-write';
+export const SEMESTERS_READ = 'semesters-read';
+export const SEMESTERS_WRITE = 'semesters-write';

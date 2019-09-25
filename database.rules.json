@@ -37,6 +37,10 @@
     "event_types": {
       ".read": "root.child('roles').child(root.child('users').child(auth.uid).child('role').val()).child('permissions/events-read').exists()",
       ".write": "root.child('roles').child(root.child('users').child(auth.uid).child('role').val()).child('permissions/event-types-write').exists()",
+    },
+    "semesters": {
+      ".read": "root.child('roles').child(root.child('users').child(auth.uid).child('role').val()).child('permissions/semesters-read').exists()",
+      ".write": "root.child('roles').child(root.child('users').child(auth.uid).child('role').val()).child('permissions/semesters-write').exists()",
     }
   }
 }

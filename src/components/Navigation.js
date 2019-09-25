@@ -90,6 +90,9 @@ const NavigationAuth = ({
         {authUser.permissions[PERMISSIONS.EVENTS_WRITE] && (
             <NavLink link={ROUTES.REGISTRATION}>Registrering</NavLink>
         )}
+        {authUser.permissions[PERMISSIONS.SEMESTERS_WRITE] && (
+            <NavLink link={ROUTES.PAYMENT}>Betaling</NavLink>
+        )}
         {authUser.permissions[PERMISSIONS.MEMBERS_WRITE] && (
             <NavLink link={ROUTES.MEMBERS}>Medlemmer</NavLink>
         )}
