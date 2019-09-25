@@ -1,6 +1,8 @@
 @import '../_variables.scss';
 .button-select {
 
+    display: inline-flex;
+
     button {
         border-radius: 0;
         margin: 0;

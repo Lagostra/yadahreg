@@ -7,12 +7,25 @@ class PaymentForm extends React.Component {
         this.paymentOptions = [
             {
                 value: 'paid',
-                text: 'Har betalt',
+                text: (
+                    <i
+                        className="fas fa-money-bill"
+                        style={{
+                            'font-size': '2em',
+                            'line-height': '1em',
+                        }}
+                    />
+                ),
                 toolTip: 'Har betalt',
             },
             {
                 value: 'not-paid',
-                text: 'Har ikke betalt',
+                text: (
+                    <span className="fa-stack">
+                        <i className="fas fa-money-bill fa-stack-1x" />
+                        <i className="fas fa-ban fa-stack-2x" />
+                    </span>
+                ),
                 toolTip: 'Har ikke betalt',
             },
         ];
