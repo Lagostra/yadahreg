@@ -144,7 +144,7 @@ class RoleFormBase extends React.Component {
         const role = {
             name: '',
             description: '',
-            hidden: false,
+            restricted: false,
             permissions: {},
             ...props.role,
         };
@@ -155,8 +155,12 @@ class RoleFormBase extends React.Component {
     }
 
     onChange = e => {
+        let value = e.target.value;
+        if (e.target.hasOwnProperty('checked')) {
+            value = e.target.checked;
+        }
         this.setState({
-            [e.target.name]: e.target.value,
+            [e.target.name]: value,
         });
     };
 
@@ -174,7 +178,12 @@ class RoleFormBase extends React.Component {
 
     onSubmit = e => {
         e.preventDefault();
-        const { name, description, permissions } = this.state;
+        const {
+            name,
+            description,
+            permissions,
+            restricted,
+        } = this.state;
 
         /*
         if (name !== this.props.name) {
@@ -192,7 +201,7 @@ class RoleFormBase extends React.Component {
 
         this.props.firebase
             .role(name)
-            .set({ description, permissions });
+            .set({ description, permissions, restricted });
 
         if (this.props.onSubmit) {
             this.props.onSubmit();
@@ -200,7 +209,12 @@ class RoleFormBase extends React.Component {
     };
 
     render() {
-        const { name, description, hidden, permissions } = this.state;
+        const {
+            name,
+            description,
+            restricted,
+            permissions,
+        } = this.state;
 
         return (
             <form onSubmit={this.onSubmit}>
@@ -225,18 +239,18 @@ class RoleFormBase extends React.Component {
                     onChange={this.onChange}
                 />
 
-                <label htmlFor="hidden">Skjult</label>
+                <label htmlFor="restricted">Begrenset</label>
                 <input
                     type="checkbox"
-                    name="hidden"
-                    value={hidden}
+                    name="restricted"
+                    checked={restricted}
                     onChange={this.onChange}
                 />
                 <p className="light">
-                    Bare brukere med tilgangen "see-hidden-roles" kan
-                    se skjulte roller. Dette er nyttig for å la en
-                    moderator kunne dele ut alle andre roller enn sin
-                    egen eller høyere.
+                    Bare brukere med tilgangen "set-restricted-roles"
+                    kan tildele begrensede roller. Dette er nyttig for
+                    å la en moderator kunne dele ut alle andre roller
+                    enn sin egen eller høyere.
                 </p>
 
                 <h2>Tilganger</h2>

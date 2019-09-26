@@ -9,4 +9,4 @@ export const USERS_WRITE = 'users-write';
 export const SEMESTERS_READ = 'semesters-read';
 export const SEMESTERS_WRITE = 'semesters-write';
 export const ROOT_READ = 'root-read';
-export const SEE_HIDDEN_ROLES = 'see-hidden-roles';
+export const SET_RESTRICTED_ROLES = 'set-restricted-roles';

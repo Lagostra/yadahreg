@@ -81,9 +81,10 @@ class UserForm extends React.Component {
         const { name, email, role, availableRoles } = this.state;
         const { authUser } = this.props;
 
-        const hiddenRoles = availableRoles
-            .filter(r => r.hidden)
+        const restrictedRoles = availableRoles
+            .filter(r => r.restricted)
             .map(r => r.name);
+        console.log(restrictedRoles);
 
         return (
             <form onSubmit={this.onSubmit}>
@@ -112,9 +113,9 @@ class UserForm extends React.Component {
                     onChange={this.onChange}
                     name="role"
                     disabled={
-                        hiddenRoles.includes(role) &&
+                        restrictedRoles.includes(role) &&
                         !authUser.permissions[
-                            PERMISSIONS.SEE_HIDDEN_ROLES
+                            PERMISSIONS.SET_RESTRICTED_ROLES
                         ]
                     }
                 >
@@ -130,9 +131,9 @@ class UserForm extends React.Component {
                             key={r.name}
                             title={r.description}
                             disabled={
-                                r.hidden &&
+                                r.restricted &&
                                 !authUser.permissions[
-                                    PERMISSIONS.SEE_HIDDEN_ROLES
+                                    PERMISSIONS.SET_RESTRICTED_ROLES
                                 ]
                             }
                         >
