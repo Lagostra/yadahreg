@@ -202,6 +202,7 @@ class RoleFormBase extends React.Component {
 
         return (
             <form onSubmit={this.onSubmit}>
+                {this.props.role && <h1>{name}</h1>}
                 {!this.props.role && (
                     <React.Fragment>
                         <label htmlFor="name">Navn</label>
