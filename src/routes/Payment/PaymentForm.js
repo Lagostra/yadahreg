@@ -52,7 +52,7 @@ class PaymentForm extends React.Component {
     };
 
     handleFilterChange = e => {
-        this.setState({ fitler: e.target.value });
+        this.setState({ filter: e.target.value });
     };
 
     render() {
