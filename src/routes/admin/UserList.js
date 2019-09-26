@@ -6,6 +6,7 @@ import { withFirebase } from '../../components/Firebase';
 import { withAuthorization } from '../../components/Session';
 import Modal from '../../components/Modal';
 import UserForm from './UserForm';
+import Spinner from '../../components/Spinner';
 
 class UsersPage extends Component {
     constructor(props) {
@@ -71,12 +72,14 @@ class UsersPage extends Component {
                     />
                 </Modal>
 
-                {loading && <div>Loading...</div>}
+                {loading && <Spinner />}
 
-                <UsersList
-                    users={users}
-                    onEditUser={this.handleEditUser}
-                />
+                {!loading && (
+                    <UsersList
+                        users={users}
+                        onEditUser={this.handleEditUser}
+                    />
+                )}
             </div>
         );
     }

@@ -6,6 +6,7 @@ import { compose } from 'recompose';
 import { withAuthorization } from '../components/Session';
 
 import * as PERMISSIONS from '../constants/permissions';
+import Spinner from '../components/Spinner';
 import Modal from '../components/Modal';
 
 class MembersPage extends React.Component {
@@ -91,7 +92,7 @@ class MembersPage extends React.Component {
                 >
                     Nytt medlem
                 </button>
-                {!members.length && <p>Laster...</p>}
+                {!members.length && <Spinner />}
                 {!!members.length && (
                     <MembersList
                         members={members}

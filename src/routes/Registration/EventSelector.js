@@ -1,8 +1,11 @@
 import React from 'react';
 import moment from 'moment';
+
 import Modal from './../../components/Modal';
 import EventForm from './EventForm';
 import { withFirebase } from '../../components/Firebase';
+import Spinner from '../../components/Spinner';
+
 class EventSelectorBase extends React.Component {
     constructor(props) {
         super(props);
@@ -83,7 +86,7 @@ class EventSelectorBase extends React.Component {
                         Nytt arrangement
                     </button>
                 </div>
-                {!events.length && <p>Laster...</p>}
+                {!events.length && <Spinner />}
                 {!!events.length && (
                     <EventList
                         events={events}

@@ -5,6 +5,7 @@ import { withAuthorization } from '../../components/Session';
 
 import * as PERMISSIONS from './../../constants/permissions';
 import Modal from '../../components/Modal';
+import Spinner from '../../components/Spinner';
 
 class RolesListBase extends React.Component {
     constructor(props) {
@@ -89,7 +90,7 @@ class RolesListBase extends React.Component {
 
                 {!this.state.roles.length ||
                 !this.state.permissions.length ? (
-                    <p>Laster...</p>
+                    <Spinner />
                 ) : (
                     <table className="table-full-width table-hor-lines-between">
                         <thead>

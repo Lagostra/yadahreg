@@ -4,6 +4,7 @@ import Modal from './../../components/Modal';
 
 import { withFirebase } from '../../components/Firebase';
 import SemesterForm from './SemesterForm';
+import Spinner from '../../components/Spinner';
 
 class SemesterSelectorBase extends React.Component {
     constructor(props) {
@@ -72,7 +73,7 @@ class SemesterSelectorBase extends React.Component {
                         Nytt semester
                     </button>
                 </div>
-                {!semesters.length && <p>Laster...</p>}
+                {!semesters.length && <Spinner />}
                 {!!semesters.length && (
                     <SemesterList
                         semesters={semesters}
