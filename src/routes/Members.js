@@ -17,6 +17,8 @@ class MembersPage extends React.Component {
             members: [],
             editMember: null,
             modalActive: false,
+            filter: '',
+            showOnlyActiveMembers: true,
         };
     }
 
@@ -66,8 +68,18 @@ class MembersPage extends React.Component {
         }
     };
 
+    handleFilterChange = e => {
+        this.setState({ filter: e.target.value });
+    };
+
     render() {
-        const { members, modalActive, editMember } = this.state;
+        const {
+            members,
+            modalActive,
+            editMember,
+            filter,
+            showOnlyActiveMembers,
+        } = this.state;
         return (
             <div className="content">
                 <h1>Medlemmer</h1>
@@ -92,55 +104,116 @@ class MembersPage extends React.Component {
                 >
                     Nytt medlem
                 </button>
+                <button
+                    className="btn"
+                    onClick={() => {
+                        this.setState({
+                            showOnlyActiveMembers: !showOnlyActiveMembers,
+                        });
+                    }}
+                >
+                    {showOnlyActiveMembers
+                        ? 'Vis inaktive medlemmer'
+                        : 'Vis bare aktive medlemmer'}
+                </button>
                 {!members.length && <Spinner />}
                 {!!members.length && (
-                    <MembersList
-                        members={members}
-                        onEditMember={this.handleEditMember}
-                        onDeleteMember={this.handleDeleteMember}
-                    />
+                    <React.Fragment>
+                        <input
+                            value={filter}
+                            onChange={this.handleFilterChange}
+                            name="filter"
+                            type="text"
+                            placeholder="Søk..."
+                            style={{ marginTop: '25px' }}
+                        />
+
+                        <MembersList
+                            members={members}
+                            onEditMember={this.handleEditMember}
+                            onDeleteMember={this.handleDeleteMember}
+                            filter={filter}
+                            showOnlyActiveMembers={
+                                showOnlyActiveMembers
+                            }
+                        />
+                    </React.Fragment>
                 )}
             </div>
         );
     }
 }
 
-const MembersList = ({ members, onEditMember, onDeleteMember }) => (
-    <table className="table-full-width table-hor-lines-between">
-        <thead>
-            <tr>
-                <th>Navn</th>
-                <th className="desktop-only">E-post</th>
-                <th className="desktop-only">Telefon</th>
-            </tr>
-        </thead>
-        <tbody>
-            {members.map(member => (
-                <tr key={member.id}>
-                    <td>
-                        {member.first_name} {member.last_name}
-                    </td>
-                    <td className="desktop-only">{member.email}</td>
-                    <td className="desktop-only">{member.phone}</td>
-                    <td>
-                        <button
-                            className="btn btn-small"
-                            onClick={() => onEditMember(member)}
-                        >
-                            <i className="fas fa-edit" />
-                        </button>
-                        <button
-                            className="btn btn-small btn-danger"
-                            onClick={() => onDeleteMember(member)}
-                        >
-                            <i className="fas fa-trash-alt" />
-                        </button>
-                    </td>
+const MembersList = ({
+    members,
+    onEditMember,
+    onDeleteMember,
+    filter,
+    showOnlyActiveMembers,
+}) => {
+    const isMatch = (filter, name) => {
+        const regex = new RegExp('(.*)' + filter + '(.*)', 'i');
+        return regex.test(name);
+    };
+
+    return (
+        <table className="table-full-width table-hor-lines-between">
+            <thead>
+                <tr>
+                    <th>Navn</th>
+                    <th className="desktop-only">E-post</th>
+                    <th className="desktop-only">Telefon</th>
                 </tr>
-            ))}
-        </tbody>
-    </table>
-);
+            </thead>
+            <tbody>
+                {members.map(member => (
+                    <React.Fragment key={member.id}>
+                        {(!filter ||
+                            isMatch(
+                                filter,
+                                member.first_name +
+                                    ' ' +
+                                    member.last_name,
+                            )) &&
+                            (!showOnlyActiveMembers ||
+                                !!member.active) && (
+                                <tr>
+                                    <td>
+                                        {member.first_name}{' '}
+                                        {member.last_name}
+                                    </td>
+                                    <td className="desktop-only">
+                                        {member.email}
+                                    </td>
+                                    <td className="desktop-only">
+                                        {member.phone}
+                                    </td>
+                                    <td>
+                                        <button
+                                            className="btn btn-small"
+                                            onClick={() =>
+                                                onEditMember(member)
+                                            }
+                                        >
+                                            <i className="fas fa-edit" />
+                                        </button>
+                                        <button
+                                            className="btn btn-small btn-danger"
+                                            onClick={() =>
+                                                onDeleteMember(member)
+                                            }
+                                        >
+                                            <i className="fas fa-trash-alt" />
+                                        </button>
+                                    </td>
+                                </tr>
+                            )}
+                    </React.Fragment>
+                ))}
+            </tbody>
+        </table>
+    );
+};
 
 class MemberFormBase extends React.Component {
     constructor(props) {
