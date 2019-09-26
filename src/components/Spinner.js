@@ -1,7 +1,7 @@
 import React from 'react';
 
 const FacebookSpinner = () => (
-    <div class="lds-facebook">
+    <div className="lds-facebook">
         <div></div>
         <div></div>
         <div></div>
@@ -9,7 +9,7 @@ const FacebookSpinner = () => (
 );
 
 const SimpleSpinner = () => (
-    <div class="lds-default">
+    <div className="lds-default">
         <div></div>
         <div></div>
         <div></div>
