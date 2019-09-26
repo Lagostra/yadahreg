@@ -3,7 +3,14 @@ import React from 'react';
 const Modal = ({ active, onClose, children, title }) => (
     <React.Fragment>
         {active && (
-            <div className="modal__container">
+            <div
+                className="modal__container"
+                onClick={e => {
+                    if (e.currentTarget === e.target) {
+                        onClose();
+                    }
+                }}
+            >
                 <div className="modal__box">
                     <div className="modal__header">
                         <span>{title ? title : ' '}</span>
