@@ -89,7 +89,7 @@ class RolesListBase extends React.Component {
 
                 {!this.state.roles.length ||
                 !this.state.permissions.length ? (
-                    'Loading...'
+                    <p>Laster...</p>
                 ) : (
                     <table className="table-full-width table-hor-lines-between">
                         <thead>
@@ -238,7 +238,7 @@ class RoleFormBase extends React.Component {
                     </span>
                 ))}
                 <button type="submit" className="btn">
-                    Save
+                    Lagre
                 </button>
             </form>
         );

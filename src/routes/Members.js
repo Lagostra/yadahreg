@@ -66,15 +66,16 @@ class MembersPage extends React.Component {
     };
 
     render() {
+        const { members, modalActive, editMember } = this.state;
         return (
             <div className="content">
                 <h1>Medlemmer</h1>
                 <Modal
-                    active={this.state.modalActive}
+                    active={modalActive}
                     onClose={this.handleModalClose}
                 >
                     <MemberForm
-                        member={this.state.editMember}
+                        member={editMember}
                         onSubmit={this.handleModalClose}
                     />
                 </Modal>
@@ -90,11 +91,14 @@ class MembersPage extends React.Component {
                 >
                     Nytt medlem
                 </button>
-                <MembersList
-                    members={this.state.members}
-                    onEditMember={this.handleEditMember}
-                    onDeleteMember={this.handleDeleteMember}
-                />
+                {!members.length && <p>Laster...</p>}
+                {!!members.length && (
+                    <MembersList
+                        members={members}
+                        onEditMember={this.handleEditMember}
+                        onDeleteMember={this.handleDeleteMember}
+                    />
+                )}
             </div>
         );
     }
@@ -102,12 +106,21 @@ class MembersPage extends React.Component {
 
 const MembersList = ({ members, onEditMember, onDeleteMember }) => (
     <table className="table-full-width table-hor-lines-between">
+        <thead>
+            <tr>
+                <th>Navn</th>
+                <th className="desktop-only">E-post</th>
+                <th className="desktop-only">Telefon</th>
+            </tr>
+        </thead>
         <tbody>
             {members.map(member => (
                 <tr key={member.id}>
                     <td>
                         {member.first_name} {member.last_name}
                     </td>
+                    <td className="desktop-only">{member.email}</td>
+                    <td className="desktop-only">{member.phone}</td>
                     <td>
                         <button
                             className="btn btn-small"

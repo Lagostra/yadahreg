@@ -72,10 +72,13 @@ class SemesterSelectorBase extends React.Component {
                         Nytt semester
                     </button>
                 </div>
-                <SemesterList
-                    semesters={semesters}
-                    onSemesterSelect={this.props.onSemesterSelect}
-                />
+                {!semesters.length && <p>Laster...</p>}
+                {!!semesters.length && (
+                    <SemesterList
+                        semesters={semesters}
+                        onSemesterSelect={this.props.onSemesterSelect}
+                    />
+                )}
             </div>
         );
     }
@@ -114,7 +117,9 @@ const SemesterListElement = ({ semester, onSemesterSelect }) => {
             <td className="desktop-only">
                 {moment(semester.start_date).format('DD.MM.YYYY')}
             </td>
-            <td className="desktop-only">{moment(semester.end_date).format('DD.MM.YYYY')}</td>
+            <td className="desktop-only">
+                {moment(semester.end_date).format('DD.MM.YYYY')}
+            </td>
             <td>
                 <button
                     onClick={() => onSemesterSelect(semester)}

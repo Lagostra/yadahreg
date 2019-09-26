@@ -83,10 +83,13 @@ class EventSelectorBase extends React.Component {
                         Nytt arrangement
                     </button>
                 </div>
-                <EventList
-                    events={events}
-                    onEventSelect={this.props.onEventSelect}
-                />
+                {!events.length && <p>Laster...</p>}
+                {!!events.length && (
+                    <EventList
+                        events={events}
+                        onEventSelect={this.props.onEventSelect}
+                    />
+                )}
             </div>
         );
     }
