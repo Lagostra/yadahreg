@@ -89,8 +89,8 @@ const SemesterList = ({ semesters, onSemesterSelect }) => {
             <thead>
                 <tr>
                     <th>Tittel</th>
-                    <th>Startdato</th>
-                    <th>Sluttdato</th>
+                    <th className="desktop-only">Startdato</th>
+                    <th className="desktop-only">Sluttdato</th>
                     <th></th>
                 </tr>
             </thead>
@@ -111,10 +111,10 @@ const SemesterListElement = ({ semester, onSemesterSelect }) => {
     return (
         <tr>
             <td>{semester.title}</td>
-            <td>
+            <td className="desktop-only">
                 {moment(semester.start_date).format('DD.MM.YYYY')}
             </td>
-            <td>{moment(semester.end_date).format('DD.MM.YYYY')}</td>
+            <td className="desktop-only">{moment(semester.end_date).format('DD.MM.YYYY')}</td>
             <td>
                 <button
                     onClick={() => onSemesterSelect(semester)}

@@ -5,6 +5,14 @@ table {
         text-align: left;
         font-weight: bold;
     }
+
+    th.desktop-only, td.desktop-only {
+        display: none;
+
+        @media only screen and (min-width: $screen-limit-1) {
+            display: table-cell;
+        }
+    }
 }
 
 .table-full-width {
