@@ -47,7 +47,10 @@ class UserForm extends React.Component {
             .once('value')
             .then(snapshot => {
                 if (this._isMounted) {
-                    const roles = Object.keys(snapshot.val());
+                    const roleObject = snapshot.val();
+                    const roles = Object.keys(roleObject).map(
+                        key => ({ ...roleObject[key], name: key }),
+                    );
                     this.setState({ availableRoles: roles });
                 }
             });
@@ -102,10 +105,19 @@ class UserForm extends React.Component {
                     onChange={this.onChange}
                     name="role"
                 >
-                    <option value="">Ingen rolle</option>
+                    <option
+                        value=""
+                        title="Ingen rolle - brukeren vil ikke ha tilgang til noen funksjoner."
+                    >
+                        Ingen rolle
+                    </option>
                     {availableRoles.map(r => (
-                        <option value={r} key={r}>
-                            {r}
+                        <option
+                            value={r.name}
+                            key={r.name}
+                            title={r.description}
+                        >
+                            {r.name}
                         </option>
                     ))}
                 </select>
