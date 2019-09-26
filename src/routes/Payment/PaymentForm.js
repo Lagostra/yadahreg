@@ -55,6 +55,27 @@ class PaymentForm extends React.Component {
         this.setState({ filter: e.target.value });
     };
 
+    handleFilterKeyDown = e => {
+        const { members, onPaymentChange } = this.props;
+        const { filter } = this.state;
+        if (e.key === 'Enter') {
+            const matchingMembers = members.filter(member => {
+                const res = this.isMatch(
+                    filter,
+                    member.first_name + ' ' + member.last_name,
+                );
+                return res;
+            });
+            if (matchingMembers.length === 1) {
+                onPaymentChange(matchingMembers[0], 'paid');
+
+                setTimeout(() => {
+                    this.setState({ filter: '' });
+                }, 600);
+            }
+        }
+    };
+
     render() {
         const { members, semester, onChangeSemester } = this.props;
         const { filter } = this.state;
@@ -75,6 +96,7 @@ class PaymentForm extends React.Component {
                 <input
                     value={filter}
                     onChange={this.handleFilterChange}
+                    onKeyDown={this.handleFilterKeyDown}
                     name="filter"
                     type="text"
                     placeholder="Søk..."
