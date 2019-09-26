@@ -22,6 +22,8 @@ import Roles from './routes/admin/Roles';
 import Members from './routes/Members';
 import Registration from './routes/Registration';
 import Payment from './routes/Payment';
+import DataExport from './routes/DataExport';
+
 
 const App = props => {
     const showNavigation = !!props.authUser;
@@ -31,7 +33,7 @@ const App = props => {
             <div
                 className={`top-bar ${
                     showNavigation ? '' : 'hidden'
-                }`}
+                    }`}
             >
                 <Navigation />
             </div>
@@ -59,6 +61,7 @@ const App = props => {
                     component={Registration}
                 />
                 <Route path={ROUTES.PAYMENT} component={Payment} />
+                <Route path={ROUTES.DATA_EXPORT} component={DataExport} />
             </div>
         </Router>
     );

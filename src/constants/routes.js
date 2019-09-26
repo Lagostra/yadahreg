@@ -9,3 +9,4 @@ export const ROLES = '/roles';
 export const MEMBERS = '/members';
 export const REGISTRATION = '/registration';
 export const PAYMENT = '/payment';
+export const DATA_EXPORT = '/data-export';
