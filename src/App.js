@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { compose } from 'recompose';
 
 import * as ROUTES from './constants/routes';
 import {
@@ -17,7 +18,7 @@ import AccountPage from './routes/auth/Account';
 
 import UserList from './routes/admin/UserList';
 import Roles from './routes/admin/Roles';
-import { compose } from 'recompose';
+
 import Members from './routes/Members';
 import Registration from './routes/Registration';
 import Payment from './routes/Payment';

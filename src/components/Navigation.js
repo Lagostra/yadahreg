@@ -144,8 +144,10 @@ class NavSubDrawer extends React.Component {
 
     render() {
         const shouldRender =
-            this.props.children &&
-            this.props.children.reduce((prev, cur) => prev || cur);
+            this.props.children && (
+                !Array.isArray(this.props.children) ||
+                this.props.children.reduce((prev, cur) => prev || cur)
+            );
 
         if (!shouldRender) {
             return null;
