@@ -11,7 +11,7 @@ class PaymentForm extends React.Component {
                     <i
                         className="fas fa-money-bill"
                         style={{
-                            'font-size': '2em',
+                            'font-size': '1.5em',
                             'line-height': '1em',
                         }}
                     />
@@ -21,7 +21,9 @@ class PaymentForm extends React.Component {
             {
                 value: 'not-paid',
                 text: (
-                    <span className="fa-stack">
+                    <span className="fa-stack" style={{
+                        'font-size': '0.75em',
+                    }}>
                         <i className="fas fa-money-bill fa-stack-1x" />
                         <i className="fas fa-ban fa-stack-2x" />
                     </span>
@@ -86,33 +88,33 @@ class PaymentForm extends React.Component {
                                     this.isMatch(
                                         filter,
                                         member.first_name +
-                                            ' ' +
-                                            member.last_name,
+                                        ' ' +
+                                        member.last_name,
                                     )) && (
-                                    <tr>
-                                        <td className="payment-form__member-name">
-                                            {member.first_name}{' '}
-                                            {member.last_name}
-                                        </td>
-                                        <td className="payment-form__buttons">
-                                            <ButtonSelect
-                                                options={
-                                                    this
-                                                        .paymentOptions
-                                                }
-                                                onChange={e =>
-                                                    this.props.onPaymentChange(
+                                        <tr>
+                                            <td className="payment-form__member-name">
+                                                {member.first_name}{' '}
+                                                {member.last_name}
+                                            </td>
+                                            <td className="payment-form__buttons">
+                                                <ButtonSelect
+                                                    options={
+                                                        this
+                                                            .paymentOptions
+                                                    }
+                                                    onChange={e =>
+                                                        this.props.onPaymentChange(
+                                                            member,
+                                                            e.value,
+                                                        )
+                                                    }
+                                                    value={this.getStatus(
                                                         member,
-                                                        e.value,
-                                                    )
-                                                }
-                                                value={this.getStatus(
-                                                    member,
-                                                )}
-                                            />
-                                        </td>
-                                    </tr>
-                                )}
+                                                    )}
+                                                />
+                                            </td>
+                                        </tr>
+                                    )}
                             </React.Fragment>
                         ))}
                     </tbody>
