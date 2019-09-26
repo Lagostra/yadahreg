@@ -8,12 +8,23 @@ class UserForm extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = { ...props.user, availableRoles: [] };
+        this.state = {
+            name: '',
+            email: '',
+            role: '',
+            ...props.user,
+            availableRoles: [],
+        };
     }
 
     componentDidUpdate(prevProps) {
         if (prevProps !== this.props) {
-            this.setState({ ...this.props.user });
+            this.setState({
+                name: '',
+                email: '',
+                role: '',
+                ...this.props.user,
+            });
         }
     }
 
@@ -91,6 +102,7 @@ class UserForm extends React.Component {
                     onChange={this.onChange}
                     name="role"
                 >
+                    <option value="">Ingen rolle</option>
                     {availableRoles.map(r => (
                         <option value={r} key={r}>
                             {r}
