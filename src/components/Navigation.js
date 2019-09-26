@@ -98,7 +98,7 @@ const NavigationAuth = ({
             )}
             <NavSubDrawer title="Verktøy" active={activeSubDrawer === 'Verktøy'} onActivateSubDrawer={onActivateSubDrawer}>
                 {authUser.permissions[PERMISSIONS.USERS_READ] && authUser.permissions[PERMISSIONS.EVENTS_READ] && authUser.permissions[PERMISSIONS.SEMESTERS_READ] && (
-                    <NavLink link={ROUTES.DATA_EXPORT}>Dataeksportering</NavLink>
+                    <NavLink link={ROUTES.DATA_EXPORT}>Eksporter data</NavLink>
                 )}
             </NavSubDrawer>
             <NavSubDrawer
