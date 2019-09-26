@@ -30,7 +30,7 @@ class SemesterSelectorBase extends React.Component {
             }));
 
             semesters.sort(
-                (a, b) => moment(b.start_date) - moment(a.end_date),
+                (a, b) => moment(b.end_date) - moment(a.end_date),
             );
 
             this.setState({ semesters });
