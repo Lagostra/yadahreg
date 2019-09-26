@@ -48,9 +48,14 @@ input {
     background: $color2-light;
 }
 
-input[type="radio"], input[type="checkbox"] {
+input[type="radio"] {
     width: auto;
     display: inline;
+}
+
+input[type="checkbox"] {
+    width: auto;
+    display: block;
 }
 
 label {
