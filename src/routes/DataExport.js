@@ -1,53 +1,86 @@
 import React from 'react';
-import { withFirebase } from '../components/Firebase';
 import XLSX from 'xlsx';
 import moment from 'moment';
+import { saveAs } from 'file-saver';
+import { compose } from 'recompose';
 
-const DataExportBase = ({ firebase }) => {
+import { withFirebase } from '../components/Firebase';
+import { withAuthUser } from './../components/Session';
+import * as PERMISSIONS from '../constants/permissions';
 
+const DataExportBase = ({ firebase, authUser }) => {
     const exportAllAsExcel = () => {
         let members = null;
         let events = null;
         let semesters = null;
-        const memberPromise = firebase.members().once('value').then(snapshot => {
-            const membersObject = snapshot.val();
-            members = Object.keys(membersObject)
-                .map(key => ({
-                    ...membersObject[key],
-                    uid: key,
-                }))
-                .sort((a, b) => {
-                    const a1 = (
-                        a.last_name
-                    ).toLowerCase();
-                    const b1 = (
-                        b.last_name
-                    ).toLowerCase();
-                    if (a1 < b1) return -1;
-                    if (b1 < a1) return 1;
-                    return 0;
-                });
-        });
+        const memberPromise = firebase
+            .members()
+            .once('value')
+            .then(snapshot => {
+                const membersObject = snapshot.val();
+                members = Object.keys(membersObject)
+                    .map(key => ({
+                        ...membersObject[key],
+                        uid: key,
+                    }))
+                    .sort((a, b) => {
+                        const a1 = a.last_name.toLowerCase();
+                        const b1 = b.last_name.toLowerCase();
+                        if (a1 < b1) return -1;
+                        if (b1 < a1) return 1;
+                        return 0;
+                    });
+            });
 
-        const eventPromise = firebase.events().once('value').then(snapshot => {
-            const eventsObject = snapshot.val();
-            events = Object.keys(eventsObject).map(key => ({
-                ...eventsObject[key],
-                uid: key
-            })).sort((a, b) => moment(a.date) - moment(b.date));
-        });
+        const eventPromise = firebase
+            .events()
+            .once('value')
+            .then(snapshot => {
+                const eventsObject = snapshot.val();
+                events = Object.keys(eventsObject)
+                    .map(key => ({
+                        ...eventsObject[key],
+                        uid: key,
+                    }))
+                    .sort((a, b) => moment(a.date) - moment(b.date));
+            });
 
-        const semesterPromise = firebase.semesters().once('value').then(snapshot => {
-            const semestersObject = snapshot.val()
-            semesters = Object.keys(semestersObject).map(key => ({
-                ...semestersObject[key],
-                uid: key
-            })).sort((a, b) => moment(a.end_date) - moment(b.end_date));
-        });
+        const semesterPromise = firebase
+            .semesters()
+            .once('value')
+            .then(snapshot => {
+                const semestersObject = snapshot.val();
+                semesters = Object.keys(semestersObject)
+                    .map(key => ({
+                        ...semestersObject[key],
+                        uid: key,
+                    }))
+                    .sort(
+                        (a, b) =>
+                            moment(a.end_date) - moment(b.end_date),
+                    );
+            });
 
-        Promise.all([memberPromise, eventPromise, semesterPromise]).then(() => {
-            const membersSheet = XLSX.utils.json_to_sheet(members,
-                { header: ['uid', 'last_name', 'first_name', 'phone', 'email', 'address', 'birthday', 'gender', 'active', 'allergies', 'voice_group'] });
+        Promise.all([
+            memberPromise,
+            eventPromise,
+            semesterPromise,
+        ]).then(() => {
+            const membersSheet = XLSX.utils.json_to_sheet(members, {
+                header: [
+                    'uid',
+                    'last_name',
+                    'first_name',
+                    'phone',
+                    'email',
+                    'address',
+                    'birthday',
+                    'gender',
+                    'active',
+                    'allergies',
+                    'voice_group',
+                ],
+            });
 
             const presence = members.map(member => {
                 const row = {
@@ -58,18 +91,37 @@ const DataExportBase = ({ firebase }) => {
 
                 events.forEach(event => {
                     let status = '';
-                    if (event.attendants && event.attendants[member.uid]) {
+                    if (
+                        event.attendants &&
+                        event.attendants[member.uid]
+                    ) {
                         status = '1';
-                    } else if (event.non_attendants && event.non_attendants[member.uid]) {
+                    } else if (
+                        event.non_attendants &&
+                        event.non_attendants[member.uid]
+                    ) {
                         status = '0';
                     }
-                    row[`${moment(event.date).format('DD.MM.YYYY')} - ${event.title}`] = status;
+                    row[
+                        `${moment(event.date).format(
+                            'DD.MM.YYYY',
+                        )} - ${event.title}`
+                    ] = status;
                 });
 
                 return row;
             });
 
-            const presenceSheet = XLSX.utils.json_to_sheet(presence, { header: ['uid', 'last_name', 'first_name'].concat(events.map(event => `${moment(event.date).format('DD.MM.YYYY')} - ${event.title}`)) });
+            const presenceSheet = XLSX.utils.json_to_sheet(presence, {
+                header: ['uid', 'last_name', 'first_name'].concat(
+                    events.map(
+                        event =>
+                            `${moment(event.date).format(
+                                'DD.MM.YYYY',
+                            )} - ${event.title}`,
+                    ),
+                ),
+            });
 
             const saveEvents = events.map(event => {
                 let e = { ...event };
@@ -79,7 +131,9 @@ const DataExportBase = ({ firebase }) => {
                 return e;
             });
 
-            const eventsSheet = XLSX.utils.json_to_sheet(saveEvents, { header: ['uid', 'date', 'title', 'type'] });
+            const eventsSheet = XLSX.utils.json_to_sheet(saveEvents, {
+                header: ['uid', 'date', 'title', 'type'],
+            });
 
             const payment = members.map(member => {
                 const row = {
@@ -89,13 +143,20 @@ const DataExportBase = ({ firebase }) => {
                 };
 
                 semesters.forEach(semester => {
-                    row[semester.title] = semester.payees && semester.payees[member.uid] ? '1' : '';
+                    row[semester.title] =
+                        semester.payees && semester.payees[member.uid]
+                            ? '1'
+                            : '';
                 });
 
                 return row;
-            })
+            });
 
-            const paymentSheet = XLSX.utils.json_to_sheet(payment, { header: ['uid', 'last_name', 'first_name'].concat(semesters.map(semester => semester.title)) });
+            const paymentSheet = XLSX.utils.json_to_sheet(payment, {
+                header: ['uid', 'last_name', 'first_name'].concat(
+                    semesters.map(semester => semester.title),
+                ),
+            });
 
             const saveSemesters = semesters.map(semester => {
                 let s = { ...semester };
@@ -103,25 +164,89 @@ const DataExportBase = ({ firebase }) => {
 
                 return s;
             });
-            const semestersSheet = XLSX.utils.json_to_sheet(saveSemesters, { header: ['uid', 'title', 'start_date', 'end_date'] });
+            const semestersSheet = XLSX.utils.json_to_sheet(
+                saveSemesters,
+                {
+                    header: [
+                        'uid',
+                        'title',
+                        'start_date',
+                        'end_date',
+                    ],
+                },
+            );
 
             const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, membersSheet, 'Medlemmer');
-            XLSX.utils.book_append_sheet(wb, presenceSheet, 'Oppmøte');
-            XLSX.utils.book_append_sheet(wb, paymentSheet, 'Betaling');
-            XLSX.utils.book_append_sheet(wb, eventsSheet, 'Arrangementer');
-            XLSX.utils.book_append_sheet(wb, semestersSheet, 'Semestere');
-            XLSX.writeFile(wb, 'yadahreg-data.xlsx', { bookType: 'xlsx' });
+            XLSX.utils.book_append_sheet(
+                wb,
+                membersSheet,
+                'Medlemmer',
+            );
+            XLSX.utils.book_append_sheet(
+                wb,
+                presenceSheet,
+                'Oppmøte',
+            );
+            XLSX.utils.book_append_sheet(
+                wb,
+                paymentSheet,
+                'Betaling',
+            );
+            XLSX.utils.book_append_sheet(
+                wb,
+                eventsSheet,
+                'Arrangementer',
+            );
+            XLSX.utils.book_append_sheet(
+                wb,
+                semestersSheet,
+                'Semestere',
+            );
+            XLSX.writeFile(wb, 'yadahreg-data.xlsx', {
+                bookType: 'xlsx',
+            });
         });
-    }
+    };
 
-    return (<div className="content">
-        <button className="btn" onClick={exportAllAsExcel}>
-            Eksporter alt som Excel
-        </button>
-    </div>);
-}
+    const exportDatabaseAsJson = () => {
+        firebase.db
+            .ref('/')
+            .once('value')
+            .then(snapshot => {
+                const data = snapshot.val();
 
-const DataExport = withFirebase(DataExportBase);
+                const blob = new Blob(
+                    [JSON.stringify(data, null, 4)],
+                    {
+                        type: 'application/json',
+                    },
+                );
+
+                saveAs(blob, 'yadahreg-database.json');
+            });
+    };
+
+    return (
+        <div className="content">
+            <button className="btn" onClick={exportAllAsExcel}>
+                Eksporter alt som Excel
+            </button>
+
+            {authUser.permissions[PERMISSIONS.ROOT_READ] && (
+                <button
+                    className="btn"
+                    onClick={exportDatabaseAsJson}
+                >
+                    Eksporter database som JSON
+                </button>
+            )}
+        </div>
+    );
+};
+
+const DataExport = compose(
+    withFirebase,
+    withAuthUser,
+)(DataExportBase);
 
 export default DataExport;

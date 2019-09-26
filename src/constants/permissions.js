@@ -8,3 +8,4 @@ export const USERS_READ = 'users-read';
 export const USERS_WRITE = 'users-write';
 export const SEMESTERS_READ = 'semesters-read';
 export const SEMESTERS_WRITE = 'semesters-write';
+export const ROOT_READ = 'root-read';
