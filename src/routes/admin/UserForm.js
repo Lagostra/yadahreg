@@ -2,6 +2,8 @@ import React from 'react';
 import { withFirebase } from '../../components/Firebase';
 
 import { compose } from 'recompose';
+import { withAuthUser } from '../../components/Session';
+import * as PERMISSIONS from '../../constants/permissions';
 
 class UserForm extends React.Component {
     _isMounted = false;
@@ -77,6 +79,11 @@ class UserForm extends React.Component {
 
     render() {
         const { name, email, role, availableRoles } = this.state;
+        const { authUser } = this.props;
+
+        const hiddenRoles = availableRoles
+            .filter(r => r.hidden)
+            .map(r => r.name);
 
         return (
             <form onSubmit={this.onSubmit}>
@@ -104,6 +111,12 @@ class UserForm extends React.Component {
                     value={role}
                     onChange={this.onChange}
                     name="role"
+                    disabled={
+                        hiddenRoles.includes(role) &&
+                        !authUser.permissions[
+                            PERMISSIONS.SEE_HIDDEN_ROLES
+                        ]
+                    }
                 >
                     <option
                         value=""
@@ -116,6 +129,12 @@ class UserForm extends React.Component {
                             value={r.name}
                             key={r.name}
                             title={r.description}
+                            disabled={
+                                r.hidden &&
+                                !authUser.permissions[
+                                    PERMISSIONS.SEE_HIDDEN_ROLES
+                                ]
+                            }
                         >
                             {r.name}
                         </option>
@@ -130,4 +149,7 @@ class UserForm extends React.Component {
     }
 }
 
-export default compose(withFirebase)(UserForm);
+export default compose(
+    withFirebase,
+    withAuthUser,
+)(UserForm);

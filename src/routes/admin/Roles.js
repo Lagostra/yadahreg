@@ -144,6 +144,7 @@ class RoleFormBase extends React.Component {
         const role = {
             name: '',
             description: '',
+            hidden: false,
             permissions: {},
             ...props.role,
         };
@@ -199,7 +200,7 @@ class RoleFormBase extends React.Component {
     };
 
     render() {
-        const { name, description, permissions } = this.state;
+        const { name, description, hidden, permissions } = this.state;
 
         return (
             <form onSubmit={this.onSubmit}>
@@ -224,6 +225,21 @@ class RoleFormBase extends React.Component {
                     onChange={this.onChange}
                 />
 
+                <label htmlFor="hidden">Skjult</label>
+                <input
+                    type="checkbox"
+                    name="hidden"
+                    value={hidden}
+                    onChange={this.onChange}
+                />
+                <p className="light">
+                    Bare brukere med tilgangen "see-hidden-roles" kan
+                    se skjulte roller. Dette er nyttig for å la en
+                    moderator kunne dele ut alle andre roller enn sin
+                    egen eller høyere.
+                </p>
+
+                <h2>Tilganger</h2>
                 {this.props.permissions.map(permission => (
                     <span key={permission}>
                         <label>{permission}</label>
