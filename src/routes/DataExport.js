@@ -4,8 +4,6 @@ import XLSX from 'xlsx';
 import moment from 'moment';
 
 const DataExportBase = ({ firebase }) => {
-    const fileTypes = ['xlsx', 'csv'];
-    const fileType = 'xlsx';
 
     const exportAllAsExcel = () => {
         let members = null;

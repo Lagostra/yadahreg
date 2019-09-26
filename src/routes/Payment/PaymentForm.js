@@ -11,8 +11,8 @@ class PaymentForm extends React.Component {
                     <i
                         className="fas fa-money-bill"
                         style={{
-                            'font-size': '1.5em',
-                            'line-height': '1em',
+                            fontSize: '1.5em',
+                            lineHeight: '1em',
                         }}
                     />
                 ),
@@ -22,7 +22,7 @@ class PaymentForm extends React.Component {
                 value: 'not-paid',
                 text: (
                     <span className="fa-stack" style={{
-                        'font-size': '0.75em',
+                        fontSize: '0.75em',
                     }}>
                         <i className="fas fa-money-bill fa-stack-1x" />
                         <i className="fas fa-ban fa-stack-2x" />
