@@ -104,7 +104,7 @@ const UsersList = ({ users, onEditUser }) => (
                             className="btn btn-small"
                             onClick={() => onEditUser(user)}
                         >
-                            <i class="fas fa-edit" />
+                            <i className="fas fa-edit" />
                         </button>
                     </td>
                 </tr>
