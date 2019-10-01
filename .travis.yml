@@ -6,7 +6,7 @@ cache:
   - node_modules
 stages:
   - name: deploy
-    if: env(DEPLOY_ENV) != prod OR (tag =~ ^v) AND (branch = master)
+    #if: env(DEPLOY_ENV) != prod OR (tag =~ ^v) AND (branch = master)
 
 before_script: 
   - cd $TRAVIS_BUILD_DIR/functions && npm install
