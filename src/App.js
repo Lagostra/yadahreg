@@ -24,20 +24,34 @@ import Registration from './routes/Registration';
 import Payment from './routes/Payment';
 import DataExport from './routes/DataExport';
 
-
 const App = props => {
     const showNavigation = !!props.authUser;
+    const prodOnLocal =
+        process.env.NODE_ENV === 'production' &&
+        (window.location.hostname === 'localhost' ||
+            window.location.hostname === '127.0.0.1');
 
     return (
         <Router>
             <div
                 className={`top-bar ${
                     showNavigation ? '' : 'hidden'
-                    }`}
+                }`}
             >
                 <Navigation />
             </div>
             <div className="content-wrapper">
+                {prodOnLocal && (
+                    <span
+                        style={{ fontWeight: 'bold', color: 'red' }}
+                    >
+                        You are running against the production
+                        environment on localhost! For development, the
+                        testing environment should be used to avoid
+                        accidental data corruption or loss.
+                    </span>
+                )}
+
                 <Route exact path={ROUTES.LANDING} component={Home} />
                 <Route path={ROUTES.SIGN_IN} component={SignIn} />
                 <Route path={ROUTES.SIGN_UP} component={SignUp} />
@@ -61,7 +75,10 @@ const App = props => {
                     component={Registration}
                 />
                 <Route path={ROUTES.PAYMENT} component={Payment} />
-                <Route path={ROUTES.DATA_EXPORT} component={DataExport} />
+                <Route
+                    path={ROUTES.DATA_EXPORT}
+                    component={DataExport}
+                />
             </div>
         </Router>
     );
