@@ -5,8 +5,10 @@ cache:
   directories:
   - node_modules
 stages:
-  - name: deploy
-    #if: env(DEPLOY_ENV) != prod OR (tag =~ ^v) AND (branch = master)
+  - name: deploy-test
+    if: NOT ((tag =~ ^v) AND (branch = master))
+  - name: deploy  
+    if: (tag =~ ^v) AND (branch = master)
 
 before_script: 
   - cd $TRAVIS_BUILD_DIR/functions && npm install
@@ -14,13 +16,18 @@ before_script:
   - cd $TRAVIS_BUILD_DIR && yarn
 jobs:
   include:
+    - stage: deploy-test
+    - script: cd $TRAVIS_BUILD_DIR && yarn run build:test
+    - script: firebase use test --token $FIREBASE_TOKEN
+    - script: firebase deploy --token $FIREBASE_TOKEN
+
     - stage: deploy
+      env: 
+        - DEPLOY_ENV=prod
+        - DEPLOY_ENV=test
     - script: cd $TRAVIS_BUILD_DIR && yarn run build:$DEPLOY_ENV
     - script: firebase use $DEPLOY_ENV --token $FIREBASE_TOKEN
     - script: firebase deploy --token $FIREBASE_TOKEN
 env:
   global:
     - secure: "fQPZHtiPxVmKmAMVmk2IahA1gVvRGLOpVZ0vfkzVZmSOvolFUn1G+H7GK+D8XcAJbRC43CAmmWd5hL8J8e4pl4X4wmb/OOeCbCG9bE+w6RGRTacHrMTu05oHM0UN5V1cOz9K/xFnpcsxU1KIzTKHZHtM/zTY3sVBWymlRgGH7kn7MySvKxoa/Hptv6bLQzpY1gCU/CqtJoYq68+7eUICRIWgXXiFWKG5ex56TMF8NYwqMwBXF0cuEdBQXQPBppNjPmZTr8C8L2NQMCKtgYZy+wzlV7UBqVHoSu80YLEXgoIeC4jxEiXPL1RwXPBDT0a0iYxxp+JSsv2xIx1srp83lJB0uaV/qwkH5huLEcf7rr3q24DaqjBrn+uYE7uJYs7JtWSP/PawBiLxuUbfSAM4iwYHGzMstJos7nmitqzyvW3DH+m81LqYaaU570pZT42IXpRUqhZSiXVHR5Oj5OzEW8Dcj10Ye1UBxe4H0/g5TKMW5itrzWFmmJJhv5pqmrZ9jWBzujhfb7UqbuLHhnvR7WPBwDpO9T9HeS0rRT6xl77q4Xqm9N/dqUNTUXDKzJAhxrpvQe4FddAyHnjT+xcCo/gl99QSNlcLvO/HYsvWRe9/45aaZ6ZaarQa6yA0AqFUI8Dmxj6WbNu7rwxpMeHGUDx1kd4Pj4EZ8Zey0IOkpzA="
-  matrix:
-    - DEPLOY_ENV=prod
-    - DEPLOY_ENV=test
