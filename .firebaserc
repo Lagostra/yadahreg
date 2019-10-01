@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "yadahreg-6f904"
+    "default": "yadahreg-6f904",
+    "test" : "yadahreg-6f904",
+    "prod": "yadahreg-prod"
   }
 }
