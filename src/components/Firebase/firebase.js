@@ -54,22 +54,24 @@ class Firebase {
                     .then(snapshot => {
                         const dbUser = snapshot.val();
 
-                        this.permissionsOfRole(dbUser.role)
-                            .once('value')
-                            .then(snapshot2 => {
-                                let permissions = snapshot2.val();
-                                if (!permissions) {
-                                    permissions = {};
-                                }
-                                // merge auth and db user
-                                authUser = {
-                                    uid: authUser.uid,
-                                    email: authUser.email,
-                                    permissions,
-                                    ...dbUser,
-                                };
-                                next(authUser);
-                            });
+                        if (dbUser.role) {
+                            this.permissionsOfRole(dbUser.role)
+                                .once('value')
+                                .then(snapshot2 => {
+                                    let permissions = snapshot2.val();
+                                    if (!permissions) {
+                                        permissions = {};
+                                    }
+                                    // merge auth and db user
+                                    authUser = {
+                                        uid: authUser.uid,
+                                        email: authUser.email,
+                                        permissions,
+                                        ...dbUser,
+                                    };
+                                    next(authUser);
+                                });
+                        }
                     });
             } else {
                 fallback();
