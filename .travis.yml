@@ -6,9 +6,9 @@ cache:
   - node_modules
 stages:
   - name: deploy-test
-    if: NOT ((tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+) AND (branch = master))
+    if: NOT (tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+)
   - name: deploy  
-    if: (tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+) AND (branch = master)
+    if: (tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+))
 
 before_script: 
   - cd $TRAVIS_BUILD_DIR/functions && npm install
