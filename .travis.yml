@@ -23,11 +23,13 @@ jobs:
         - firebase deploy --token $FIREBASE_TOKEN
 
     - stage: deploy
+      name: test
       script: 
       - cd $TRAVIS_BUILD_DIR && yarn run build:test
       - firebase use test --token $FIREBASE_TOKEN
       - firebase deploy --token $FIREBASE_TOKEN
     - script: 
+      name: prod
       - cd $TRAVIS_BUILD_DIR && yarn run build:prod
       - firebase use prod --token $FIREBASE_TOKEN
       - firebase deploy --token $FIREBASE_TOKEN
