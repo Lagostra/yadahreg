@@ -17,7 +17,7 @@ before_script:
 jobs:
   include:
     - stage: deploy-test
-    - script: 
+      script: 
         - cd $TRAVIS_BUILD_DIR && yarn run build:test
         - firebase use test --token $FIREBASE_TOKEN
         - firebase deploy --token $FIREBASE_TOKEN
@@ -26,7 +26,7 @@ jobs:
       env: 
         - DEPLOY_ENV=prod
         - DEPLOY_ENV=test
-    - script: 
+      script: 
       - cd $TRAVIS_BUILD_DIR && yarn run build:$DEPLOY_ENV
       - firebase use $DEPLOY_ENV --token $FIREBASE_TOKEN
       - firebase deploy --token $FIREBASE_TOKEN
