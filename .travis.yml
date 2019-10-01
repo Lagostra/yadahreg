@@ -7,9 +7,9 @@ cache:
 stages:
   - name: install-requirements
   - name: compile-prod
-    if: tag IS present
+    if: (tag =~ ^v) AND (branch = master)
   - name: deploy-prod
-    if: tag IS present
+    if: (tag =~ ^v) AND (branch = master)
   - name: compile-test
   - name: deploy-test
 
