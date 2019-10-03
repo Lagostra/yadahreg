@@ -22,7 +22,9 @@ import Roles from './routes/admin/Roles';
 import Members from './routes/Members';
 import Registration from './routes/Registration';
 import Payment from './routes/Payment';
+
 import DataExport from './routes/DataExport';
+import InactiveMembers from './routes/InactiveMembers';
 
 const App = props => {
     const showNavigation = !!props.authUser;
@@ -78,6 +80,10 @@ const App = props => {
                 <Route
                     path={ROUTES.DATA_EXPORT}
                     component={DataExport}
+                />
+                <Route
+                    path={ROUTES.INACTIVE_MEMBERS}
+                    component={InactiveMembers}
                 />
             </div>
         </Router>
