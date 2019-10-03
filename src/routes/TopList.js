@@ -152,9 +152,9 @@ const TopList = ({
         <table className="table-full-width table-hor-lines-between">
             <thead>
                 <tr>
-                    <th>Plassering</th>
+                    <th>Plass</th>
                     <th>Navn</th>
-                    <th>Antall øvelser</th>
+                    <th>Antall</th>
                 </tr>
             </thead>
             <tbody>
