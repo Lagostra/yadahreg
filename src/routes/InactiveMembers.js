@@ -1,7 +1,10 @@
 import React from 'react';
 import moment from 'moment';
+
 import { withFirebase } from '../components/Firebase';
 import Spinner from '../components/Spinner';
+import Modal from '../components/Modal';
+import { MemberForm } from './Members';
 
 class InactiveMembers extends React.Component {
     constructor(props) {
@@ -10,6 +13,8 @@ class InactiveMembers extends React.Component {
         this.state = {
             inactiveMembers: [],
             loaded: false,
+            modalActive: false,
+            editMember: null,
         };
     }
 
@@ -120,81 +125,113 @@ class InactiveMembers extends React.Component {
                         );
                     });
 
-                console.log(inactiveMembers);
-
                 this.setState({ inactiveMembers, loaded: true });
             },
         );
     }
 
+    handleModalClose = memberId => {
+        this.setState({ modalActive: false });
+        if (memberId) {
+            this.props.firebase
+                .member(memberId)
+                .once('value')
+                .then(snapshot => {
+                    if (!snapshot.val().active) {
+                        this.setState({
+                            inactiveMembers: this.state.inactiveMembers.filter(
+                                m => m.id !== memberId,
+                            ),
+                        });
+                    }
+                });
+        }
+    };
+
+    handleEditMember = member => {
+        this.setState({ editMember: member, modalActive: true });
+    };
+
     render() {
-        const { inactiveMembers, loaded } = this.state;
+        const {
+            inactiveMembers,
+            loaded,
+            modalActive,
+            editMember,
+        } = this.state;
 
         return (
-            <div className="content">
-                <h1>Inaktive medlemmer</h1>
-                {!loaded && <Spinner />}
-                {loaded &&
-                    'Medlemskapet til de følgende kormedlemmene er regnet som avsluttet jf. korets vedtekter (§3.5).'}
-                {loaded && inactiveMembers.length && (
-                    <table className="table-full-width table-hor-lines-between">
-                        <thead>
-                            <tr>
-                                <th>Navn</th>
-                                <th>Siste øvelse</th>
-                                <th className="desktop-only">
-                                    Fravær dette semester
-                                </th>
-                                <th className="desktop-only">
-                                    Fravær på rad
-                                </th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {inactiveMembers.map(member => (
-                                <tr key={member.id}>
-                                    <td>
-                                        {member.first_name}{' '}
-                                        {member.last_name}
-                                    </td>
-                                    <td>
-                                        {member.lastPresent
-                                            ? moment(
-                                                  member.lastPresent,
-                                              ).format('DD.MM.YYYY')
-                                            : 'Ingen dette semesteret'}
-                                    </td>
-                                    <td className="desktop-only">
-                                        {member.totalAbsent}
-                                    </td>
-                                    <td className="desktop-only">
-                                        {member.absentInRow}
-                                    </td>
-                                    <td>
-                                        {/*<button
-                                            className="btn btn-small"
-                                            onClick={() =>
-                                                onEditMember(member)
-                                            }
-                                        >
-                                            <i className="fas fa-edit" />
-                                        </button>
-                                        <button
-                                            className="btn btn-small btn-danger"
-                                            onClick={() =>
-                                                onDeleteMember(member)
-                                            }
-                                        >
-                                            <i className="fas fa-trash-alt" />
-                                        </button>*/}
-                                    </td>
+            <React.Fragment>
+                <Modal
+                    active={modalActive}
+                    onClose={this.handleModalClose}
+                >
+                    <MemberForm
+                        member={editMember}
+                        onSubmit={this.handleModalClose}
+                    />
+                </Modal>
+                <div className="content">
+                    <h1>Inaktive medlemmer</h1>
+                    {!loaded && <Spinner />}
+                    {loaded &&
+                        'Medlemskapet til de følgende kormedlemmene er regnet som avsluttet jf. korets vedtekter (§3.5).'}
+                    {loaded && inactiveMembers.length && (
+                        <table className="table-full-width table-hor-lines-between">
+                            <thead>
+                                <tr>
+                                    <th>Navn</th>
+                                    <th>Siste øvelse</th>
+                                    <th className="desktop-only">
+                                        Fravær dette semester
+                                    </th>
+                                    <th className="desktop-only">
+                                        Fravær på rad
+                                    </th>
+                                    <th></th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                )}
-            </div>
+                            </thead>
+                            <tbody>
+                                {inactiveMembers.map(member => (
+                                    <tr key={member.id}>
+                                        <td>
+                                            {member.first_name}{' '}
+                                            {member.last_name}
+                                        </td>
+                                        <td>
+                                            {member.lastPresent
+                                                ? moment(
+                                                      member.lastPresent,
+                                                  ).format(
+                                                      'DD.MM.YYYY',
+                                                  )
+                                                : 'Ingen dette semesteret'}
+                                        </td>
+                                        <td className="desktop-only">
+                                            {member.totalAbsent}
+                                        </td>
+                                        <td className="desktop-only">
+                                            {member.absentInRow}
+                                        </td>
+                                        <td>
+                                            <button
+                                                className="btn btn-small"
+                                                onClick={() =>
+                                                    this.handleEditMember(
+                                                        member,
+                                                    )
+                                                }
+                                            >
+                                                <i className="fas fa-edit" />
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    )}
+                </div>
+            </React.Fragment>
         );
     }
 }
