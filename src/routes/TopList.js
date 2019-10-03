@@ -10,7 +10,8 @@ class TopListPage extends React.Component {
         this.state = {
             members: [],
             events: [],
-            selectedSemester: null,
+            semesters: [],
+            selectedSemester: '',
         };
     }
 
@@ -49,23 +50,52 @@ class TopListPage extends React.Component {
         });
     }
 
+    handleSelectSemester = selectedSemesterId => {
+        const s = this.state.semesters.filter(
+            s => s.id === selectedSemesterId,
+        )[0];
+        this.setState({ selectedSemester: s });
+    };
+
     render() {
-        const { members, events, selectedSemester } = this.state;
+        const {
+            members,
+            events,
+            semesters,
+            selectedSemester,
+        } = this.state;
         return (
             <div className="content">
                 <h1>Toppliste</h1>
+                <select
+                    onChange={event => {
+                        return this.handleSelectSemester(
+                            event.target.value,
+                        );
+                    }}
+                    value={
+                        selectedSemester ? selectedSemester.id : ''
+                    }
+                >
+                    <option value={''}>Totalt</option>
+                    {semesters.map(semester => (
+                        <option value={semester.id} key={semester.id}>
+                            {semester.title}
+                        </option>
+                    ))}
+                </select>
                 <TopList
                     members={members}
                     events={events}
                     start_date={
                         selectedSemester
                             ? selectedSemester.start_date
-                            : null
+                            : '1970-01-01'
                     }
                     end_date={
                         selectedSemester
                             ? selectedSemester.end_date
-                            : null
+                            : '4000-01-01'
                     }
                 />
             </div>
