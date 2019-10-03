@@ -130,6 +130,13 @@ const NavigationAuth = ({
                         Inaktive medlemmer
                     </NavLink>
                 )}
+            {authUser.permissions[PERMISSIONS.USERS_READ] &&
+                authUser.permissions[PERMISSIONS.EVENTS_READ] &&
+                authUser.permissions[PERMISSIONS.SEMESTERS_READ] && (
+                    <NavLink link={ROUTES.TOP_LIST}>
+                        Toppliste
+                    </NavLink>
+                )}
         </NavSubDrawer>
         <NavSubDrawer
             title="Admin"

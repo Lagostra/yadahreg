@@ -25,6 +25,7 @@ import Payment from './routes/Payment';
 
 import DataExport from './routes/DataExport';
 import InactiveMembers from './routes/InactiveMembers';
+import TopList from './routes/TopList';
 
 const App = props => {
     const showNavigation = !!props.authUser;
@@ -85,6 +86,7 @@ const App = props => {
                     path={ROUTES.INACTIVE_MEMBERS}
                     component={InactiveMembers}
                 />
+                <Route path={ROUTES.TOP_LIST} component={TopList} />
             </div>
         </Router>
     );
