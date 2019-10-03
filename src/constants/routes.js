@@ -10,3 +10,5 @@ export const MEMBERS = '/members';
 export const REGISTRATION = '/registration';
 export const PAYMENT = '/payment';
 export const DATA_EXPORT = '/data-export';
+export const INACTIVE_MEMBERS = '/inactive-members';
+export const TOP_LIST = '/top-list';

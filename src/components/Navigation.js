@@ -31,7 +31,10 @@ class Navigation extends React.Component {
     };
 
     render() {
-        const isTest = !process.env.NODE_ENV || process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test';
+        const isTest =
+            !process.env.NODE_ENV ||
+            process.env.NODE_ENV === 'development' ||
+            process.env.NODE_ENV === 'test';
 
         return (
             <nav className="navbar">
@@ -42,7 +45,16 @@ class Navigation extends React.Component {
                     >
                         YadahReg
                         {isTest && ' - '}
-                        {isTest && <span style={{ color: 'red', fontWeight: 'bold' }}>Testing</span>}
+                        {isTest && (
+                            <span
+                                style={{
+                                    color: 'red',
+                                    fontWeight: 'bold',
+                                }}
+                            >
+                                Testing
+                            </span>
+                        )}
                     </Link>
                     <button
                         className="navbar__hamburger-menu"
@@ -67,14 +79,14 @@ class Navigation extends React.Component {
                         }
                     />
                 ) : (
-                        <NavigationNonAuth
-                            active={this.state.navDrawerActive}
-                            activeSubDrawer={this.state.activeSubDrawer}
-                            onActivateSubDrawer={
-                                this.handleActivateSubDrawer
-                            }
-                        />
-                    )}
+                    <NavigationNonAuth
+                        active={this.state.navDrawerActive}
+                        activeSubDrawer={this.state.activeSubDrawer}
+                        onActivateSubDrawer={
+                            this.handleActivateSubDrawer
+                        }
+                    />
+                )}
             </nav>
         );
     }
@@ -86,57 +98,70 @@ const NavigationAuth = ({
     activeSubDrawer,
     onActivateSubDrawer,
 }) => (
-        <ul
-            className={`navbar__drawer ${
-                active ? 'navbar__drawer--active' : ''
-                }`}
+    <ul
+        className={`navbar__drawer ${
+            active ? 'navbar__drawer--active' : ''
+        }`}
+    >
+        {authUser.permissions[PERMISSIONS.EVENTS_WRITE] && (
+            <NavLink link={ROUTES.REGISTRATION}>Registrering</NavLink>
+        )}
+        {authUser.permissions[PERMISSIONS.SEMESTERS_WRITE] && (
+            <NavLink link={ROUTES.PAYMENT}>Betaling</NavLink>
+        )}
+        {authUser.permissions[PERMISSIONS.MEMBERS_WRITE] && (
+            <NavLink link={ROUTES.MEMBERS}>Medlemmer</NavLink>
+        )}
+        <NavSubDrawer
+            title="Verktøy"
+            active={activeSubDrawer === 'Verktøy'}
+            onActivateSubDrawer={onActivateSubDrawer}
         >
-            {authUser.permissions[PERMISSIONS.EVENTS_WRITE] && (
-                <NavLink link={ROUTES.REGISTRATION}>Registrering</NavLink>
-            )}
-            {authUser.permissions[PERMISSIONS.SEMESTERS_WRITE] && (
-                <NavLink link={ROUTES.PAYMENT}>Betaling</NavLink>
-            )}
-            {authUser.permissions[PERMISSIONS.MEMBERS_WRITE] && (
-                <NavLink link={ROUTES.MEMBERS}>Medlemmer</NavLink>
-            )}
-            <NavSubDrawer
-                title="Verktøy"
-                active={activeSubDrawer === 'Verktøy'}
-                onActivateSubDrawer={onActivateSubDrawer}
-            >
-                {authUser.permissions[PERMISSIONS.USERS_READ] &&
-                    authUser.permissions[PERMISSIONS.EVENTS_READ] &&
-                    authUser.permissions[PERMISSIONS.SEMESTERS_READ] && (
-                        <NavLink link={ROUTES.DATA_EXPORT}>
-                            Eksporter data
+            {authUser.permissions[PERMISSIONS.USERS_READ] &&
+                authUser.permissions[PERMISSIONS.EVENTS_READ] &&
+                authUser.permissions[PERMISSIONS.SEMESTERS_READ] && (
+                    <NavLink link={ROUTES.DATA_EXPORT}>
+                        Eksporter data
                     </NavLink>
-                    )}
-            </NavSubDrawer>
-            <NavSubDrawer
-                title="Admin"
-                active={activeSubDrawer === 'Admin'}
-                onActivateSubDrawer={onActivateSubDrawer}
-            >
-                {authUser.permissions[PERMISSIONS.USERS_WRITE] && (
-                    <NavLink link={ROUTES.USER_LIST}>Brukere</NavLink>
                 )}
-                {authUser.permissions[PERMISSIONS.ROLES_WRITE] && (
-                    <NavLink link={ROUTES.ROLES}>Roller</NavLink>
+            {authUser.permissions[PERMISSIONS.USERS_READ] &&
+                authUser.permissions[PERMISSIONS.EVENTS_READ] && (
+                    <NavLink link={ROUTES.INACTIVE_MEMBERS}>
+                        Inaktive medlemmer
+                    </NavLink>
                 )}
-            </NavSubDrawer>
-            <NavLink link={ROUTES.ACCOUNT}>Min Bruker</NavLink>
-            <li className="navbar__element">
-                <SignOutButton buttonClass="navbar__link" />
-            </li>
-        </ul>
-    );
+            {authUser.permissions[PERMISSIONS.USERS_READ] &&
+                authUser.permissions[PERMISSIONS.EVENTS_READ] &&
+                authUser.permissions[PERMISSIONS.SEMESTERS_READ] && (
+                    <NavLink link={ROUTES.TOP_LIST}>
+                        Toppliste
+                    </NavLink>
+                )}
+        </NavSubDrawer>
+        <NavSubDrawer
+            title="Admin"
+            active={activeSubDrawer === 'Admin'}
+            onActivateSubDrawer={onActivateSubDrawer}
+        >
+            {authUser.permissions[PERMISSIONS.USERS_WRITE] && (
+                <NavLink link={ROUTES.USER_LIST}>Brukere</NavLink>
+            )}
+            {authUser.permissions[PERMISSIONS.ROLES_WRITE] && (
+                <NavLink link={ROUTES.ROLES}>Roller</NavLink>
+            )}
+        </NavSubDrawer>
+        <NavLink link={ROUTES.ACCOUNT}>Min Bruker</NavLink>
+        <li className="navbar__element">
+            <SignOutButton buttonClass="navbar__link" />
+        </li>
+    </ul>
+);
 
 const NavigationNonAuth = ({ active }) => (
     <ul
         className={`navbar__drawer ${
             active ? 'navbar__drawer--active' : ''
-            }`}
+        }`}
     >
         {/*<NavLink link={ROUTES.SIGN_IN}>Sign In</NavLink>*/}
     </ul>
@@ -179,7 +204,7 @@ class NavSubDrawer extends React.Component {
                             this.props.active
                                 ? 'navbar__subdrawer-link--active'
                                 : ''
-                            }`}
+                        }`}
                         onClick={this.handleClick}
                     >
                         {this.props.title}
@@ -188,7 +213,7 @@ class NavSubDrawer extends React.Component {
                                 this.props.active
                                     ? 'fa-caret-down'
                                     : 'fa-caret-right'
-                                }`}
+                            }`}
                         />
                     </button>
                 </span>
@@ -198,7 +223,7 @@ class NavSubDrawer extends React.Component {
                         this.props.active
                             ? 'navbar__subdrawer--active'
                             : ''
-                        }`}
+                    }`}
                 >
                     {this.props.children}
                 </ul>
