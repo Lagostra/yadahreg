@@ -6,7 +6,7 @@ cache:
   - node_modules
 stages:
   - name: deploy-test
-    if: NOT (tag =~ ^v)
+    if: NOT (tag =~ ^v) && (branch = master)
   - name: deploy  
     if: (tag =~ ^v)
 
