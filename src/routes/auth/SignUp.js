@@ -52,12 +52,12 @@ class SignUpFormBase extends Component {
         this.props.firebase
             .doCreateUserWithEmailAndPassword(email, passwordOne)
             .then(authUser => {
-                return this.props.firebase
-                    .user(authUser.user.uid)
-                    .set({
-                        name,
-                        email,
-                    });
+                setTimeout(() => {
+                    this.props.firebase
+                        .user(authUser.user.uid)
+                        .child('name')
+                        .set(name);
+                }, 1000);
             })
             .then(() => {
                 this.setState({ ...INITIAL_STATE });
