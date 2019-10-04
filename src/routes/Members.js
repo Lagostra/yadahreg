@@ -230,7 +230,7 @@ class MemberFormBase extends React.Component {
                 active: true,
                 address: '',
                 allergies: '',
-                birthdate: '',
+                birthday: '',
                 email: '',
                 first_name: '',
                 gender: '',
@@ -264,15 +264,40 @@ class MemberFormBase extends React.Component {
     onSubmit = event => {
         event.preventDefault();
         let memberId;
+
+        const {
+            active,
+            address,
+            allergies,
+            birthday,
+            email,
+            first_name,
+            gender,
+            last_name,
+            phone,
+            voice_group,
+        } = this.state;
+
+        const member = {
+            active,
+            address,
+            allergies,
+            birthday,
+            email,
+            first_name,
+            gender,
+            last_name,
+            phone,
+            voice_group,
+        };
+
         if (this.props.member) {
             this.props.firebase
                 .member(this.props.member.id)
-                .set(this.state);
+                .set(member);
             memberId = this.props.member.id;
         } else {
-            const ref = this.props.firebase
-                .members()
-                .push(this.state);
+            const ref = this.props.firebase.members().push(member);
             memberId = ref.getKey();
         }
 
