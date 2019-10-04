@@ -8,6 +8,7 @@ import { PasswordForgetLink } from './PasswordForget';
 import { withFirebase } from '../../components/Firebase';
 import * as ROUTES from '../../constants/routes';
 import { withAuthUser } from '../../components/Session';
+import Spinner from '../../components/Spinner';
 
 const ERROR_CODE_ACCOUNT_EXISTS =
     'auth/account-exists-with-different-credential';
@@ -19,30 +20,48 @@ const ERROR_MSG_ACCOUNT_EXISTS = `
 `;
 
 class SignInPage extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = { loggingIn: false, error: '' };
+    }
+
     componentDidMount() {
         if (window.localStorage.hasOwnProperty('login_redirect')) {
             const loginRedirect = JSON.parse(
                 window.localStorage['login_redirect'],
             );
             if (moment() < moment(loginRedirect['timeout']))
-                this.props.firebase.auth
-                    .getRedirectResult()
-                    .then(() => {
-                        this.props.history.push(ROUTES.HOME);
-                    });
+                this.setState({ loggingIn: true });
+            this.props.firebase.auth
+                .getRedirectResult()
+                .then(() => {
+                    this.props.history.push(ROUTES.HOME);
+                    this.setState({ loggingIn: false });
+                })
+                .catch(error => {
+                    this.setState({ loggingIn: false, error });
+                });
             window.localStorage.removeItem('login_redirect');
         }
     }
 
     render() {
+        const { loggingIn, error } = this.state;
         return (
             <div className="signin__container">
                 <h1>YadahReg</h1>
-                <h2>Sign in</h2>
-                <SignInForm />
-                <SignInGoogle />
-                <SignInFacebook />
-                <SignUpLink />
+                <h2>{loggingIn ? 'Signing in' : 'Sign in'}</h2>
+                {error && <p>{error}</p>}
+                {loggingIn && <Spinner />}
+                {!loggingIn && (
+                    <React.Fragment>
+                        <SignInForm />
+                        <SignInGoogle />
+                        <SignInFacebook />
+                        <SignUpLink />
+                    </React.Fragment>
+                )}
             </div>
         );
     }
