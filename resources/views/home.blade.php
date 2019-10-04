@@ -3,6 +3,11 @@
 @section('content')
 <div class="row">
     <div class="col-md-10 col-md-offset-1">
+        <div class="alert alert-danger">
+                        Dette er den gamle versjonen av YadahReg, som ikke lenger er i bruk! Endringer foretatt her vil derfor ikke lagres i korets registere.
+                        Det jobbes med å få den nye versjonen opp og gå - den vil snart bli tilgjengelig.
+                    </div>
+
         <div class="panel panel-default">
             <div class="panel-body">
                 <noscript>
@@ -16,10 +21,6 @@
                     Velkommen til YadahReg!
                 </h3>
 
-                <div class="alert alert-danger">
-                    Dette er den gamle versjonen av YadahReg, som ikke lenger er i bruk! Endringer foretatt her vil derfor ikke lagres i korets registere.
-                    Det jobbes med å få den nye versjonen opp og gå - den vil snart bli tilgjengelig.
-                </div>
 
                 @if(Auth::user()->is_user())
                 <p>
