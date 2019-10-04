@@ -1,6 +1,7 @@
 @import '_variables.scss';
 
 table {
+    max-width: 100%;
     margin-top: 50px;
 
     th {
@@ -15,15 +16,17 @@ table {
             display: table-cell;
         }
     }
+
+    td, th {
+        margin: 0;
+        padding: 10px 5px;
+        white-space: break;
+        word-break: break-word;
+    }
 }
 
 .table-full-width {
     width: 100%;
-
-    td {
-        margin: 0;
-        padding: 10px 0;
-    }
 
     tr {
         vertical-align: middle;
