@@ -54,6 +54,16 @@ class Firebase {
                     .then(snapshot => {
                         const dbUser = snapshot.val();
 
+                        if (!dbUser) {
+                            authUser = {
+                                uid: authUser.uid,
+                                email: authUser.email,
+                                permissions: {},
+                            };
+                            next(authUser);
+                            return;
+                        }
+
                         if (dbUser.role) {
                             this.permissionsOfRole(dbUser.role)
                                 .once('value')
