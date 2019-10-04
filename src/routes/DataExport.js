@@ -249,7 +249,7 @@ const DataExportBase = ({ firebase, authUser }) => {
 
 const authCondition = authUser =>
     !!authUser &&
-    !!authUser.permissions[PERMISSIONS.USERS_READ] &&
+    !!authUser.permissions[PERMISSIONS.MEMBERS_READ] &&
     !!authUser.permissions[PERMISSIONS.EVENTS_READ] &&
     !!authUser.permissions[PERMISSIONS.SEMESTERS_READ];
 

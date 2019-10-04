@@ -241,7 +241,7 @@ class InactiveMembers extends React.Component {
 
 const authCondition = authUser =>
     !!authUser &&
-    !!authUser.permissions[PERMISSIONS.USERS_READ] &&
+    !!authUser.permissions[PERMISSIONS.MEMBERS_READ] &&
     !!authUser.permissions[PERMISSIONS.EVENTS_READ];
 
 export default compose(
