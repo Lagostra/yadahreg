@@ -1,7 +1,11 @@
 import React from 'react';
+import { compose } from 'recompose';
+
 import { withFirebase } from '../components/Firebase';
 import Spinner from '../components/Spinner';
 import moment from 'moment';
+import { withAuthorization } from '../components/Session';
+import * as PERMISSIONS from '../constants/permissions';
 
 class TopListPage extends React.Component {
     constructor(props) {
@@ -172,4 +176,13 @@ const TopList = ({
     );
 };
 
-export default withFirebase(TopListPage);
+const authCondition = authUser =>
+    !!authUser &&
+    !!authUser.permissions[PERMISSIONS.USERS_READ] &&
+    !!authUser.permissions[PERMISSIONS.EVENTS_READ] &&
+    !!authUser.permissions[PERMISSIONS.SEMESTERS_READ];
+
+export default compose(
+    withFirebase,
+    withAuthorization(authCondition),
+)(TopListPage);

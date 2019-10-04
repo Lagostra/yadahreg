@@ -5,7 +5,10 @@ import { saveAs } from 'file-saver';
 import { compose } from 'recompose';
 
 import { withFirebase } from '../components/Firebase';
-import { withAuthUser } from './../components/Session';
+import {
+    withAuthUser,
+    withAuthorization,
+} from './../components/Session';
 import * as PERMISSIONS from '../constants/permissions';
 
 const DataExportBase = ({ firebase, authUser }) => {
@@ -244,9 +247,16 @@ const DataExportBase = ({ firebase, authUser }) => {
     );
 };
 
+const authCondition = authUser =>
+    !!authUser &&
+    !!authUser.permissions[PERMISSIONS.USERS_READ] &&
+    !!authUser.permissions[PERMISSIONS.EVENTS_READ] &&
+    !!authUser.permissions[PERMISSIONS.SEMESTERS_READ];
+
 const DataExport = compose(
     withFirebase,
     withAuthUser,
+    withAuthorization(authCondition),
 )(DataExportBase);
 
 export default DataExport;

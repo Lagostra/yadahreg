@@ -2,6 +2,9 @@ import React from 'react';
 import { withFirebase } from './../../components/Firebase';
 import SemesterSelector from './SemesterSelector';
 import PaymentForm from './PaymentForm';
+import { compose } from 'recompose';
+import * as PERMISSIONS from '../../constants/permissions';
+import { withAuthorization } from '../../components/Session';
 
 class PaymentPage extends React.Component {
     constructor(props) {
@@ -105,4 +108,10 @@ class PaymentPage extends React.Component {
     }
 }
 
-export default withFirebase(PaymentPage);
+const authCondition = authUser =>
+    !!authUser && !!authUser.permissions[PERMISSIONS.SEMESTERS_WRITE];
+
+export default compose(
+    withFirebase,
+    withAuthorization(authCondition),
+)(PaymentPage);

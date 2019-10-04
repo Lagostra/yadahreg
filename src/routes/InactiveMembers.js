@@ -1,10 +1,13 @@
 import React from 'react';
 import moment from 'moment';
+import { compose } from 'recompose';
 
 import { withFirebase } from '../components/Firebase';
 import Spinner from '../components/Spinner';
 import Modal from '../components/Modal';
 import { MemberForm } from './Members';
+import * as PERMISSIONS from '../constants/permissions';
+import { withAuthorization } from '../components/Session';
 
 class InactiveMembers extends React.Component {
     constructor(props) {
@@ -236,4 +239,12 @@ class InactiveMembers extends React.Component {
     }
 }
 
-export default withFirebase(InactiveMembers);
+const authCondition = authUser =>
+    !!authUser &&
+    !!authUser.permissions[PERMISSIONS.USERS_READ] &&
+    !!authUser.permissions[PERMISSIONS.EVENTS_READ];
+
+export default compose(
+    withFirebase,
+    withAuthorization(authCondition),
+)(InactiveMembers);

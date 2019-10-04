@@ -2,6 +2,9 @@ import React from 'react';
 import { withFirebase } from '../../components/Firebase';
 import RegistrationForm from './RegistrationForm';
 import EventSelector from './EventSelector';
+import { compose } from 'recompose';
+import * as PERMISSIONS from '../../constants/permissions';
+import { withAuthorization } from '../../components/Session';
 
 class RegistrationPage extends React.Component {
     constructor(props) {
@@ -114,4 +117,10 @@ class RegistrationPage extends React.Component {
     }
 }
 
-export default withFirebase(RegistrationPage);
+const authCondition = authUser =>
+    !!authUser && !!authUser.permissions[PERMISSIONS.EVENTS_WRITE];
+
+export default compose(
+    withFirebase,
+    withAuthorization(authCondition),
+)(RegistrationPage);
