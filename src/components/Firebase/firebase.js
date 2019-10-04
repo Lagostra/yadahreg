@@ -1,6 +1,8 @@
 import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
+import { isMobile } from 'mobile-device-detect';
+import moment from 'moment';
 
 const config = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -31,11 +33,35 @@ class Firebase {
     doSignInWithEmailAndPassword = (email, password) =>
         this.auth.signInWithEmailAndPassword(email, password);
 
-    doSignInWithGoogle = () =>
-        this.auth.signInWithPopup(this.googleProvider);
+    doSignInWithGoogle = () => {
+        if (isMobile) {
+            window.localStorage.setItem(
+                'login_redirect',
+                JSON.stringify({
+                    timeout: moment()
+                        .add(1, 'minutes')
+                        .toDate(),
+                }),
+            );
+            return this.auth.signInWithRedirect(this.googleProvider);
+        }
+        return this.auth.signInWithPopup(this.googleProvider);
+    };
 
-    doSignInWithFacebook = () =>
-        this.auth.signInWithPopup(this.facebookProvider);
+    doSignInWithFacebook = () => {
+        if (isMobile) {
+            window.localStorage.setItem(
+                'login_redirect',
+                JSON.stringify({
+                    timeout: moment()
+                        .add(1, 'minutes')
+                        .toDate(),
+                }),
+            );
+            return this.auth.signInWithRedirect(this.googleProvider);
+        }
+        return this.auth.signInWithPopup(this.facebookProvider);
+    };
 
     doSignOut = () => this.auth.signOut();
 

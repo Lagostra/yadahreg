@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
+import moment from 'moment';
 
 import { SignUpLink } from './SignUp';
 import { PasswordForgetLink } from './PasswordForget';
@@ -17,16 +18,35 @@ const ERROR_MSG_ACCOUNT_EXISTS = `
   your personal account page.
 `;
 
-const SignInPage = () => (
-    <div className="signin__container">
-        <h1>YadahReg</h1>
-        <h2>Sign in</h2>
-        <SignInForm />
-        <SignInGoogle />
-        <SignInFacebook />
-        <SignUpLink />
-    </div>
-);
+class SignInPage extends React.Component {
+    componentDidMount() {
+        if (window.localStorage.hasOwnProperty('login_redirect')) {
+            const loginRedirect = JSON.parse(
+                window.localStorage['login_redirect'],
+            );
+            if (moment() < moment(loginRedirect['timeout']))
+                this.props.firebase.auth
+                    .getRedirectResult()
+                    .then(() => {
+                        this.props.history.push(ROUTES.HOME);
+                    });
+            window.localStorage.removeItem('login_redirect');
+        }
+    }
+
+    render() {
+        return (
+            <div className="signin__container">
+                <h1>YadahReg</h1>
+                <h2>Sign in</h2>
+                <SignInForm />
+                <SignInGoogle />
+                <SignInFacebook />
+                <SignUpLink />
+            </div>
+        );
+    }
+}
 
 const INITIAL_STATE = {
     email: '',
@@ -201,6 +221,9 @@ const SignInFacebook = compose(
     withFirebase,
 )(SignInFacebookBase);
 
-export default SignInPage;
+export default compose(
+    withFirebase,
+    withRouter,
+)(SignInPage);
 
 export { SignInForm, SignInGoogle, SignInFacebook };
