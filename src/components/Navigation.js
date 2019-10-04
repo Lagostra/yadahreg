@@ -32,9 +32,9 @@ class Navigation extends React.Component {
 
     render() {
         const isTest =
-            !process.env.NODE_ENV ||
-            process.env.NODE_ENV === 'development' ||
-            process.env.NODE_ENV === 'test';
+            !process.env.REACT_ENVIRONMENT ||
+            process.env.REACT_ENVIRONMENT === 'development' ||
+            process.env.REACT_ENVIRONMENT === 'test';
 
         return (
             <nav className="navbar">
