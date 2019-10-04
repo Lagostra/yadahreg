@@ -6,6 +6,8 @@
         <div class="alert alert-danger">
                         Dette er den gamle versjonen av YadahReg, som ikke lenger er i bruk! Endringer foretatt her vil derfor ikke lagres i korets registere.
                         Det jobbes med å få den nye versjonen opp og gå - den vil snart bli tilgjengelig.
+
+                        Dersom du ønsker å prøve ut den nye versjonen uten risiko for å ødelegge noe viktig, kan du bruke testversjonen på <a href="https://yadahreg-test.andreassen.info/">https://yadahreg-test.andreassen.info/</a>.
                     </div>
 
         <div class="panel panel-default">
