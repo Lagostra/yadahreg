@@ -4,11 +4,16 @@
 <div class="row">
     <div class="col-md-10 col-md-offset-1">
         <div class="alert alert-danger">
-                        Dette er den gamle versjonen av YadahReg, som ikke lenger er i bruk! Endringer foretatt her vil derfor ikke lagres i korets registere.
-                        Det jobbes med å få den nye versjonen opp og gå - den vil snart bli tilgjengelig.
+            <p>
+                Dette er den gamle versjonen av YadahReg, som ikke lenger er i bruk! Endringer foretatt her vil derfor ikke lagres i korets registere.
+                Den nye versjonen er tilgjengelig på <a href="https://yadahreg.andreassen.info/">https://yadahreg.andreassen.info/</a>. 
+                Du må registrere en ny bruker og få aktivert den av en administrator for å få tilgang.
+            </p>
 
-                        Dersom du ønsker å prøve ut den nye versjonen uten risiko for å ødelegge noe viktig, kan du bruke testversjonen på <a href="https://yadahreg-test.andreassen.info/">https://yadahreg-test.andreassen.info/</a>.
-                    </div>
+            <p>
+                Dersom du ønsker å prøve ut den nye versjonen uten risiko for å ødelegge noe viktig, kan du bruke testversjonen på <a href="https://yadahreg-test.andreassen.info/">https://yadahreg-test.andreassen.info/</a>.
+            </p>
+            </div>
 
         <div class="panel panel-default">
             <div class="panel-body">
