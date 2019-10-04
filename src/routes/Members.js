@@ -359,10 +359,10 @@ class MemberFormBase extends React.Component {
                     <option value="Kvinne">Kvinne</option>
                 </select>
 
-                <label htmlFor="birthdate">Fødselsdato</label>
+                <label htmlFor="birthday">Fødselsdato</label>
                 <input
-                    name="birthdate"
-                    value={this.state.birthdate}
+                    name="birthday"
+                    value={this.state.birthday}
                     onChange={this.onChange}
                     type="date"
                 />
