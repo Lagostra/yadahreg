@@ -278,7 +278,7 @@ class MemberFormBase extends React.Component {
             voice_group,
         } = this.state;
 
-        const member = {
+        let member = {
             active,
             address,
             allergies,
@@ -297,6 +297,9 @@ class MemberFormBase extends React.Component {
                 .set(member);
             memberId = this.props.member.id;
         } else {
+            const createdAt = moment().toISOString();
+            member['created_at'] = createdAt;
+
             const ref = this.props.firebase.members().push(member);
             memberId = ref.getKey();
         }
