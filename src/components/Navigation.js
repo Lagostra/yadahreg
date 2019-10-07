@@ -117,13 +117,11 @@ const NavigationAuth = ({
             active={activeSubDrawer === 'Verktøy'}
             onActivateSubDrawer={onActivateSubDrawer}
         >
-            {authUser.permissions[PERMISSIONS.MEMBERS_READ] &&
-                authUser.permissions[PERMISSIONS.EVENTS_READ] &&
-                authUser.permissions[PERMISSIONS.SEMESTERS_READ] && (
-                    <NavLink link={ROUTES.DATA_EXPORT}>
-                        Eksporter data
-                    </NavLink>
-                )}
+            {authUser.permissions[PERMISSIONS.MEMBERS_READ] && (
+                <NavLink link={ROUTES.MAILING_LIST}>
+                    Mailliste
+                </NavLink>
+            )}
             {authUser.permissions[PERMISSIONS.MEMBERS_READ] &&
                 authUser.permissions[PERMISSIONS.EVENTS_READ] && (
                     <NavLink link={ROUTES.INACTIVE_MEMBERS}>
@@ -135,6 +133,13 @@ const NavigationAuth = ({
                 authUser.permissions[PERMISSIONS.SEMESTERS_READ] && (
                     <NavLink link={ROUTES.TOP_LIST}>
                         Toppliste
+                    </NavLink>
+                )}
+            {authUser.permissions[PERMISSIONS.MEMBERS_READ] &&
+                authUser.permissions[PERMISSIONS.EVENTS_READ] &&
+                authUser.permissions[PERMISSIONS.SEMESTERS_READ] && (
+                    <NavLink link={ROUTES.DATA_EXPORT}>
+                        Eksporter data
                     </NavLink>
                 )}
         </NavSubDrawer>

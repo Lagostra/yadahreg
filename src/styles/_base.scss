@@ -88,10 +88,13 @@ select {
 }
 
 .btn {
+    display: block;
+    box-sizing: border-box;
     width: 100%;
     padding: 10px;
     margin-top: 20px;
     font-size: 1.2em;
+    line-height: normal;
     border-radius: 5px;
     box-shadow: 0 5px 3px 0 $color2;
     text-align: center;
@@ -142,6 +145,7 @@ select {
     }
 
     .btn {
+        display: inline-block;
         width: auto;
         margin-right: 10px;
     }
