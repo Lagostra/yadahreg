@@ -7,7 +7,7 @@ import * as ROUTES from '../../constants/routes';
 const PasswordForgetPage = () => (
     <div className="password-forget__container">
         <h1>YadahReg</h1>
-        <h2>Forgot Password</h2>
+        <h2>Glemt passord</h2>
         <PasswordForgetForm />
     </div>
 );
@@ -55,7 +55,7 @@ class PasswordForgetFormBase extends Component {
                     value={this.state.email}
                     onChange={this.onChange}
                     type="text"
-                    placeholder="Email Address"
+                    placeholder="E-Post"
                 />
 
                 <button
@@ -63,7 +63,7 @@ class PasswordForgetFormBase extends Component {
                     type="submit"
                     className="password-forget__submit"
                 >
-                    Reset My Password
+                    Tilbakestill passord
                 </button>
 
                 {error && <p>{error.message}</p>}
@@ -74,7 +74,7 @@ class PasswordForgetFormBase extends Component {
 
 const PasswordForgetLink = () => (
     <p>
-        <Link to={ROUTES.PASSWORD_FORGET}>Forgot Password?</Link>
+        <Link to={ROUTES.PASSWORD_FORGET}>Glemt passord?</Link>
     </p>
 );
 

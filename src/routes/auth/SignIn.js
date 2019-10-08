@@ -51,7 +51,7 @@ class SignInPage extends React.Component {
         return (
             <div className="signin__container">
                 <h1>YadahReg</h1>
-                <h2>{loggingIn ? 'Signing in' : 'Sign in'}</h2>
+                <h2>{loggingIn ? 'Logger inn...' : 'Logg inn'}</h2>
                 {error && <p>{error}</p>}
                 {loggingIn && <Spinner />}
                 {!loggingIn && (
@@ -116,14 +116,14 @@ class SignInFormBase extends Component {
                     value={email}
                     onChange={this.onChange}
                     type="text"
-                    placeholder="Email Address"
+                    placeholder="E-post"
                 />
                 <input
                     name="password"
                     value={password}
                     onChange={this.onChange}
                     type="password"
-                    placeholder="Password"
+                    placeholder="Passord"
                 />
 
                 <PasswordForgetLink />
@@ -133,7 +133,7 @@ class SignInFormBase extends Component {
                     type="submit"
                     className="signin__submit"
                 >
-                    Sign In
+                    Logg inn
                 </button>
 
                 {error && <p>{error.message}</p>}
@@ -181,7 +181,7 @@ class SignInGoogleBase extends React.Component {
                     type="submit"
                     className="signin__social signin__social-google"
                 >
-                    Sign In with Google
+                    Logg inn med Google
                 </button>
 
                 {error && <p>{error.message}</p>}
@@ -227,7 +227,7 @@ class SignInFacebookBase extends React.Component {
                     type="submit"
                     className="signin__social signin__social-facebook"
                 >
-                    Sign In with Facebook
+                    Logg inn med Facebook
                 </button>
                 {error && <p>{error.message}</p>}
             </form>

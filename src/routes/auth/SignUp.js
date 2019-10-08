@@ -19,7 +19,7 @@ const ERROR_MSG_ACCOUNT_EXISTS = `
 const SignUpPage = () => (
     <div className="signup__container">
         <h1>YadahReg</h1>
-        <h2>Sign Up</h2>
+        <h2>Registrer deg</h2>
         <SignUpForm />
         <SignInGoogle />
         <SignInFacebook />
@@ -97,28 +97,28 @@ class SignUpFormBase extends Component {
                     value={name}
                     onChange={this.onChange}
                     type="text"
-                    placeholder="Full Name"
+                    placeholder="Fullt navn"
                 />
                 <input
                     name="email"
                     value={email}
                     onChange={this.onChange}
                     type="text"
-                    placeholder="Email Address"
+                    placeholder="E-post"
                 />
                 <input
                     name="passwordOne"
                     value={passwordOne}
                     onChange={this.onChange}
                     type="password"
-                    placeholder="Password"
+                    placeholder="Passord"
                 />
                 <input
                     name="passwordTwo"
                     value={passwordTwo}
                     onChange={this.onChange}
                     type="password"
-                    placeholder="Confirm Password"
+                    placeholder="Bekreft passord"
                 />
 
                 <button
@@ -126,7 +126,7 @@ class SignUpFormBase extends Component {
                     disabled={isInvalid}
                     className="signup__submit"
                 >
-                    Sign Up
+                    Registrer
                 </button>
 
                 {error && <p>{error.message}</p>}
@@ -137,8 +137,8 @@ class SignUpFormBase extends Component {
 
 const SignUpLink = () => (
     <p>
-        Don't have an account?{' '}
-        <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
+        Har du ikke bruker?{' '}
+        <Link to={ROUTES.SIGN_UP}>Registrer deg</Link>
     </p>
 );
 
