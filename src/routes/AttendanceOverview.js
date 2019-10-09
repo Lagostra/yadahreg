@@ -11,7 +11,7 @@ class AttendanceOverview extends React.Component {
             members: [],
             events: [],
             startDate: moment()
-                .subtract(300, 'd')
+                .subtract(30, 'd')
                 .toDate(),
             endDate: moment()
                 .add(1, 'd')
