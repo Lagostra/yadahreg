@@ -37,6 +37,29 @@ table {
     }
 }
 
+.table-scroll-container {
+    width: 100%;
+    overflow-x: auto;
+
+    table {
+        width: auto;
+
+        td {
+            white-space: nowrap;
+            word-break: none;
+        }
+
+        th {
+            white-space: nowrap;
+            word-break: none;
+        }
+    }
+
+    .table-full-width {
+        min-width: 100%;
+    }
+}
+
 .table-hor-lines-between {
 
     tr {

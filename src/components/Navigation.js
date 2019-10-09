@@ -124,6 +124,12 @@ const NavigationAuth = ({
             )}
             {authUser.permissions[PERMISSIONS.MEMBERS_READ] &&
                 authUser.permissions[PERMISSIONS.EVENTS_READ] && (
+                    <NavLink link={ROUTES.ATTENDANCE_OVERVIEW}>
+                        Oppmøte
+                    </NavLink>
+                )}
+            {authUser.permissions[PERMISSIONS.MEMBERS_READ] &&
+                authUser.permissions[PERMISSIONS.EVENTS_READ] && (
                     <NavLink link={ROUTES.INACTIVE_MEMBERS}>
                         Inaktive medlemmer
                     </NavLink>
