@@ -27,6 +27,7 @@ import DataExport from './routes/DataExport';
 import InactiveMembers from './routes/InactiveMembers';
 import TopList from './routes/TopList';
 import MailingList from './routes/MailingList';
+import AttendanceOverview from './routes/AttendanceOverview';
 
 const App = props => {
     const showNavigation = !!props.authUser;
@@ -92,6 +93,10 @@ const App = props => {
                     component={MailingList}
                 />
                 <Route path={ROUTES.TOP_LIST} component={TopList} />
+                <Route
+                    path={ROUTES.ATTENDANCE_OVERVIEW}
+                    component={AttendanceOverview}
+                />
             </div>
         </Router>
     );
