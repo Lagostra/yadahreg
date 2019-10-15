@@ -138,7 +138,7 @@ class TopListPage extends React.Component {
                     )}
                 </div>
                 {eventTypeDrawerOpen && (
-                    <div>
+                    <div style={{ padding: '0 15px' }}>
                         {console.log(
                             selectedEventTypes.includes('Øvelse'),
                         )}
@@ -153,6 +153,7 @@ class TopListPage extends React.Component {
                                     onChange={
                                         this.handleEventTypeChange
                                     }
+                                    className="inline"
                                 />
                                 {eventType}
                             </React.Fragment>
