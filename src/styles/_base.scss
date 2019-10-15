@@ -79,6 +79,15 @@ input[type="checkbox"] {
     display: block;
 }
 
+input[type="checkbox"].inline {
+    display: inline;
+    margin-left: 15px;
+}
+
+input[type="checkbox"].inline:first-child {
+    margin-left: 0;
+}
+
 label {
     font-size: 1.1em;
     margin-top: 20px;
