@@ -162,12 +162,13 @@ class TopListPage extends React.Component {
                 <TopList
                     members={members}
                     events={events}
-                    start_date={
+                    eventTypes={selectedEventTypes}
+                    startDate={
                         selectedSemester
                             ? selectedSemester.start_date
                             : '1970-01-01'
                     }
-                    end_date={
+                    endDate={
                         selectedSemester
                             ? selectedSemester.end_date
                             : '4000-01-01'
@@ -181,20 +182,20 @@ class TopListPage extends React.Component {
 const TopList = ({
     members,
     events,
-    start_date,
-    end_date,
-    event_type = 'Øvelse',
+    startDate,
+    endDate,
+    eventTypes = ['Øvelse'],
 }) => {
-    if (!members || !events || !start_date || !end_date) {
+    if (!members || !events || !startDate || !endDate) {
         return <Spinner />;
     }
 
     events = events.filter(event => {
         const d = moment(event.date);
         return (
-            d > moment(start_date) &&
-            d < moment(end_date) &&
-            (!event_type || event.type === event_type)
+            d > moment(startDate) &&
+            d < moment(endDate) &&
+            (!eventTypes || eventTypes.includes(event.type))
         );
     });
 
