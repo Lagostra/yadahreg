@@ -14,8 +14,11 @@ class TopListPage extends React.Component {
         this.state = {
             members: [],
             events: [],
+            eventTypes: [],
             semesters: [],
             selectedSemester: '',
+            eventTypeDrawerOpen: false,
+            selectedEventTypes: ['Øvelse'],
         };
     }
 
@@ -52,6 +55,14 @@ class TopListPage extends React.Component {
             this.setState({ semesters });
             this.setState({ selectedSemester: semesters[0] });
         });
+
+        this.props.firebase
+            .eventTypes()
+            .once('value')
+            .then(snapshot => {
+                const eventTypes = Object.keys(snapshot.val());
+                this.setState({ eventTypes });
+            });
     }
 
     handleSelectSemester = selectedSemesterId => {
@@ -61,12 +72,35 @@ class TopListPage extends React.Component {
         this.setState({ selectedSemester: s });
     };
 
+    handleEventTypeChange = event => {
+        let { selectedEventTypes } = this.state;
+        const eventType = event.currentTarget.name;
+        if (
+            event.currentTarget.checked &&
+            !selectedEventTypes.includes(eventType)
+        ) {
+            selectedEventTypes.push(eventType);
+        } else if (
+            !event.currentTarget.checked &&
+            selectedEventTypes.includes(eventType)
+        ) {
+            selectedEventTypes = selectedEventTypes.filter(
+                t => t !== eventType,
+            );
+        }
+
+        this.setState({ selectedEventTypes });
+    };
+
     render() {
         const {
             members,
             events,
             semesters,
             selectedSemester,
+            eventTypeDrawerOpen,
+            eventTypes,
+            selectedEventTypes,
         } = this.state;
         return (
             <div className="content">
@@ -88,6 +122,43 @@ class TopListPage extends React.Component {
                         </option>
                     ))}
                 </select>
+                <div
+                    onClick={() => {
+                        this.setState({
+                            eventTypeDrawerOpen: !eventTypeDrawerOpen,
+                        });
+                    }}
+                    style={{ cursor: 'pointer', padding: '15px' }}
+                >
+                    Typer arrangementer{' '}
+                    {eventTypeDrawerOpen ? (
+                        <i className="fas fa-caret-down" />
+                    ) : (
+                        <i className="fas fa-caret-right" />
+                    )}
+                </div>
+                {eventTypeDrawerOpen && (
+                    <div>
+                        {console.log(
+                            selectedEventTypes.includes('Øvelse'),
+                        )}
+                        {eventTypes.map(eventType => (
+                            <React.Fragment key={eventType}>
+                                <input
+                                    type="checkbox"
+                                    checked={selectedEventTypes.includes(
+                                        eventType,
+                                    )}
+                                    name={eventType}
+                                    onChange={
+                                        this.handleEventTypeChange
+                                    }
+                                />
+                                {eventType}
+                            </React.Fragment>
+                        ))}
+                    </div>
+                )}
                 <TopList
                     members={members}
                     events={events}
