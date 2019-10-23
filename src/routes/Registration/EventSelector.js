@@ -108,6 +108,7 @@ const EventList = ({ events, onEventSelect }) => {
                     <th>Dato</th>
                     <th>Tittel</th>
                     <th className="desktop-only">Type</th>
+                    <th className="desktop-only">Antall oppmøtte</th>
                     <th></th>
                 </tr>
             </thead>
@@ -130,6 +131,11 @@ const EventListElement = ({ event, onEventSelect }) => {
             <td>{moment(event.date).format('DD.MM.YYYY')}</td>
             <td>{event.title}</td>
             <td className="desktop-only">{event.type}</td>
+            <td className="desktop-only">
+                {!!event.attendants
+                    ? Object.keys(event.attendants).length
+                    : '0'}
+            </td>
             <td>
                 <button
                     onClick={() => onEventSelect(event)}
