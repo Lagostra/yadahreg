@@ -42,6 +42,20 @@ class EventSelectorBase extends React.Component {
             date: new Date().toISOString().split('T')[0],
         };
 
+        if (
+            this.state.events.filter(
+                e => e.date === event.date && e.type === event.type,
+            ).length
+        ) {
+            if (
+                !window.confirm(
+                    'Det finnes allerede en øvelse i dag. Vil du likevel opprette en ny?',
+                )
+            ) {
+                return;
+            }
+        }
+
         const newRef = this.props.firebase.events().push(event);
         event.id = newRef.getKey();
 
