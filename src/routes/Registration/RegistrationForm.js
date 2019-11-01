@@ -3,6 +3,7 @@ import ButtonSelect from '../../components/ButtonSelect';
 import moment from 'moment';
 import Modal from '../../components/Modal';
 import { MemberForm } from '../Members';
+import hasBirthday from '../../util/hasBirthday';
 
 class RegistrationForm extends React.Component {
     constructor(props) {
@@ -153,7 +154,14 @@ class RegistrationForm extends React.Component {
                                             member.last_name,
                                     )) && (
                                     <tr>
-                                        <td className="registration-form__member-name">
+                                        <td
+                                            className={
+                                                'registration-form__member-name ' +
+                                                (hasBirthday(member)
+                                                    ? 'registration-form__member-name--birthday'
+                                                    : '')
+                                            }
+                                        >
                                             {member.first_name}{' '}
                                             {member.last_name}
                                         </td>
