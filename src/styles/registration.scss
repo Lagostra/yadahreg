@@ -34,14 +34,13 @@
         word-wrap: break-word;
     }
 
-    .registration-form__member-name--birthday {
+    .registration-form__member--birthday {
         background: 
             linear-gradient(
                 rgba(255, 255, 255, 0.4), 
                 rgba(255, 255, 255, 0.4)
             ),
             url('../assets/birthday.png');
-            background-size: 33%;
     }
 
     .registration-form__buttons {

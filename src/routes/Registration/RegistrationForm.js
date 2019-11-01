@@ -153,15 +153,14 @@ class RegistrationForm extends React.Component {
                                             ' ' +
                                             member.last_name,
                                     )) && (
-                                    <tr>
-                                        <td
-                                            className={
-                                                'registration-form__member-name ' +
-                                                (hasBirthday(member)
-                                                    ? 'registration-form__member-name--birthday'
-                                                    : '')
-                                            }
-                                        >
+                                    <tr
+                                        className={
+                                            hasBirthday(member)
+                                                ? 'registration-form__member--birthday'
+                                                : ''
+                                        }
+                                    >
+                                        <td className="registration-form__member-name">
                                             {member.first_name}{' '}
                                             {member.last_name}
                                         </td>
