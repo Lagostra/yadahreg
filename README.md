@@ -4,7 +4,7 @@ A registration system developed for Yadah Gospel, a gospel choir based in Salem 
 
 For details about setup and usage, see the [documentation](docs/index.md).
 
-The code is open source under the GPL-3.0 license, so feel free to adapt it for any use. The project is built in React with Firebase as the backend.
+The code is open source under the GPL-3.0 license, so feel free to adapt it for any use (just make sure you check out the terms of the license first). The project is built in React with Firebase as the backend.
 
 &copy; 2016-2019 Eivind Lie Andreassen 
 
