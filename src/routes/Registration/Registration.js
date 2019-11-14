@@ -4,7 +4,11 @@ import RegistrationForm from './RegistrationForm';
 import EventSelector from './EventSelector';
 import { compose } from 'recompose';
 import * as PERMISSIONS from '../../constants/permissions';
-import { withAuthorization } from '../../components/Session';
+import {
+    withAuthorization,
+    withAuthUser,
+} from '../../components/Session';
+import moment from 'moment';
 
 class RegistrationPage extends React.Component {
     constructor(props) {
@@ -13,11 +17,14 @@ class RegistrationPage extends React.Component {
         this.state = {
             members: [],
             event: null,
+            semester: null,
         };
     }
 
     componentDidMount() {
-        this.props.firebase.members().on('value', snapshot => {
+        const { authUser, firebase } = this.props;
+
+        firebase.members().on('value', snapshot => {
             const membersObject = snapshot.val();
             const members = Object.keys(membersObject)
                 .map(key => ({
@@ -39,6 +46,29 @@ class RegistrationPage extends React.Component {
 
             this.setState({ members });
         });
+
+        if (!!authUser.permissions[PERMISSIONS.SEMESTERS_READ]) {
+            firebase
+                .semesters()
+                .once('value')
+                .then(snapshot => {
+                    const semestersObject = snapshot.val();
+                    const semesters = Object.keys(
+                        semestersObject,
+                    ).map(key => ({
+                        ...semestersObject[key],
+                        id: key,
+                    }));
+
+                    const lastSemester = semesters.reduce((a, b) =>
+                        moment(a.end_date) > moment(b.end_data)
+                            ? a
+                            : b,
+                    );
+
+                    this.setState({ semester: lastSemester });
+                });
+        }
     }
 
     componentWillUnmount() {
@@ -94,7 +124,7 @@ class RegistrationPage extends React.Component {
     };
 
     render() {
-        const { event, members } = this.state;
+        const { event, members, semester } = this.state;
         return (
             <div className="content">
                 {!event && (
@@ -109,6 +139,7 @@ class RegistrationPage extends React.Component {
                         }
                         members={members}
                         event={event}
+                        semester={semester}
                         onChangeEvent={this.handleChangeEvent}
                     />
                 )}
@@ -123,4 +154,5 @@ const authCondition = authUser =>
 export default compose(
     withFirebase,
     withAuthorization(authCondition),
+    withAuthUser,
 )(RegistrationPage);

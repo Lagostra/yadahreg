@@ -82,7 +82,12 @@ class RegistrationForm extends React.Component {
     };
 
     render() {
-        const { members, event, onChangeEvent } = this.props;
+        const {
+            members,
+            event,
+            onChangeEvent,
+            semester,
+        } = this.props;
         const { filter, memberModalActive } = this.state;
 
         return (
@@ -163,6 +168,12 @@ class RegistrationForm extends React.Component {
                                         <td className="registration-form__member-name">
                                             {member.first_name}{' '}
                                             {member.last_name}
+                                            {semester &&
+                                                semester.payees &&
+                                                !semester.payees[
+                                                    member.id
+                                                ] &&
+                                                '*'}
                                         </td>
                                         <td className="registration-form__buttons">
                                             <ButtonSelect
@@ -187,6 +198,7 @@ class RegistrationForm extends React.Component {
                         ))}
                     </tbody>
                 </table>
+                {semester && '* Har ikke betalt siste semesteravgift'}
             </div>
         );
     }
