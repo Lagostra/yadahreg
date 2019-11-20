@@ -19,6 +19,7 @@ class TopListPage extends React.Component {
             selectedSemester: '',
             eventTypeDrawerOpen: false,
             selectedEventTypes: ['Øvelse'],
+            filter: '',
         };
     }
 
@@ -92,6 +93,10 @@ class TopListPage extends React.Component {
         this.setState({ selectedEventTypes });
     };
 
+    handleFilterChange = e => {
+        this.setState({ filter: e.target.value });
+    };
+
     render() {
         const {
             members,
@@ -101,6 +106,7 @@ class TopListPage extends React.Component {
             eventTypeDrawerOpen,
             eventTypes,
             selectedEventTypes,
+            filter,
         } = this.state;
         return (
             <div className="content">
@@ -160,6 +166,13 @@ class TopListPage extends React.Component {
                         ))}
                     </div>
                 )}
+                <input
+                    value={filter}
+                    onChange={this.handleFilterChange}
+                    name="filter"
+                    type="text"
+                    placeholder="Søk..."
+                />
                 <TopList
                     members={members}
                     events={events}
@@ -174,6 +187,7 @@ class TopListPage extends React.Component {
                             ? selectedSemester.end_date
                             : '4000-01-01'
                     }
+                    filter={filter}
                 />
             </div>
         );
@@ -186,6 +200,7 @@ const TopList = ({
     startDate,
     endDate,
     eventTypes = ['Øvelse'],
+    filter,
 }) => {
     if (!members || !events || !startDate || !endDate) {
         return <Spinner />;
@@ -223,6 +238,11 @@ const TopList = ({
         }
 
         return { ...member, placement: placement };
+    });
+
+    members = members.filter(m => {
+        const regex = new RegExp('(.*)' + filter + '(.*)', 'i');
+        return regex.test(m.first_name + ' ' + m.last_name);
     });
 
     return (
