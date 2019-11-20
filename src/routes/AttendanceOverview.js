@@ -27,6 +27,12 @@ class AttendanceOverview extends React.Component {
                 id: key,
             }));
 
+            members.sort((a, b) =>
+                (a.first_name + ' ' + a.last_name).localeCompare(
+                    b.first_name + ' ' + b.last_name,
+                ),
+            );
+
             this.setState({ members });
         });
 
