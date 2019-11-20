@@ -216,6 +216,9 @@ const TopList = ({
     });
 
     members = members.map(member => {
+        const possibleEvents = events.filter(
+            e => moment(e.date) >= moment(member.created_at),
+        ).length;
         const count = events.reduce((prev, cur) => {
             if (cur.attendants && cur.attendants[member.id]) {
                 return prev + 1;
@@ -223,7 +226,11 @@ const TopList = ({
             return prev;
         }, 0);
 
-        return { ...member, eventCount: count };
+        return {
+            ...member,
+            eventCount: count,
+            eventFraction: count / possibleEvents,
+        };
     });
 
     members = members
@@ -252,6 +259,9 @@ const TopList = ({
                     <th>Plass</th>
                     <th>Navn</th>
                     <th>Antall</th>
+                    <th title="Estimert andel av arrangementer som medlemmet har vært med i valgt periode som var etter at vedkommende ble med i koret.">
+                        Andel
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -262,6 +272,9 @@ const TopList = ({
                             {member.first_name} {member.last_name}
                         </td>
                         <td>{member.eventCount}</td>
+                        <td title="Estimert andel av arrangementer som medlemmet har vært med i valgt periode som var etter at vedkommende ble med i koret.">
+                            {(member.eventFraction * 100).toFixed(2)}%
+                        </td>
                     </tr>
                 ))}
             </tbody>
