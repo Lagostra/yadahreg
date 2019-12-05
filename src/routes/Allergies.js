@@ -45,6 +45,11 @@ class Allergies extends React.Component {
         });
     }
 
+    componentWillUnmount() {
+        const { firebase } = this.state;
+        firebase.members().off();
+    }
+
     render() {
         const { members, loaded } = this.state;
 
