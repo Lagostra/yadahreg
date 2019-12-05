@@ -1,7 +1,11 @@
 import React from 'react';
+import moment from 'moment';
+import { compose } from 'recompose';
+
 import { withFirebase } from '../components/Firebase';
 import Spinner from '../components/Spinner';
-import moment from 'moment';
+import { withAuthorization } from '../components/Session';
+import * as PERMISSIONS from '../constants/permissions';
 
 class AttendanceOverview extends React.Component {
     constructor(props) {
@@ -170,4 +174,10 @@ class AttendanceOverview extends React.Component {
     }
 }
 
-export default withFirebase(AttendanceOverview);
+const authCondition = authUser =>
+    !!authUser && !!authUser.permissions[PERMISSIONS.EVENTS_WRITE];
+
+export default compose(
+    withFirebase,
+    withAuthorization(authCondition),
+)(AttendanceOverview);
