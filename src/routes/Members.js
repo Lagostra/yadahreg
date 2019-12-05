@@ -292,9 +292,11 @@ class MemberFormBase extends React.Component {
         };
 
         if (this.props.member) {
+            // Clean up undefined values that will otherwise cause problems with Firebase
+            const savedMember = JSON.parse(JSON.stringify(member));
             this.props.firebase
                 .member(this.props.member.id)
-                .set(member);
+                .set(savedMember);
             memberId = this.props.member.id;
         } else {
             const createdAt = moment().toISOString();
