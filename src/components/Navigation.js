@@ -134,6 +134,9 @@ const NavigationAuth = ({
                         Inaktive medlemmer
                     </NavLink>
                 )}
+            {authUser.permissions[PERMISSIONS.MEMBERS_READ] && (
+                <NavLink link={ROUTES.ALLERGIES}>Allergier</NavLink>
+            )}
             {authUser.permissions[PERMISSIONS.MEMBERS_READ] &&
                 authUser.permissions[PERMISSIONS.EVENTS_READ] &&
                 authUser.permissions[PERMISSIONS.SEMESTERS_READ] && (
@@ -243,7 +246,4 @@ class NavSubDrawer extends React.Component {
     }
 }
 
-export default compose(
-    withAuthUser,
-    withRouter,
-)(Navigation);
+export default compose(withAuthUser, withRouter)(Navigation);

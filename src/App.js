@@ -28,6 +28,7 @@ import InactiveMembers from './routes/InactiveMembers';
 import TopList from './routes/TopList';
 import MailingList from './routes/MailingList';
 import AttendanceOverview from './routes/AttendanceOverview';
+import Allergies from './routes/Allergies';
 
 const App = props => {
     const showNavigation = !!props.authUser;
@@ -97,12 +98,13 @@ const App = props => {
                     path={ROUTES.ATTENDANCE_OVERVIEW}
                     component={AttendanceOverview}
                 />
+                <Route
+                    path={ROUTES.ALLERGIES}
+                    component={Allergies}
+                />
             </div>
         </Router>
     );
 };
 
-export default compose(
-    withAuthentication,
-    withAuthUser,
-)(App);
+export default compose(withAuthentication, withAuthUser)(App);
