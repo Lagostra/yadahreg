@@ -24,10 +24,16 @@ class UsersPage extends Component {
         this.props.firebase.users().on('value', snapshot => {
             const usersObject = snapshot.val();
 
-            const usersList = Object.keys(usersObject).map(key => ({
-                ...usersObject[key],
-                uid: key,
-            }));
+            const usersList = Object.keys(usersObject)
+                .map(key => ({
+                    ...usersObject[key],
+                    uid: key,
+                }))
+                .sort((a, b) => {
+                    if (a.name < b.name) return -1;
+                    if (b.name < a.name) return 1;
+                    return 0;
+                });
 
             this.setState({
                 users: usersList,
