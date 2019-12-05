@@ -46,7 +46,7 @@ class Allergies extends React.Component {
     }
 
     componentWillUnmount() {
-        const { firebase } = this.state;
+        const { firebase } = this.props;
         firebase.members().off();
     }
 
