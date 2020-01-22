@@ -30,7 +30,7 @@ class AttendanceOverview extends React.Component {
             const membersObject = snapshot.val();
             const members = Object.keys(membersObject).map(key => ({
                 ...membersObject[key],
-                id: key,
+                uid: key,
             }));
 
             members.sort((a, b) =>
@@ -46,7 +46,7 @@ class AttendanceOverview extends React.Component {
             const eventsObject = snapshot.val();
             const events = Object.keys(eventsObject).map(key => ({
                 ...eventsObject[key],
-                id: key,
+                uid: key,
             }));
 
             this.setState({ events });
@@ -132,7 +132,7 @@ class AttendanceOverview extends React.Component {
 
         const presenceSheet = XLSX.utils.json_to_sheet(presence, {
             header: ['uid', 'Fornavn', 'Etternavn'].concat(
-                events.map(
+                filteredEvents.map(
                     event =>
                         `${moment(event.date).format(
                             'DD.MM.YYYY',
@@ -226,7 +226,7 @@ class AttendanceOverview extends React.Component {
                                     <tr>
                                         <th>Navn</th>
                                         {filteredEvents.map(event => (
-                                            <th key={event.id}>
+                                            <th key={event.uid}>
                                                 {moment(
                                                     event.date,
                                                 ).format(
@@ -242,7 +242,7 @@ class AttendanceOverview extends React.Component {
                                             <i>Antall oppmøtte</i>
                                         </td>
                                         {filteredEvents.map(event => (
-                                            <td key={event.id}>
+                                            <td key={event.uid}>
                                                 {event.attendants
                                                     ? Object.keys(
                                                           event.attendants,
@@ -252,7 +252,7 @@ class AttendanceOverview extends React.Component {
                                         ))}
                                     </tr>
                                     {filteredMembers.map(member => (
-                                        <tr key={member.id}>
+                                        <tr key={member.uid}>
                                             <td>
                                                 {member.first_name}{' '}
                                                 {member.last_name}
@@ -260,19 +260,21 @@ class AttendanceOverview extends React.Component {
                                             {filteredEvents.map(
                                                 event => (
                                                     <td
-                                                        key={event.id}
+                                                        key={
+                                                            event.uid
+                                                        }
                                                     >
                                                         {event.attendants &&
                                                         !!event
                                                             .attendants[
-                                                            member.id
+                                                            member.uid
                                                         ]
                                                             ? 'Y'
                                                             : event.non_attendants &&
                                                               !!event
                                                                   .non_attendants[
                                                                   member
-                                                                      .id
+                                                                      .uid
                                                               ]
                                                             ? 'N'
                                                             : ''}
