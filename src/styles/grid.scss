@@ -12,3 +12,13 @@
     width: calc(50% - 10px);
     margin: 5px;
 }
+
+.col-half:first-child {
+    width: calc(50% - 5px);
+    margin-left: 0;
+}
+
+.col-half:last-child {
+    width: calc(50% - 5px);
+    margin-right: 0;
+}
