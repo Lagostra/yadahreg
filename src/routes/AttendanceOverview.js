@@ -110,7 +110,6 @@ class AttendanceOverview extends React.Component {
                                     Startdato
                                 </label>
                                 <input
-                                    class="input-half"
                                     name="startDate"
                                     value={moment(startDate).format(
                                         'YYYY-MM-DD',
@@ -125,7 +124,6 @@ class AttendanceOverview extends React.Component {
                                     Sluttdato
                                 </label>
                                 <input
-                                    class="input-half"
                                     name="endDate"
                                     value={moment(endDate).format(
                                         'YYYY-MM-DD',
