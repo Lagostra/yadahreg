@@ -32,10 +32,17 @@ import Allergies from './routes/Allergies';
 
 const App = props => {
     const showNavigation = !!props.authUser;
-    const prodOnLocal =
-        process.env.NODE_ENV === 'production' &&
-        (window.location.hostname === 'localhost' ||
-            window.location.hostname === '127.0.0.1');
+    const isLocal =
+        window.location.hostname === 'localhost' ||
+        window.location.hostname === '127.0.0.1';
+    const isProd = process.env.NODE_ENV === 'production';
+    const prodOnLocal = isLocal && isProd;
+
+    if (isLocal) {
+        document.title = 'YadahReg - Localhost';
+    } else if (!isProd) {
+        document.title = 'YadahReg - Testing';
+    }
 
     return (
         <Router>
