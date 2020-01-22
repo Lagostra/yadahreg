@@ -157,7 +157,7 @@ const MembersList = ({
     };
 
     return (
-        <table className="table-full-width table-hor-lines-between">
+        <table className="table-full-width table-hor-lines-between table-last-td-right">
             <thead>
                 <tr>
                     <th>Navn</th>
