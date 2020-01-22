@@ -31,10 +31,13 @@ table {
     tr {
         vertical-align: middle;
     }
-    
-    // td:last-child {
-    //     text-align: right;
-    // }
+
+}
+
+.table-last-td-right {
+    td:last-child {
+        text-align:right;
+    }
 }
 
 .table-scroll-container {

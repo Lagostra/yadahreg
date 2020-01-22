@@ -116,7 +116,7 @@ const EventSelector = withFirebase(EventSelectorBase);
 
 const EventList = ({ events, onEventSelect }) => {
     return (
-        <table className="table-full-width table-hor-lines-between">
+        <table className="table-full-width table-hor-lines-between table-last-td-right">
             <thead>
                 <tr>
                     <th>Dato</th>
