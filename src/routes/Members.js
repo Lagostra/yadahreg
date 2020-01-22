@@ -385,6 +385,14 @@ class MemberFormBase extends React.Component {
                     type="text"
                 />
 
+                <label htmlFor="address">Adresse</label>
+                <input
+                    name="address"
+                    value={this.state.address}
+                    onChange={this.onChange}
+                    type="text"
+                />
+
                 <label htmlFor="allergies">Allergier</label>
                 <input
                     name="allergies"
