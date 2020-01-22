@@ -98,12 +98,12 @@ const DataExportBase = ({ firebase, authUser }) => {
                         event.attendants &&
                         event.attendants[member.uid]
                     ) {
-                        status = '1';
+                        status = 1;
                     } else if (
                         event.non_attendants &&
                         event.non_attendants[member.uid]
                     ) {
-                        status = '0';
+                        status = 0;
                     }
                     row[
                         `${moment(event.date).format(
@@ -148,7 +148,7 @@ const DataExportBase = ({ firebase, authUser }) => {
                 semesters.forEach(semester => {
                     row[semester.title] =
                         semester.payees && semester.payees[member.uid]
-                            ? '1'
+                            ? 1
                             : '';
                 });
 

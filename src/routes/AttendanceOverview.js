@@ -113,12 +113,12 @@ class AttendanceOverview extends React.Component {
                     event.attendants &&
                     event.attendants[member.uid]
                 ) {
-                    status = '1';
+                    status = 1;
                 } else if (
                     event.non_attendants &&
                     event.non_attendants[member.uid]
                 ) {
-                    status = '0';
+                    status = 0;
                 }
                 row[
                     `${moment(event.date).format('DD.MM.YYYY')} - ${
