@@ -39,9 +39,11 @@ const App = props => {
     const prodOnLocal = isLocal && isProd;
 
     if (isLocal) {
-        document.title = 'YadahReg - Localhost';
-    } else if (!isProd) {
-        document.title = 'YadahReg - Testing';
+        if (!document.title.startsWith('[local] ')) {
+            document.title = '[local] ' + document.title;
+        }
+    } else if (!isProd && !document.title.startsWith('[test] ')) {
+        document.title = '[test] ' + document.title;
     }
 
     return (
