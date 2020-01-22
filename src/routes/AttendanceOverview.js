@@ -66,6 +66,14 @@ class AttendanceOverview extends React.Component {
         this.setState({ filter: e.target.value });
     };
 
+    handleDateChange = e => {
+        this.setState({
+            [e.currentTarget.name]: moment(
+                e.currentTarget.value,
+            ).toDate(),
+        });
+    };
+
     render() {
         const {
             members,
@@ -96,6 +104,31 @@ class AttendanceOverview extends React.Component {
                 {(!members.length || !events.length) && <Spinner />}
                 {!!members.length && !!events.length && (
                     <React.Fragment>
+                        <div>
+                            <label htmlFor="startDate">
+                                Startdato
+                            </label>
+                            <input
+                                class="input-half"
+                                name="startDate"
+                                value={moment(startDate).format(
+                                    'YYYY-MM-DD',
+                                )}
+                                onChange={this.handleDateChange}
+                                type="date"
+                            />
+
+                            <label htmlFor="endDate">Sluttdato</label>
+                            <input
+                                class="input-half"
+                                name="endDate"
+                                value={moment(endDate).format(
+                                    'YYYY-MM-DD',
+                                )}
+                                onChange={this.handleDateChange}
+                                type="date"
+                            />
+                        </div>
                         <input
                             value={filter}
                             onChange={this.handleFilterChange}
