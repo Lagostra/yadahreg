@@ -104,30 +104,36 @@ class AttendanceOverview extends React.Component {
                 {(!members.length || !events.length) && <Spinner />}
                 {!!members.length && !!events.length && (
                     <React.Fragment>
-                        <div>
-                            <label htmlFor="startDate">
-                                Startdato
-                            </label>
-                            <input
-                                class="input-half"
-                                name="startDate"
-                                value={moment(startDate).format(
-                                    'YYYY-MM-DD',
-                                )}
-                                onChange={this.handleDateChange}
-                                type="date"
-                            />
+                        <div className="row">
+                            <div className="col-half">
+                                <label htmlFor="startDate">
+                                    Startdato
+                                </label>
+                                <input
+                                    class="input-half"
+                                    name="startDate"
+                                    value={moment(startDate).format(
+                                        'YYYY-MM-DD',
+                                    )}
+                                    onChange={this.handleDateChange}
+                                    type="date"
+                                />
+                            </div>
 
-                            <label htmlFor="endDate">Sluttdato</label>
-                            <input
-                                class="input-half"
-                                name="endDate"
-                                value={moment(endDate).format(
-                                    'YYYY-MM-DD',
-                                )}
-                                onChange={this.handleDateChange}
-                                type="date"
-                            />
+                            <div className="col-half">
+                                <label htmlFor="endDate">
+                                    Sluttdato
+                                </label>
+                                <input
+                                    class="input-half"
+                                    name="endDate"
+                                    value={moment(endDate).format(
+                                        'YYYY-MM-DD',
+                                    )}
+                                    onChange={this.handleDateChange}
+                                    type="date"
+                                />
+                            </div>
                         </div>
                         <input
                             value={filter}

@@ -1,0 +1,14 @@
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
+.row-reverse {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.col-half {
+    width: calc(50% - 10px);
+    margin: 5px;
+}
