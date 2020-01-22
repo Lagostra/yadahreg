@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { compose } from 'recompose';
+import XLSX from 'xlsx';
 
 import { withFirebase } from '../components/Firebase';
 import Spinner from '../components/Spinner';
@@ -74,6 +75,79 @@ class AttendanceOverview extends React.Component {
         });
     };
 
+    handleDownload = e => {
+        const {
+            members,
+            events,
+            startDate,
+            endDate,
+            filter,
+        } = this.state;
+
+        const filteredEvents = events.filter(
+            event =>
+                moment(event.date) > moment(startDate) &&
+                moment(event.date) < moment(endDate),
+        );
+
+        const filteredMembers = members.filter(
+            member =>
+                member.active &&
+                (!filter ||
+                    this.isMatch(
+                        filter,
+                        member.first_name + ' ' + member.last_name,
+                    )),
+        );
+
+        const presence = filteredMembers.map(member => {
+            const row = {
+                Etternavn: member.last_name,
+                Fornavn: member.first_name,
+                uid: member.uid,
+            };
+
+            filteredEvents.forEach(event => {
+                let status = '';
+                if (
+                    event.attendants &&
+                    event.attendants[member.uid]
+                ) {
+                    status = '1';
+                } else if (
+                    event.non_attendants &&
+                    event.non_attendants[member.uid]
+                ) {
+                    status = '0';
+                }
+                row[
+                    `${moment(event.date).format('DD.MM.YYYY')} - ${
+                        event.title
+                    }`
+                ] = status;
+            });
+
+            return row;
+        });
+
+        const presenceSheet = XLSX.utils.json_to_sheet(presence, {
+            header: ['uid', 'Fornavn', 'Etternavn'].concat(
+                events.map(
+                    event =>
+                        `${moment(event.date).format(
+                            'DD.MM.YYYY',
+                        )} - ${event.title}`,
+                ),
+            ),
+        });
+
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, presenceSheet, 'Oppmøte');
+        XLSX.writeFile(wb, 'yadahreg-oppmøte.xslx', {
+            bookType: 'xlsx',
+        });
+    };
+
     render() {
         const {
             members,
@@ -104,6 +178,12 @@ class AttendanceOverview extends React.Component {
                 {(!members.length || !events.length) && <Spinner />}
                 {!!members.length && !!events.length && (
                     <React.Fragment>
+                        <button
+                            className="btn"
+                            onClick={this.handleDownload}
+                        >
+                            Last ned som Excel
+                        </button>
                         <div className="row">
                             <div className="col-half">
                                 <label htmlFor="startDate">
