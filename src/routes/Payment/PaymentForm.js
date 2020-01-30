@@ -21,9 +21,12 @@ class PaymentForm extends React.Component {
             {
                 value: 'not-paid',
                 text: (
-                    <span className="fa-stack" style={{
-                        fontSize: '0.75em',
-                    }}>
+                    <span
+                        className="fa-stack"
+                        style={{
+                            fontSize: '0.75em',
+                        }}
+                    >
                         <i className="fas fa-money-bill fa-stack-1x" />
                         <i className="fas fa-ban fa-stack-2x" />
                     </span>
@@ -102,7 +105,7 @@ class PaymentForm extends React.Component {
                     placeholder="Søk..."
                 />
 
-                <table className="payment-form__member-table table-full-width table-hor-lines-between">
+                <table className="payment-form__member-table table-full-width table-hor-lines-between table-last-td-right">
                     <tbody>
                         {members.map(member => (
                             <React.Fragment key={member.id}>
@@ -110,33 +113,33 @@ class PaymentForm extends React.Component {
                                     this.isMatch(
                                         filter,
                                         member.first_name +
-                                        ' ' +
-                                        member.last_name,
+                                            ' ' +
+                                            member.last_name,
                                     )) && (
-                                        <tr>
-                                            <td className="payment-form__member-name">
-                                                {member.first_name}{' '}
-                                                {member.last_name}
-                                            </td>
-                                            <td className="payment-form__buttons">
-                                                <ButtonSelect
-                                                    options={
-                                                        this
-                                                            .paymentOptions
-                                                    }
-                                                    onChange={e =>
-                                                        this.props.onPaymentChange(
-                                                            member,
-                                                            e.value,
-                                                        )
-                                                    }
-                                                    value={this.getStatus(
+                                    <tr>
+                                        <td className="payment-form__member-name">
+                                            {member.first_name}{' '}
+                                            {member.last_name}
+                                        </td>
+                                        <td className="payment-form__buttons">
+                                            <ButtonSelect
+                                                options={
+                                                    this
+                                                        .paymentOptions
+                                                }
+                                                onChange={e =>
+                                                    this.props.onPaymentChange(
                                                         member,
-                                                    )}
-                                                />
-                                            </td>
-                                        </tr>
-                                    )}
+                                                        e.value,
+                                                    )
+                                                }
+                                                value={this.getStatus(
+                                                    member,
+                                                )}
+                                            />
+                                        </td>
+                                    </tr>
+                                )}
                             </React.Fragment>
                         ))}
                     </tbody>

@@ -147,7 +147,7 @@ class RegistrationForm extends React.Component {
                     onKeyDown={this.handleFilterKeyDown}
                 />
 
-                <table className="registration-form__member-table table-full-width table-hor-lines-between">
+                <table className="registration-form__member-table table-full-width table-hor-lines-between table-last-td-right">
                     <tbody>
                         {members.map(member => (
                             <React.Fragment key={member.id}>
