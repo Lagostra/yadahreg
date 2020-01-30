@@ -15,3 +15,4 @@ export const TOP_LIST = '/top-list';
 export const MAILING_LIST = '/mailing-list';
 export const ATTENDANCE_OVERVIEW = '/attendance-overview';
 export const ALLERGIES = '/allergies';
+export const SEMESTER_STATISTICS = '/semester-statistics';

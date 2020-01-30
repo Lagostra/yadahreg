@@ -144,6 +144,12 @@ const NavigationAuth = ({
                         Toppliste
                     </NavLink>
                 )}
+            {authUser.permissions[PERMISSIONS.SEMESTERS_READ] &&
+                authUser.permissions[PERMISSIONS.EVENTS_READ] && (
+                    <NavLink link={ROUTES.SEMESTER_STATISTICS}>
+                        Semesterstatistikk
+                    </NavLink>
+                )}
             {authUser.permissions[PERMISSIONS.MEMBERS_READ] &&
                 authUser.permissions[PERMISSIONS.EVENTS_READ] &&
                 authUser.permissions[PERMISSIONS.SEMESTERS_READ] && (

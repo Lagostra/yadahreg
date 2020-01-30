@@ -29,6 +29,7 @@ import TopList from './routes/TopList';
 import MailingList from './routes/MailingList';
 import AttendanceOverview from './routes/AttendanceOverview';
 import Allergies from './routes/Allergies';
+import SemesterStatistics from './routes/SemesterStatistics';
 
 const App = props => {
     const showNavigation = !!props.authUser;
@@ -110,6 +111,10 @@ const App = props => {
                 <Route
                     path={ROUTES.ALLERGIES}
                     component={Allergies}
+                />
+                <Route
+                    path={ROUTES.SEMESTER_STATISTICS}
+                    component={SemesterStatistics}
                 />
             </div>
         </Router>
