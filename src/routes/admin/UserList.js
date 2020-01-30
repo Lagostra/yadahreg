@@ -96,7 +96,8 @@ const UsersList = ({ users, onEditUser }) => (
         <thead>
             <tr>
                 <th>Navn</th>
-                <th>E-post</th>
+                <th className="desktop-only">E-post</th>
+                <th className="desktop-only">Rolle</th>
                 <th></th>
             </tr>
         </thead>
@@ -105,6 +106,7 @@ const UsersList = ({ users, onEditUser }) => (
                 <tr key={user.uid}>
                     <td>{user.name}</td>
                     <td>{user.email}</td>
+                    <td>{user.role}</td>
                     <td>
                         <button
                             className="btn btn-small"
