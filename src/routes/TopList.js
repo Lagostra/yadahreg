@@ -151,9 +151,6 @@ class TopListPage extends React.Component {
                 </div>
                 {eventTypeDrawerOpen && (
                     <div style={{ padding: '0 15px' }}>
-                        {console.log(
-                            selectedEventTypes.includes('Øvelse'),
-                        )}
                         {eventTypes.map(eventType => (
                             <React.Fragment key={eventType}>
                                 <input
@@ -215,8 +212,8 @@ const TopList = ({
     events = events.filter(event => {
         const d = moment(event.date);
         return (
-            d > moment(startDate) &&
-            d < moment(endDate) &&
+            d >= moment(startDate) &&
+            d <= moment(endDate) &&
             (!eventTypes || eventTypes.includes(event.type))
         );
     });
