@@ -1,6 +1,7 @@
 import React from 'react';
 import { compose } from 'recompose';
 import moment from 'moment';
+import jStat from 'jStat';
 
 import { withFirebase } from '../components/Firebase';
 import { withAuthorization } from '../components/Session';
@@ -72,14 +73,15 @@ class SemesterStatistics extends React.Component {
             e.attendants ? Object.keys(e.attendants).length : 0,
         );
 
-        const averageAttendance = round(
-            attendance.reduce((a, b) => a + b, 0) /
-                filteredEvents.length,
-            2,
-        );
+        const meanAttendance = round(jStat.mean(attendance), 2);
+        const medianAttendance = jStat.median(attendance);
+        let modeAttendance = jStat.mode(attendance);
+        if (Array.isArray(modeAttendance)) {
+            modeAttendance = modeAttendance.join(', ');
+        }
 
-        const maxAttendance = Math.max(...attendance);
-        const minAttendance = Math.min(...attendance);
+        const maxAttendance = jStat.max(attendance);
+        const minAttendance = jStat.min(attendance);
 
         return (
             <div className="content">
@@ -119,7 +121,7 @@ class SemesterStatistics extends React.Component {
                                 </tr>
                                 <tr>
                                     <td>Gjennomsnittlig oppmøte</td>
-                                    <td>{averageAttendance}</td>
+                                    <td>{meanAttendance}</td>
                                 </tr>
                                 <tr>
                                     <td>Maksimalt oppmøte</td>
@@ -128,6 +130,14 @@ class SemesterStatistics extends React.Component {
                                 <tr>
                                     <td>Minimalt oppmøte</td>
                                     <td>{minAttendance}</td>
+                                </tr>
+                                <tr>
+                                    <td>Median</td>
+                                    <td>{medianAttendance}</td>
+                                </tr>
+                                <tr>
+                                    <td>Typetall</td>
+                                    <td>{modeAttendance}</td>
                                 </tr>
                             </tbody>
                         </table>
