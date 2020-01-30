@@ -66,6 +66,12 @@ class TopListPage extends React.Component {
             });
     }
 
+    componentWillUnmount() {
+        this.props.firebase.events().off();
+        this.props.firebase.semesters().off();
+        this.props.firebase.members().off();
+    }
+
     handleSelectSemester = selectedSemesterId => {
         const s = this.state.semesters.filter(
             s => s.id === selectedSemesterId,
