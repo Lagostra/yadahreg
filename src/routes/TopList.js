@@ -220,7 +220,7 @@ const TopList = ({
 
     members = members.map(member => {
         const possibleEvents = events.filter(
-            e => moment(e.date) >= moment(member.created_at),
+            e => !member.created_at || moment(e.date).isSameOrAfter(member.created_at, 'day'),
         ).length;
         const count = events.reduce((prev, cur) => {
             if (cur.attendants && cur.attendants[member.id]) {
