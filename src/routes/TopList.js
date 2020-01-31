@@ -146,8 +146,8 @@ class TopListPage extends React.Component {
                     {eventTypeDrawerOpen ? (
                         <i className="fas fa-caret-down" />
                     ) : (
-                        <i className="fas fa-caret-right" />
-                    )}
+                            <i className="fas fa-caret-right" />
+                        )}
                 </div>
                 {eventTypeDrawerOpen && (
                     <div style={{ padding: '0 15px' }}>
@@ -232,7 +232,7 @@ const TopList = ({
         return {
             ...member,
             eventCount: count,
-            eventFraction: count / possibleEvents,
+            eventFraction: possibleEvents ? count / possibleEvents : 0,
         };
     });
 
