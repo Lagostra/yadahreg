@@ -348,6 +348,15 @@ class MemberFormBase extends React.Component {
                     type="text"
                 />
 
+                {this.props.member.created_at && (
+                    <p style={{ color: 'gray' }}>
+                        Medlem siden{' '}
+                        {moment(this.props.member.created_at).format(
+                            'DD.MM.YYYY',
+                        )}
+                    </p>
+                )}
+
                 <label htmlFor="gender">Kjønn</label>
                 <select
                     value={this.state.gender}
