@@ -30,6 +30,7 @@ import MailingList from './routes/MailingList';
 import AttendanceOverview from './routes/AttendanceOverview';
 import Allergies from './routes/Allergies';
 import SemesterStatistics from './routes/SemesterStatistics';
+import PhoneBilliard from './components/PhoneBilliard';
 
 const App = props => {
     const showNavigation = !!props.authUser;
@@ -46,6 +47,8 @@ const App = props => {
     } else if (!isProd && !document.title.startsWith('[test] ')) {
         document.title = '[test] ' + document.title;
     }
+
+    return <PhoneBilliard />;
 
     return (
         <Router>
