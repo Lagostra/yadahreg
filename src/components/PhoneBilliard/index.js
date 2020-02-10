@@ -5,7 +5,7 @@ class PhoneBilliard extends React.Component {
         super(props);
 
         this.canvasRef = React.createRef();
-        this.ballRadius = 1 / 100.0;
+        this.ballRadius = 1 / 50.0;
         this.speedFactor = 0.2;
         this.maxSpeed = 10.0;
         this.drag = 0.5;
@@ -100,6 +100,9 @@ class PhoneBilliard extends React.Component {
             ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
             ctx.fillStyle = 'green';
             ctx.fill();
+            ctx.fillStyle = 'black';
+            ctx.font = '15px Arial';
+            ctx.fillText(ball.number, centerX, centerY);
             // ctx.lineWidth = 1;
             // ctx.strokeStyle = '#003300';
             // ctx.stroke();
