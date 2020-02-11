@@ -61,6 +61,8 @@ class PhoneBilliard extends React.Component {
             new Ball(1, 1),
             new Ball(0, 1),
         ];
+
+        this.props.updatePhoneNumber(this.state.phoneNumber);
     }
 
     componentWillUnmount() {
@@ -89,9 +91,6 @@ class PhoneBilliard extends React.Component {
         const canvas = this.canvasRef.current;
         offsetX /= canvas.width;
         offsetY /= canvas.height;
-
-        console.debug(offsetX, offsetY);
-        console.debug(this.balls);
 
         for (const ball of this.balls) {
             // (x - center_x)^2 + (y - center_y)^2 < radius^2
@@ -175,10 +174,13 @@ class PhoneBilliard extends React.Component {
         ball.x = x;
         ball.y = y;
         ball.dx = ball.dy = 0;
+
+        this.props.updatePhoneNumber(this.state.phoneNumber);
     };
 
     clearNumber = () => {
         this.setState({ phoneNumber: '' });
+        this.props.updatePhoneNumber(this.state.phoneNumber);
     };
 
     draw() {

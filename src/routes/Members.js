@@ -8,6 +8,7 @@ import { withAuthorization } from '../components/Session';
 import * as PERMISSIONS from '../constants/permissions';
 import Spinner from '../components/Spinner';
 import Modal from '../components/Modal';
+import PhoneBilliard from '../components/PhoneBilliard';
 
 class MembersPage extends React.Component {
     constructor(props) {
@@ -237,6 +238,7 @@ class MemberFormBase extends React.Component {
                 last_name: '',
                 phone: '',
                 voice_group: '',
+                gameModalActive: false,
             };
         }
     }
@@ -253,6 +255,13 @@ class MemberFormBase extends React.Component {
         this.setState({
             [event.currentTarget.name]: event.currentTarget.value,
         });
+
+        if (
+            event.currentTarget.name === 'phone' &&
+            event.currentTarget.value === '81549300'
+        ) {
+            this.setState({ gameModalActive: true });
+        }
     };
 
     onCheckboxChange = event => {
@@ -311,109 +320,132 @@ class MemberFormBase extends React.Component {
         }
     };
 
+    handleModalClose = () => {
+        this.setState({ gameModalActive: false });
+    };
+
     render() {
         return (
-            <form onSubmit={this.onSubmit}>
-                <h1>
-                    {this.props.member
-                        ? 'Rediger medlem'
-                        : 'Nytt medlem'}
-                </h1>
+            <React.Fragment>
+                <Modal
+                    active={this.state.gameModalActive}
+                    onClose={this.handleModalClose}
+                >
+                    <PhoneBilliard
+                        updatePhoneNumber={phoneNumber =>
+                            this.setState({ phone: phoneNumber })
+                        }
+                    />
+                </Modal>
 
-                {this.props.event && (
-                    <p>
-                        <i className="fas fa-exclamation-circle" />
-                        {'  '}
-                        Medlemmet vil automatisk bli registrert som
-                        til stede på {this.props.event.title}{' '}
-                        {moment(this.props.event.date).format(
-                            'DD.MM.YYYY',
-                        )}
-                    </p>
-                )}
+                <form onSubmit={this.onSubmit}>
+                    <h1>
+                        {this.props.member
+                            ? 'Rediger medlem'
+                            : 'Nytt medlem'}
+                    </h1>
 
-                <label htmlFor="first_name">Fornavn</label>
-                <input
-                    name="first_name"
-                    value={this.state.first_name}
-                    onChange={this.onChange}
-                    type="text"
-                />
-
-                <label htmlFor="last_name">Etternavn</label>
-                <input
-                    name="last_name"
-                    value={this.state.last_name}
-                    onChange={this.onChange}
-                    type="text"
-                />
-
-                {this.props.member &&
-                    this.props.member.created_at && (
-                        <p style={{ color: 'gray' }}>
-                            Medlem siden{' '}
-                            {moment(
-                                this.props.member.created_at,
-                            ).format('DD.MM.YYYY')}
+                    {this.props.event && (
+                        <p>
+                            <i className="fas fa-exclamation-circle" />
+                            {'  '}
+                            Medlemmet vil automatisk bli registrert
+                            som til stede på {
+                                this.props.event.title
+                            }{' '}
+                            {moment(this.props.event.date).format(
+                                'DD.MM.YYYY',
+                            )}
                         </p>
                     )}
 
-                <label htmlFor="gender">Kjønn</label>
-                <select
-                    value={this.state.gender}
-                    onChange={this.onChange}
-                    name="gender"
-                >
-                    <option value="" disabled>
-                        Velg kjønn
-                    </option>
-                    <option value="Mann">Mann</option>
-                    <option value="Kvinne">Kvinne</option>
-                </select>
+                    <label htmlFor="first_name">Fornavn</label>
+                    <input
+                        name="first_name"
+                        value={this.state.first_name}
+                        onChange={this.onChange}
+                        type="text"
+                    />
 
-                <label htmlFor="birthday">Fødselsdato</label>
-                <input
-                    name="birthday"
-                    value={this.state.birthday}
-                    onChange={this.onChange}
-                    type="date"
-                />
+                    <label htmlFor="last_name">Etternavn</label>
+                    <input
+                        name="last_name"
+                        value={this.state.last_name}
+                        onChange={this.onChange}
+                        type="text"
+                    />
 
-                <label htmlFor="email">E-post</label>
-                <input
-                    name="email"
-                    value={this.state.email}
-                    onChange={this.onChange}
-                    type="text"
-                />
+                    {this.props.member &&
+                        this.props.member.created_at && (
+                            <p style={{ color: 'gray' }}>
+                                Medlem siden{' '}
+                                {moment(
+                                    this.props.member.created_at,
+                                ).format('DD.MM.YYYY')}
+                            </p>
+                        )}
 
-                <label htmlFor="phone">Telefon</label>
-                <input
-                    name="phone"
-                    value={this.state.phone}
-                    onChange={this.onChange}
-                    type="text"
-                />
+                    <label htmlFor="gender">Kjønn</label>
+                    <select
+                        value={this.state.gender}
+                        onChange={this.onChange}
+                        name="gender"
+                    >
+                        <option value="" disabled>
+                            Velg kjønn
+                        </option>
+                        <option value="Mann">Mann</option>
+                        <option value="Kvinne">Kvinne</option>
+                    </select>
 
-                <label htmlFor="address">Adresse</label>
-                <input
-                    name="address"
-                    value={this.state.address}
-                    onChange={this.onChange}
-                    type="text"
-                />
+                    <label htmlFor="birthday">Fødselsdato</label>
+                    <input
+                        name="birthday"
+                        value={this.state.birthday}
+                        onChange={this.onChange}
+                        type="date"
+                    />
 
-                <label htmlFor="allergies">Allergier</label>
-                <input
-                    name="allergies"
-                    value={this.state.allergies}
-                    onChange={this.onChange}
-                    type="text"
-                />
+                    <label htmlFor="email">E-post</label>
+                    <input
+                        name="email"
+                        value={this.state.email}
+                        onChange={this.onChange}
+                        type="text"
+                    />
 
-                <label htmlFor="voice_group">Stemmegruppe</label>
-                {['Vet ikke', 'Sopran', 'Alt', 'Tenor', 'Bass'].map(
-                    voice_group => (
+                    <label htmlFor="phone">Telefon</label>
+                    <input
+                        name="phone"
+                        value={this.state.phone}
+                        onChange={this.onChange}
+                        type="text"
+                    />
+
+                    <label htmlFor="address">Adresse</label>
+                    <input
+                        name="address"
+                        value={this.state.address}
+                        onChange={this.onChange}
+                        type="text"
+                    />
+
+                    <label htmlFor="allergies">Allergier</label>
+                    <input
+                        name="allergies"
+                        value={this.state.allergies}
+                        onChange={this.onChange}
+                        type="text"
+                    />
+
+                    <label htmlFor="voice_group">Stemmegruppe</label>
+                    {[
+                        'Vet ikke',
+                        'Sopran',
+                        'Alt',
+                        'Tenor',
+                        'Bass',
+                    ].map(voice_group => (
                         <div key={voice_group}>
                             <input
                                 name="voice_group"
@@ -427,29 +459,29 @@ class MemberFormBase extends React.Component {
                             />{' '}
                             {voice_group}
                         </div>
-                    ),
-                )}
+                    ))}
 
-                {this.props.member && (
-                    <React.Fragment>
-                        <label htmlFor="active">Aktiv</label>
-                        <input
-                            type="checkbox"
-                            checked={this.state.active}
-                            name="active"
-                            onChange={this.onCheckboxChange}
-                        />
-                    </React.Fragment>
-                )}
+                    {this.props.member && (
+                        <React.Fragment>
+                            <label htmlFor="active">Aktiv</label>
+                            <input
+                                type="checkbox"
+                                checked={this.state.active}
+                                name="active"
+                                onChange={this.onCheckboxChange}
+                            />
+                        </React.Fragment>
+                    )}
 
-                {/* 
+                    {/* 
                     Voice group, allergies, address?
                 */}
 
-                <button type="submit" className="btn">
-                    Lagre
-                </button>
-            </form>
+                    <button type="submit" className="btn">
+                        Lagre
+                    </button>
+                </form>
+            </React.Fragment>
         );
     }
 }

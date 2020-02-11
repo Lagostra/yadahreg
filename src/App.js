@@ -48,8 +48,6 @@ const App = props => {
         document.title = '[test] ' + document.title;
     }
 
-    return <PhoneBilliard />;
-
     return (
         <Router>
             <div
