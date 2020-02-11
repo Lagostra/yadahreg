@@ -6,25 +6,21 @@ class PhoneBilliard extends React.Component {
 
         this.canvasRef = React.createRef();
         this.ballRadius = 1 / 50.0;
+        this.holeRadius = 1 / 15.0;
         this.speedFactor = 0.2;
-        this.maxSpeed = 10.0;
-        this.drag = 0.5;
+        this.maxSpeed = 5.0;
+        this.wallDrag = 0.5;
+        this.drag = 0.99;
 
-        const balls = [];
-        for (let i = 0; i < 10; i++) {
-            const x =
-                Math.random() * (1 - 2 * this.ballRadius) +
-                this.ballRadius;
-            const y =
-                Math.random() * (1 - 2 * this.ballRadius) +
-                this.ballRadius;
-            balls.push(new Ball(x, y, i));
-        }
-        this.balls = balls;
+        this.touchX = null;
+        this.touchY = null;
+
+        this.balls = [];
+        this.holes = [];
         this.activeBall = null;
 
         this.state = {
-            phoneNumber: '90651077',
+            phoneNumber: '',
         };
 
         this.interval = null;
@@ -38,38 +34,117 @@ class PhoneBilliard extends React.Component {
         const canvas = this.canvasRef.current;
         canvas.onmousedown = this.handleMouseDown.bind(this);
         canvas.onmouseup = this.handleMouseUp.bind(this);
+        canvas.onmousemove = this.handleMouseMove.bind(this);
+        canvas.ontouchstart = this.handleTouchStart.bind(this);
+        canvas.ontouchmove = this.handleTouchMove.bind(this);
+        canvas.ontouchend = this.handleTouchEnd.bind(this);
+        canvas.width = canvas.parentNode.clientWidth;
+        canvas.height = canvas.parentNode.clientHeight;
+
+        const ballRadiusY =
+            this.ballRadius * (canvas.width / canvas.height);
+        const balls = [];
+        for (let i = 0; i < 10; i++) {
+            const x =
+                Math.random() * (1 - 2 * this.ballRadius) +
+                this.ballRadius;
+            const y =
+                Math.random() * (1 - 2 * this.ballRadius) +
+                ballRadiusY;
+            balls.push(new Ball(x, y, i));
+        }
+        this.balls = balls;
+
+        this.holes = [
+            new Ball(0, 0),
+            new Ball(1, 0),
+            new Ball(1, 1),
+            new Ball(0, 1),
+        ];
     }
 
     componentWillUnmount() {
         clearInterval(this.interval);
     }
 
-    handleMouseDown(e) {
+    handleTouchStart(e) {
+        const touch = e.changedTouches[0];
         const canvas = this.canvasRef.current;
+        const offsetX = touch.clientX - canvas.clientLeft;
+        const offsetY = touch.clientY - canvas.clientTop;
+        this.touchX = offsetX;
+        this.touchY = offsetY;
+        this.handleMouseOrTouchDown(offsetX, offsetY);
+    }
+
+    handleMouseDown(e) {
         const mouseX = e.offsetX;
         const mouseY = e.offsetY;
+        this.touchX = mouseX;
+        this.touchY = mouseY;
+        this.handleMouseOrTouchDown(mouseX, mouseY);
+    }
+
+    handleMouseOrTouchDown(offsetX, offsetY) {
+        const canvas = this.canvasRef.current;
+        offsetX /= canvas.width;
+        offsetY /= canvas.height;
+
+        console.debug(offsetX, offsetY);
+        console.debug(this.balls);
 
         for (const ball of this.balls) {
             // (x - center_x)^2 + (y - center_y)^2 < radius^2
             if (
-                Math.pow(mouseX - ball.x * canvas.width, 2) +
-                    Math.pow(mouseY - ball.y * canvas.height, 2) <=
-                Math.pow(this.ballRadius * canvas.width, 2)
+                Math.pow(offsetX - ball.x, 2) +
+                    Math.pow(offsetY - ball.y, 2) <=
+                Math.pow(this.ballRadius, 2)
             ) {
                 this.activeBall = ball;
                 break;
             }
         }
+
+        // this.activeBall = this.balls[0];
+    }
+
+    handleTouchMove(e) {
+        e.preventDefault();
+        const touch = e.changedTouches[0];
+        const canvas = this.canvasRef.current;
+        this.touchX = touch.clientX - canvas.clientLeft;
+        this.touchY = touch.clientY - canvas.clientTop;
+    }
+
+    handleMouseMove(e) {
+        this.touchX = e.offsetX;
+        this.touchY = e.offsetY;
     }
 
     handleMouseUp(e) {
-        const canvas = this.canvasRef.current;
-        const mouseX = e.offsetX / canvas.width;
-        const mouseY = e.offsetY / canvas.height;
+        const mouseX = e.offsetX;
+        const mouseY = e.offsetY;
+        this.handleMouseOrTouchUp(mouseX, mouseY);
+    }
 
+    handleTouchEnd(e) {
+        const touch = e.changedTouches[0];
+        const canvas = this.canvasRef.current;
+        // const offsetX = touch.clientX - canvas.clientLeft;
+        // const offsetY = touch.clientY - canvas.clientTop;
+        const offsetX = this.touchX;
+        const offsetY = this.touchY;
+        this.handleMouseOrTouchUp(offsetX, offsetY);
+    }
+
+    handleMouseOrTouchUp(offsetX, offsetY) {
+        this.touchX = this.touchY = null;
+        const canvas = this.canvasRef.current;
+        offsetX /= canvas.width;
+        offsetY /= canvas.height;
         if (this.activeBall) {
-            const dx = this.activeBall.x - mouseX;
-            const dy = this.activeBall.y - mouseY;
+            const dx = this.activeBall.x - offsetX;
+            const dy = this.activeBall.y - offsetY;
 
             this.activeBall.dx = Math.min(
                 dx * this.speedFactor,
@@ -83,6 +158,28 @@ class PhoneBilliard extends React.Component {
 
         this.activeBall = null;
     }
+
+    addNumber = ball => {
+        const canvas = this.canvasRef.current;
+        const ballRadiusY =
+            this.ballRadius * (canvas.width / canvas.height);
+        let { phoneNumber } = this.state;
+        phoneNumber = phoneNumber + ball.number;
+        this.setState({ phoneNumber });
+
+        const x =
+            Math.random() * (1 - 2 * this.ballRadius) +
+            this.ballRadius;
+        const y =
+            Math.random() * (1 - 2 * this.ballRadius) + ballRadiusY;
+        ball.x = x;
+        ball.y = y;
+        ball.dx = ball.dy = 0;
+    };
+
+    clearNumber = () => {
+        this.setState({ phoneNumber: '' });
+    };
 
     draw() {
         const canvas = this.canvasRef.current;
@@ -107,11 +204,50 @@ class PhoneBilliard extends React.Component {
             // ctx.strokeStyle = '#003300';
             // ctx.stroke();
         }
+
+        for (let hole of this.holes) {
+            const centerX = hole.x * w;
+            const centerY = hole.y * h;
+            ctx.beginPath();
+            ctx.arc(
+                centerX,
+                centerY,
+                this.holeRadius * w,
+                0,
+                2 * Math.PI,
+                false,
+            );
+            ctx.fillStyle = 'gray';
+            ctx.fill();
+        }
+
+        if (this.touchX && this.activeBall) {
+            ctx.beginPath();
+            ctx.strokeStyle = 'green';
+            ctx.lineWidth = 10;
+            ctx.moveTo(this.touchX, this.touchY);
+            ctx.lineTo(
+                this.activeBall.x * canvas.width,
+                this.activeBall.y * canvas.height,
+            );
+            ctx.stroke();
+        }
     }
 
     update() {
+        const canvas = this.canvasRef.current;
         for (const ball of this.balls) {
-            ball.move(this.ballRadius, this.drag);
+            const ballRadiusY =
+                this.ballRadius * (canvas.width / canvas.height);
+            ball.move(
+                this.ballRadius,
+                ballRadiusY,
+                this.drag,
+                this.wallDrag,
+                this.holes,
+                this.holeRadius,
+                this.addNumber,
+            );
         }
     }
 
@@ -119,17 +255,18 @@ class PhoneBilliard extends React.Component {
         const { phoneNumber } = this.state;
 
         return (
-            <div>
+            <div style={{ width: '100%', height: '1000px' }}>
                 <div>
                     <label>Telefonnummer: {phoneNumber}</label>
-                    <button className="btn">Start på nytt</button>
+                    <button
+                        className="btn"
+                        onClick={this.clearNumber}
+                    >
+                        Start på nytt
+                    </button>
                 </div>
 
-                <canvas
-                    ref={this.canvasRef}
-                    width="1024px"
-                    height="768px"
-                ></canvas>
+                <canvas ref={this.canvasRef}></canvas>
             </div>
         );
     }
@@ -148,20 +285,47 @@ class Ball {
         this.number = number;
     }
 
-    move(ballRadius, drag) {
+    move(
+        ballRadiusX,
+        ballRadiusY,
+        drag,
+        wallDrag,
+        holes,
+        holeRadius,
+        addNumberFn,
+    ) {
         this.x += this.dx;
         this.y += this.dy;
 
-        if (this.x - ballRadius <= 0 && this.dx < 0) {
-            this.dx *= -drag;
-        } else if (this.x + ballRadius >= 1.0 && this.dx > 0) {
-            this.dx *= -drag;
+        this.dx *= drag;
+        this.dy *= drag;
+
+        // Check collision with walls
+        if (this.x - ballRadiusX <= 0 && this.dx < 0) {
+            this.x = ballRadiusX;
+            this.dx *= -wallDrag;
+        } else if (this.x + ballRadiusX >= 1.0 && this.dx > 0) {
+            this.x = 1 - ballRadiusX;
+            this.dx *= -wallDrag;
         }
 
-        if (this.y - ballRadius <= 0 && this.dy < 0) {
-            this.dy *= -drag;
-        } else if (this.y + ballRadius >= 1.0 && this.dy > 0) {
-            this.dy *= -drag;
+        if (this.y - ballRadiusY <= 0 && this.dy < 0) {
+            this.y = ballRadiusY;
+            this.dy *= -wallDrag;
+        } else if (this.y + ballRadiusY >= 1.0 && this.dy > 0) {
+            this.y = 1 - ballRadiusY;
+            this.dy *= -wallDrag;
+        }
+
+        // Check hit of holes
+        for (let hole of holes) {
+            if (
+                Math.pow(this.x - hole.x, 2) +
+                    Math.pow(this.y - hole.y, 2) <=
+                Math.pow(holeRadius, 2)
+            ) {
+                addNumberFn(this);
+            }
         }
     }
 }
