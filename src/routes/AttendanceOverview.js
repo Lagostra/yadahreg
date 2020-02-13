@@ -49,8 +49,6 @@ class AttendanceOverview extends React.Component {
                 uid: key,
             }));
 
-            events.sort((a, b) => moment(a.date) - moment(b.date));
-
             this.setState({ events });
         });
     }
