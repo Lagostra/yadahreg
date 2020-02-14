@@ -53,8 +53,10 @@ class TopListPage extends React.Component {
                     (a, b) => moment(b.end_date) - moment(a.end_date),
                 );
 
-            this.setState({ semesters });
-            this.setState({ selectedSemester: semesters[0] });
+            this.setState({
+                selectedSemester: semesters[0],
+                semesters,
+            });
         });
 
         this.props.firebase
@@ -114,6 +116,19 @@ class TopListPage extends React.Component {
             selectedEventTypes,
             filter,
         } = this.state;
+
+        const startDate =
+            semesters && semesters.length
+                ? selectedSemester
+                    ? selectedSemester.start_date
+                    : '1970-01-01'
+                : null;
+        const endDate =
+            semesters && semesters.length
+                ? selectedSemester
+                    ? selectedSemester.end_date
+                    : '4000-01-01'
+                : null;
         return (
             <div className="content">
                 <h1>Toppliste</h1>
@@ -146,8 +161,8 @@ class TopListPage extends React.Component {
                     {eventTypeDrawerOpen ? (
                         <i className="fas fa-caret-down" />
                     ) : (
-                            <i className="fas fa-caret-right" />
-                        )}
+                        <i className="fas fa-caret-right" />
+                    )}
                 </div>
                 {eventTypeDrawerOpen && (
                     <div style={{ padding: '0 15px' }}>
@@ -180,16 +195,8 @@ class TopListPage extends React.Component {
                     members={members}
                     events={events}
                     eventTypes={selectedEventTypes}
-                    startDate={
-                        selectedSemester
-                            ? selectedSemester.start_date
-                            : '1970-01-01'
-                    }
-                    endDate={
-                        selectedSemester
-                            ? selectedSemester.end_date
-                            : '4000-01-01'
-                    }
+                    startDate={startDate}
+                    endDate={endDate}
                     filter={filter}
                 />
             </div>
@@ -220,7 +227,12 @@ const TopList = ({
 
     members = members.map(member => {
         const possibleEvents = events.filter(
-            e => !member.created_at || moment(e.date).isSameOrAfter(member.created_at, 'day'),
+            e =>
+                !member.created_at ||
+                moment(e.date).isSameOrAfter(
+                    member.created_at,
+                    'day',
+                ),
         ).length;
         const count = events.reduce((prev, cur) => {
             if (cur.attendants && cur.attendants[member.id]) {
@@ -232,7 +244,9 @@ const TopList = ({
         return {
             ...member,
             eventCount: count,
-            eventFraction: possibleEvents ? count / possibleEvents : 0,
+            eventFraction: possibleEvents
+                ? count / possibleEvents
+                : 0,
         };
     });
 
