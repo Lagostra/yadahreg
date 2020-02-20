@@ -8,6 +8,7 @@ import Modal from '../components/Modal';
 import { MemberForm } from './Members';
 import * as PERMISSIONS from '../constants/permissions';
 import { withAuthorization } from '../components/Session';
+import { withAuthUser } from '../components/Session';
 
 class InactiveMembers extends React.Component {
     constructor(props) {
@@ -18,10 +19,40 @@ class InactiveMembers extends React.Component {
             loaded: false,
             modalActive: false,
             editMember: null,
+            semester: null,
         };
     }
 
     componentDidMount() {
+        const semesterPromise =
+            !!this.props.authUser &&
+            !!this.props.authUser.permissions[
+                PERMISSIONS.SEMESTERS_READ
+            ]
+                ? this.props.firebase
+                      .semesters()
+                      .once('value')
+                      .then(snapshot => {
+                          const semestersObject = snapshot.val();
+                          const semesters = Object.keys(
+                              semestersObject,
+                          ).map(key => ({
+                              ...semestersObject[key],
+                              id: key,
+                          }));
+
+                          const lastSemester = semesters.reduce(
+                              (a, b) =>
+                                  moment(a.end_date) >
+                                  moment(b.end_data)
+                                      ? a
+                                      : b,
+                          );
+
+                          this.setState({ semester: lastSemester });
+                      })
+                : Promise.resolve();
+
         const memberPromise = this.props.firebase
             .members()
             .once('value')
@@ -67,80 +98,79 @@ class InactiveMembers extends React.Component {
                 return events;
             });
 
-        Promise.all([memberPromise, eventsPromise]).then(
-            ([members, events]) => {
-                members = members.map(member => {
-                    let totalAbsent = 0;
-                    let absentFromLast = true;
-                    let absentInRow = 0;
-                    let maxAbsentInRow = 0;
-                    let lastPresent = null;
-                    events.forEach(event => {
-                        if (
-                            !event.attendants ||
-                            !event.attendants[member.id]
-                        ) {
-                            totalAbsent += 1;
+        Promise.all([
+            memberPromise,
+            eventsPromise,
+            semesterPromise,
+        ]).then(([members, events]) => {
+            members = members.map(member => {
+                let totalAbsent = 0;
+                let absentFromLast = true;
+                let absentInRow = 0;
+                let maxAbsentInRow = 0;
+                let lastPresent = null;
+                events.forEach(event => {
+                    if (
+                        !event.attendants ||
+                        !event.attendants[member.id]
+                    ) {
+                        totalAbsent += 1;
 
-                            if (
-                                !event.non_attendants ||
-                                !event.non_attendants[member.id]
-                            ) {
-                                if (absentFromLast) {
-                                    absentInRow += 1;
-                                    if (
-                                        absentInRow > maxAbsentInRow
-                                    ) {
-                                        maxAbsentInRow = absentInRow;
-                                    }
-                                } else {
-                                    absentFromLast = true;
+                        if (
+                            !event.non_attendants ||
+                            !event.non_attendants[member.id]
+                        ) {
+                            if (absentFromLast) {
+                                absentInRow += 1;
+                                if (absentInRow > maxAbsentInRow) {
+                                    maxAbsentInRow = absentInRow;
                                 }
-                            }
-                        } else {
-                            absentFromLast = false;
-                            absentInRow = 0;
-                            if (!lastPresent) {
-                                lastPresent = event.date;
+                            } else {
+                                absentFromLast = true;
                             }
                         }
-                    });
-
-                    const inactive =
-                        maxAbsentInRow >= 3 || totalAbsent >= 6;
-
-                    return {
-                        ...member,
-                        inactive,
-                        lastPresent,
-                        absentInRow: maxAbsentInRow,
-                        totalAbsent,
-                    };
+                    } else {
+                        absentFromLast = false;
+                        absentInRow = 0;
+                        if (!lastPresent) {
+                            lastPresent = event.date;
+                        }
+                    }
                 });
 
-                const inactiveMembers = members
-                    .filter(m => m.inactive)
-                    .sort((a, b) => b.totalAbsent - a.totalAbsent)
-                    .sort((a, b) => b.absentInRow - a.absentInRow)
-                    .sort((a, b) => {
-                        if (!b.lastPresent && !a.lastPresent) {
-                            return 0;
-                        }
-                        if (!b.lastPresent) {
-                            return 1;
-                        }
-                        if (!a.lastPresent) {
-                            return -1;
-                        }
-                        return (
-                            moment(a.lastPresent) -
-                            moment(b.lastPresent)
-                        );
-                    });
+                const inactive =
+                    maxAbsentInRow >= 3 || totalAbsent >= 6;
 
-                this.setState({ inactiveMembers, loaded: true });
-            },
-        );
+                return {
+                    ...member,
+                    inactive,
+                    lastPresent,
+                    absentInRow: maxAbsentInRow,
+                    totalAbsent,
+                };
+            });
+
+            const inactiveMembers = members
+                .filter(m => m.inactive)
+                .sort((a, b) => b.totalAbsent - a.totalAbsent)
+                .sort((a, b) => b.absentInRow - a.absentInRow)
+                .sort((a, b) => {
+                    if (!b.lastPresent && !a.lastPresent) {
+                        return 0;
+                    }
+                    if (!b.lastPresent) {
+                        return 1;
+                    }
+                    if (!a.lastPresent) {
+                        return -1;
+                    }
+                    return (
+                        moment(a.lastPresent) - moment(b.lastPresent)
+                    );
+                });
+
+            this.setState({ inactiveMembers, loaded: true });
+        });
     }
 
     handleModalClose = memberId => {
@@ -171,6 +201,7 @@ class InactiveMembers extends React.Component {
             loaded,
             modalActive,
             editMember,
+            semester,
         } = this.state;
 
         return (
@@ -201,6 +232,11 @@ class InactiveMembers extends React.Component {
                                     <th className="desktop-only">
                                         Fravær på rad
                                     </th>
+                                    {semester && (
+                                        <th className="desktop-only">
+                                            Betalt semesteravgift
+                                        </th>
+                                    )}
                                     <th></th>
                                 </tr>
                             </thead>
@@ -226,6 +262,16 @@ class InactiveMembers extends React.Component {
                                         <td className="desktop-only">
                                             {member.absentInRow}
                                         </td>
+                                        {semester && (
+                                            <td className="desktop-only">
+                                                {semester.payees &&
+                                                semester.payees[
+                                                    member.id
+                                                ]
+                                                    ? 'Ja'
+                                                    : 'Nei'}
+                                            </td>
+                                        )}
                                         <td>
                                             <button
                                                 className="btn btn-small"
@@ -257,4 +303,5 @@ const authCondition = authUser =>
 export default compose(
     withFirebase,
     withAuthorization(authCondition),
+    withAuthUser,
 )(InactiveMembers);
