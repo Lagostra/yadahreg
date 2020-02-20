@@ -92,6 +92,7 @@ class InactiveMembers extends React.Component {
                                 }
                             }
                         } else {
+                            absentFromLast = false;
                             if (!lastPresent) {
                                 lastPresent = event.date;
                             }
