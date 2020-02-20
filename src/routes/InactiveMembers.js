@@ -73,6 +73,7 @@ class InactiveMembers extends React.Component {
                     let totalAbsent = 0;
                     let absentFromLast = true;
                     let absentInRow = 0;
+                    let maxAbsentInRow = 0;
                     let lastPresent = null;
                     events.forEach(event => {
                         if (
@@ -87,12 +88,18 @@ class InactiveMembers extends React.Component {
                             ) {
                                 if (absentFromLast) {
                                     absentInRow += 1;
+                                    if (
+                                        absentInRow < maxAbsentInRow
+                                    ) {
+                                        maxAbsentInRow = absentInRow;
+                                    }
                                 } else {
                                     absentFromLast = false;
                                 }
                             }
                         } else {
                             absentFromLast = false;
+                            absentInRow = 0;
                             if (!lastPresent) {
                                 lastPresent = event.date;
                             }
