@@ -94,7 +94,7 @@ class InactiveMembers extends React.Component {
                                         maxAbsentInRow = absentInRow;
                                     }
                                 } else {
-                                    absentFromLast = false;
+                                    absentFromLast = true;
                                 }
                             }
                         } else {
