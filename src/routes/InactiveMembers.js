@@ -120,6 +120,8 @@ class InactiveMembers extends React.Component {
 
                 const inactiveMembers = members
                     .filter(m => m.inactive)
+                    .sort((a, b) => b.totalAbsent - a.totalAbsent)
+                    .sort((a, b) => b.absentInRow - a.absentInRow)
                     .sort((a, b) => {
                         if (!b.lastPresent && !a.lastPresent) {
                             return 0;
