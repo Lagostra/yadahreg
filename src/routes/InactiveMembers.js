@@ -107,13 +107,13 @@ class InactiveMembers extends React.Component {
                     });
 
                     const inactive =
-                        absentInRow >= 3 || totalAbsent >= 6;
+                        maxAbsentInRow >= 3 || totalAbsent >= 6;
 
                     return {
                         ...member,
                         inactive,
                         lastPresent,
-                        absentInRow,
+                        maxAbsentInRow,
                         totalAbsent,
                     };
                 });
