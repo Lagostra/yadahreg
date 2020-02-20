@@ -89,7 +89,7 @@ class InactiveMembers extends React.Component {
                                 if (absentFromLast) {
                                     absentInRow += 1;
                                     if (
-                                        absentInRow < maxAbsentInRow
+                                        absentInRow > maxAbsentInRow
                                     ) {
                                         maxAbsentInRow = absentInRow;
                                     }
@@ -113,7 +113,7 @@ class InactiveMembers extends React.Component {
                         ...member,
                         inactive,
                         lastPresent,
-                        maxAbsentInRow,
+                        absentInRow: maxAbsentInRow,
                         totalAbsent,
                     };
                 });
@@ -187,7 +187,7 @@ class InactiveMembers extends React.Component {
                     {!loaded && <Spinner />}
                     {loaded &&
                         'Medlemskapet til de følgende kormedlemmene er regnet som avsluttet jf. korets vedtekter (§3.5).'}
-                    {loaded && inactiveMembers.length && (
+                    {loaded && !!inactiveMembers.length && (
                         <table className="table-full-width table-hor-lines-between">
                             <thead>
                                 <tr>
