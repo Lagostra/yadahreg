@@ -38,6 +38,7 @@ class PhoneBilliard extends React.Component {
         canvas.ontouchstart = this.handleTouchStart.bind(this);
         canvas.ontouchmove = this.handleTouchMove.bind(this);
         canvas.ontouchend = this.handleTouchEnd.bind(this);
+
         canvas.width = canvas.parentNode.clientWidth;
         canvas.height = canvas.parentNode.clientHeight;
 
@@ -105,8 +106,6 @@ class PhoneBilliard extends React.Component {
                 break;
             }
         }
-
-        // this.activeBall = this.balls[0];
     }
 
     handleTouchMove(e) {
@@ -129,11 +128,7 @@ class PhoneBilliard extends React.Component {
         this.handleMouseOrTouchUp(mouseX, mouseY);
     }
 
-    handleTouchEnd = e => {
-        // const touch = e.changedTouches[0];
-        // const canvas = this.canvasRef.current;
-        // const offsetX = touch.clientX - canvas.clientLeft;
-        // const offsetY = touch.clientY - canvas.clientTop;
+    handleTouchEnd = () => {
         const offsetX = this.touchX;
         const offsetY = this.touchY;
         this.handleMouseOrTouchUp(offsetX, offsetY);
@@ -260,7 +255,14 @@ class PhoneBilliard extends React.Component {
         const { phoneNumber } = this.state;
 
         return (
-            <div style={{ width: '100%', height: '1000px' }}>
+            <div
+                style={{
+                    width: '100%',
+                    flex: '1 1 auto',
+                    display: 'flex',
+                    flexDirection: 'column',
+                }}
+            >
                 <div>
                     <label>Telefonnummer: {phoneNumber}</label>
                     <button
@@ -270,8 +272,9 @@ class PhoneBilliard extends React.Component {
                         Start på nytt
                     </button>
                 </div>
-
-                <canvas ref={this.canvasRef}></canvas>
+                <div style={{ width: '100%', flex: '1 1 auto' }}>
+                    <canvas ref={this.canvasRef}></canvas>
+                </div>
             </div>
         );
     }

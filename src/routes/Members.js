@@ -330,6 +330,11 @@ class MemberFormBase extends React.Component {
                 <Modal
                     active={this.state.gameModalActive}
                     onClose={this.handleModalClose}
+                    contentStyle={{
+                        height: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                    }}
                 >
                     <PhoneBilliard
                         updatePhoneNumber={phoneNumber =>
