@@ -72,6 +72,24 @@ class EventFormBase extends React.Component {
         }
     };
 
+    onDelete = e => {
+        e.preventDefault();
+        if (
+            !window.confirm(
+                'Er du sikker på at du vil slette arrangementet?',
+            )
+        ) {
+            return;
+        }
+        if (this.props.event) {
+            this.props.firebase.event(this.props.event.id).delete();
+        }
+
+        if (this.props.onSubmit) {
+            this.props.onSubmit(null);
+        }
+    };
+
     render() {
         return (
             <form className="event-form" onSubmit={this.onSubmit}>
@@ -115,6 +133,15 @@ class EventFormBase extends React.Component {
                 <button type="submit" className="btn">
                     Lagre
                 </button>
+
+                {this.props.event && (
+                    <button
+                        className="btn btn-danger"
+                        style={{ float: 'right' }}
+                    >
+                        Slett <i className="fas fa-trash-alt" />
+                    </button>
+                )}
             </form>
         );
     }
