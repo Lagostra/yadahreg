@@ -109,6 +109,7 @@ class RegistrationPage extends React.Component {
     };
 
     handleChangeEvent = () => {
+        this.props.firebase.event(this.state.event.id).off();
         this.setState({ event: null });
     };
 
