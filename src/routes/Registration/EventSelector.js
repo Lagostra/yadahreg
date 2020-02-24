@@ -80,7 +80,9 @@ class EventSelectorBase extends React.Component {
                     <EventForm
                         event={editEvent}
                         onSubmit={event => {
-                            this.props.onEventSelect(event);
+                            if (!!event) {
+                                this.props.onEventSelect(event);
+                            }
                             this.setState({ modalActive: false });
                         }}
                     />

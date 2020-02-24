@@ -82,7 +82,7 @@ class EventFormBase extends React.Component {
             return;
         }
         if (this.props.event) {
-            this.props.firebase.event(this.props.event.id).delete();
+            this.props.firebase.event(this.props.event.id).remove();
         }
 
         if (this.props.onSubmit) {
@@ -138,6 +138,7 @@ class EventFormBase extends React.Component {
                     <button
                         className="btn btn-danger"
                         style={{ float: 'right' }}
+                        onClick={this.onDelete}
                     >
                         Slett <i className="fas fa-trash-alt" />
                     </button>
