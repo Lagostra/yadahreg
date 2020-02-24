@@ -5,8 +5,8 @@ class PhoneBilliard extends React.Component {
         super(props);
 
         this.canvasRef = React.createRef();
-        this.ballRadius = 1 / 50.0;
-        this.holeRadius = 1 / 15.0;
+        this.ballRadius = 1 / 20.0;
+        this.holeRadius = 1 / 8.0;
         this.speedFactor = 0.2;
         this.maxSpeed = 5.0;
         this.wallDrag = 0.5;
@@ -72,10 +72,12 @@ class PhoneBilliard extends React.Component {
     handleTouchStart(e) {
         const touch = e.changedTouches[0];
         const canvas = this.canvasRef.current;
-        const offsetX = touch.clientX - canvas.clientLeft;
-        const offsetY = touch.clientY - canvas.clientTop;
+        const cRect = canvas.getBoundingClientRect();
+        const offsetX = touch.clientX - cRect.x;
+        const offsetY = touch.clientY - cRect.y;
         this.touchX = offsetX;
         this.touchY = offsetY;
+
         this.handleMouseOrTouchDown(offsetX, offsetY);
     }
 
@@ -111,8 +113,9 @@ class PhoneBilliard extends React.Component {
         e.preventDefault();
         const touch = e.changedTouches[0];
         const canvas = this.canvasRef.current;
-        this.touchX = touch.clientX - canvas.clientLeft;
-        this.touchY = touch.clientY - canvas.clientTop;
+        const cRect = canvas.getBoundingClientRect();
+        this.touchX = touch.clientX - cRect.x;
+        this.touchY = touch.clientY - cRect.y;
     }
 
     handleMouseMove(e) {
@@ -126,15 +129,15 @@ class PhoneBilliard extends React.Component {
         this.handleMouseOrTouchUp(mouseX, mouseY);
     }
 
-    handleTouchEnd(e) {
-        const touch = e.changedTouches[0];
-        const canvas = this.canvasRef.current;
+    handleTouchEnd = e => {
+        // const touch = e.changedTouches[0];
+        // const canvas = this.canvasRef.current;
         // const offsetX = touch.clientX - canvas.clientLeft;
         // const offsetY = touch.clientY - canvas.clientTop;
         const offsetX = this.touchX;
         const offsetY = this.touchY;
         this.handleMouseOrTouchUp(offsetX, offsetY);
-    }
+    };
 
     handleMouseOrTouchUp(offsetX, offsetY) {
         this.touchX = this.touchY = null;
