@@ -1,6 +1,14 @@
 import React from 'react';
 
-const Modal = ({ active, onClose, children, title }) => (
+const Modal = ({
+    active,
+    onClose,
+    children,
+    title,
+    headerStyle,
+    containerStyle,
+    contentStyle,
+}) => (
     <React.Fragment>
         {active && (
             <div
@@ -12,7 +20,10 @@ const Modal = ({ active, onClose, children, title }) => (
                 }}
             >
                 <div className="modal__box">
-                    <div className="modal__header">
+                    <div
+                        className="modal__header"
+                        style={headerStyle}
+                    >
                         <span>{title ? title : ' '}</span>
                         <button
                             onClick={onClose}
@@ -21,8 +32,14 @@ const Modal = ({ active, onClose, children, title }) => (
                             <i className="fas fa-times" />
                         </button>
                     </div>
-                    <div className="modal__content-container">
-                        <div className="modal__content">
+                    <div
+                        className="modal__content-container"
+                        style={containerStyle}
+                    >
+                        <div
+                            className="modal__content"
+                            style={contentStyle}
+                        >
                             {children}
                         </div>
                     </div>
