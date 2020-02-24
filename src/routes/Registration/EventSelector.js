@@ -83,7 +83,10 @@ class EventSelectorBase extends React.Component {
                             if (!!event) {
                                 this.props.onEventSelect(event);
                             }
-                            this.setState({ modalActive: false });
+                            this.setState({
+                                modalActive: false,
+                                editEvent: null,
+                            });
                         }}
                     />
                 </Modal>
