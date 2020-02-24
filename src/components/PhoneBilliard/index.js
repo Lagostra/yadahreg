@@ -39,9 +39,6 @@ class PhoneBilliard extends React.Component {
         canvas.ontouchmove = this.handleTouchMove.bind(this);
         canvas.ontouchend = this.handleTouchEnd.bind(this);
 
-        canvas.width = canvas.parentNode.clientWidth;
-        canvas.height = canvas.parentNode.clientHeight;
-
         const ballRadiusY =
             this.ballRadius * (canvas.width / canvas.height);
         const balls = [];
@@ -62,12 +59,21 @@ class PhoneBilliard extends React.Component {
             new Ball(1, 1),
             new Ball(0, 1),
         ];
+        window.addEventListener('resize', this.handleResize);
+        this.handleResize();
 
         this.props.updatePhoneNumber(this.state.phoneNumber);
     }
 
+    handleResize = () => {
+        const canvas = this.canvasRef.current;
+        canvas.width = canvas.parentNode.clientWidth;
+        canvas.height = canvas.parentNode.clientHeight;
+    };
+
     componentWillUnmount() {
         clearInterval(this.interval);
+        window.removeEventListener('resize', this.handleResize);
     }
 
     handleTouchStart(e) {
