@@ -62,6 +62,10 @@ class EventSelectorBase extends React.Component {
         this.props.onEventSelect(event);
     };
 
+    handleEventEdit = event => {
+        this.setState({ editEvent: event, modalActive: true });
+    };
+
     render() {
         const { events, editEvent, modalActive } = this.state;
 
@@ -105,6 +109,7 @@ class EventSelectorBase extends React.Component {
                     <EventList
                         events={events}
                         onEventSelect={this.props.onEventSelect}
+                        onEventEdit={this.handleEventEdit}
                     />
                 )}
             </div>
@@ -114,7 +119,7 @@ class EventSelectorBase extends React.Component {
 
 const EventSelector = withFirebase(EventSelectorBase);
 
-const EventList = ({ events, onEventSelect }) => {
+const EventList = ({ events, onEventSelect, onEventEdit }) => {
     return (
         <table className="table-full-width table-hor-lines-between table-last-td-right">
             <thead>
@@ -132,6 +137,7 @@ const EventList = ({ events, onEventSelect }) => {
                         event={event}
                         key={event.id}
                         onEventSelect={onEventSelect}
+                        onEventEdit={onEventEdit}
                     />
                 ))}
             </tbody>
@@ -139,7 +145,7 @@ const EventList = ({ events, onEventSelect }) => {
     );
 };
 
-const EventListElement = ({ event, onEventSelect }) => {
+const EventListElement = ({ event, onEventSelect, onEventEdit }) => {
     return (
         <tr>
             <td>{moment(event.date).format('DD.MM.YYYY')}</td>
@@ -151,6 +157,12 @@ const EventListElement = ({ event, onEventSelect }) => {
                     : '0'}
             </td>
             <td>
+                <button
+                    onClick={() => onEventEdit(event)}
+                    className="btn btn-secondary btn-small"
+                >
+                    <i className="fas fa-edit" />
+                </button>
                 <button
                     onClick={() => onEventSelect(event)}
                     className="btn btn-small"

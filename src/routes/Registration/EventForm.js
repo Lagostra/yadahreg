@@ -10,6 +10,7 @@ class EventFormBase extends React.Component {
             delete event.id;
             this.state = {
                 ...event,
+                eventTypes: [],
             };
         } else {
             this.state = {
