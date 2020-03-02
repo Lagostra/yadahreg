@@ -22,6 +22,8 @@ exports.createUserUponRegistration = functions.auth
             });
     });
 
+const backup = require('./backup');
+
 /*exports.deleteUserUponAuthDeletion = functions.auth
     .user()
     .onDelete(user => {
