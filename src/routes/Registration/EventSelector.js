@@ -162,12 +162,12 @@ const EventListElement = ({ event, onEventSelect, onEventEdit }) => {
                     : '0'}
             </td>
             <td>
-                <button
+                {/* <button
                     onClick={() => onEventEdit(event)}
                     className="btn btn-secondary btn-small"
                 >
                     <i className="fas fa-edit" />
-                </button>
+                </button> */}
                 <button
                     onClick={() => onEventSelect(event)}
                     className="btn btn-small"
