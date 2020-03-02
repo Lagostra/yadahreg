@@ -22,21 +22,21 @@ exports.createUserUponRegistration = functions.auth
             });
     });
 
-// const db = admin.database();
-// const firestore = admin.firestore();
+const db = admin.database();
+const firestore = admin.firestore();
 
-// const backupDatabase = () => {
-//     const db_root = db.ref('/');
-//     firestore
-//         .collection('backup')
-//         .doc(new Date().toISOString())
-//         .set(db_root.toJSON());
-// };
+const backupDatabase = () => {
+    const db_root = db.ref('/');
+    firestore
+        .collection('backup')
+        .doc(new Date().toISOString())
+        .set(db_root.toJSON());
+};
 
-// exports.backupDatabase = functions.pubsub
-//     .schedule('0 0 * * *')
-//     .timeZone('Norway/Oslo') // Users can choose timezone - default is America/Los_Angeles
-//     .onRun(() => backupDatabase);
+exports.backupDatabase = functions.pubsub
+    .schedule('0 0 * * *')
+    .timeZone('Norway/Oslo') // Users can choose timezone - default is America/Los_Angeles
+    .onRun(() => backupDatabase);
 
 /*exports.deleteUserUponAuthDeletion = functions.auth
     .user()
