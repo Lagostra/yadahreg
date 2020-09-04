@@ -1,26 +1,21 @@
-import React from 'react';
-import { withFirebase } from '../../components/Firebase';
+import React, { useEffect, useState } from 'react';
 import RegistrationForm from './RegistrationForm';
 import EventSelector from './EventSelector';
-import { compose } from 'recompose';
-import * as PERMISSIONS from '../../constants/permissions';
-import { withAuthorization, withAuthUser } from '../../components/Session';
+import * as PERMISSIONS from 'constants/permissions';
+import { withAuthorization } from 'components/Session';
 import moment from 'moment';
+import useFirebase from 'hooks/useFirebase';
+import useAuthUser from 'hooks/useAuthUser';
 
-class RegistrationPage extends React.Component {
-  constructor(props) {
-    super(props);
+const RegistrationPage = () => {
+  const [members, setMembers] = useState([]);
+  const [event, setEvent] = useState(null);
+  const [semester, setSemester] = useState(null);
 
-    this.state = {
-      members: [],
-      event: null,
-      semester: null,
-    };
-  }
+  const firebase = useFirebase();
+  const authUser = useAuthUser();
 
-  componentDidMount() {
-    const { authUser, firebase } = this.props;
-
+  useEffect(() => {
     firebase.members().on('value', (snapshot) => {
       const membersObject = snapshot.val();
       const members = Object.keys(membersObject)
@@ -37,38 +32,38 @@ class RegistrationPage extends React.Component {
           return 0;
         });
 
-      this.setState({ members });
+      setMembers(members);
     });
 
+    return () => firebase.members().off();
+  }, [firebase]);
+
+  useEffect(() => {
+    if (event) {
+      firebase.event(event.id).on('value', snapshot => {
+        setEvent({...snapshot.val(), id: event.id})
+      });
+
+      return () => firebase.event(event.id).off();
+    }
+  }, [event, firebase]);
+
+  useEffect(() => {
     if (!!authUser.permissions[PERMISSIONS.SEMESTERS_READ]) {
-      firebase
-        .semesters()
-        .once('value')
-        .then((snapshot) => {
-          const semestersObject = snapshot.val();
-          const semesters = Object.keys(semestersObject).map((key) => ({
-            ...semestersObject[key],
-            id: key,
-          }));
+      firebase.semesters().once('value').then(snapshot => {
+        const semestersObject = snapshot.val();
+        const semesters = Object.keys(semestersObject).map((key) => ({
+          ...semestersObject[key],
+          id: key,
+        }));
 
-          const lastSemester = semesters.reduce((a, b) => (moment(a.end_date) > moment(b.end_data) ? a : b));
-
-          this.setState({ semester: lastSemester });
-        });
+        const lastSemester = semesters.reduce((a, b) => (moment(a.end_date) > moment(b.end_data) ? a : b));
+        setSemester(lastSemester);
+      });
     }
-  }
+  }, [firebase, authUser]);
 
-  componentWillUnmount() {
-    this.props.firebase.members().off();
-    if (this.state.event) {
-      this.props.firebase.event(this.state.event.id).off();
-    }
-  }
-
-  handleRegistrationChange = (member, value) => {
-    const { firebase } = this.props;
-    const { event } = this.state;
-
+  const handleRegistrationChange = (member, value) => {
     if (!event['attendants']) {
       event.attendants = {};
     }
@@ -90,46 +85,27 @@ class RegistrationPage extends React.Component {
     const saveEvent = { ...event };
     delete saveEvent['id'];
 
-    this.setState({ event });
+    setEvent(event);
 
     firebase.event(event.id).set(saveEvent);
   };
 
-  handleChangeEvent = () => {
-    this.props.firebase.event(this.state.event.id).off();
-    this.setState({ event: null });
-  };
-
-  handleEventSelect = (event) => {
-    if (this.state.event) {
-      this.props.firebase.event(this.state.event.id).off();
-    }
-    this.props.firebase.event(event.id).on('value', (snapshot) => {
-      this.setState({
-        event: { ...snapshot.val(), id: event.id },
-      });
-    });
-  };
-
-  render() {
-    const { event, members, semester } = this.state;
-    return (
-      <div className="content">
-        {!event && <EventSelector onEventSelect={this.handleEventSelect} />}
-        {event && (
-          <RegistrationForm
-            onRegistrationChange={this.handleRegistrationChange}
-            members={members}
-            event={event}
-            semester={semester}
-            onChangeEvent={this.handleChangeEvent}
-          />
-        )}
-      </div>
-    );
-  }
+  return (
+    <div className="content">
+      {!event && <EventSelector onEventSelect={(event) => setEvent(event)} />}
+      {event && (
+        <RegistrationForm
+          onRegistrationChange={handleRegistrationChange}
+          members={members}
+          event={event}
+          semester={semester}
+          onChangeEvent={() => setEvent(null)}
+        />
+      )}
+    </div>
+  );
 }
 
 const authCondition = (authUser) => !!authUser && !!authUser.permissions[PERMISSIONS.EVENTS_WRITE];
 
-export default compose(withFirebase, withAuthorization(authCondition), withAuthUser)(RegistrationPage);
+export default withAuthorization(authCondition)(RegistrationPage);

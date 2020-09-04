@@ -27,7 +27,7 @@ const EventSelector = ({ onEventSelect }) => {
     })
 
     return () => firebase.events().off();
-  })
+  }, [firebase]);
 
   const createNewRehearsal = () => {
     const event = {
