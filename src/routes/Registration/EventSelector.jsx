@@ -1,24 +1,20 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 
 import Modal from '../../components/Modal';
 import EventForm from './EventForm';
-import { withFirebase } from '../../components/Firebase';
+import useFirebase from 'hooks/useFirebase';
 import Spinner from '../../components/Spinner';
 
-class EventSelectorBase extends React.Component {
-  constructor(props) {
-    super(props);
+const EventSelector = ({ onEventSelect }) => {
+  const firebase = useFirebase();
 
-    this.state = {
-      modalActive: false,
-      editEvent: null,
-      events: [],
-    };
-  }
+  const [modalActive, setModalActive] = useState(false);
+  const [editEvent, setEditEvent] = useState(null);
+  const [events, setEvents] = useState([]);
 
-  componentDidMount() {
-    this.props.firebase.events().on('value', (snapshot) => {
+  useEffect(() => {
+    firebase.events().on('value', (snapshot) => {
       const eventsObject = snapshot.val();
       let events = Object.keys(eventsObject).map((key) => ({
         ...eventsObject[key],
@@ -27,82 +23,71 @@ class EventSelectorBase extends React.Component {
 
       events.sort((a, b) => moment(b.date) - moment(a.date));
 
-      this.setState({ events });
-    });
-  }
+      setEvents(events);
+    })
 
-  componentWillUnmount() {
-    this.props.firebase.events().off();
-  }
+    return () => firebase.events().off();
+  })
 
-  createNewRehearsal = () => {
+  const createNewRehearsal = () => {
     const event = {
       title: 'Korøvelse',
       type: 'Øvelse',
       date: new Date().toISOString().split('T')[0],
     };
 
-    if (this.state.events.filter((e) => e.date === event.date && e.type === event.type).length) {
+    if (events.find((e) => e.date === event.date && e.type === event.type).length) {
       if (!window.confirm('Det finnes allerede en øvelse i dag. Vil du likevel opprette en ny?')) {
         return;
       }
     }
 
-    const newRef = this.props.firebase.events().push(event);
+    const newRef = firebase.events().push(event);
     event.id = newRef.getKey();
 
-    this.props.onEventSelect(event);
+    onEventSelect(event);
   };
 
-  handleEventEdit = (event) => {
-    this.setState({ editEvent: event, modalActive: true });
+  const handleEventEdit = (event) => {
+    setEditEvent(event);
+    setModalActive(true);
   };
 
-  render() {
-    const { events, editEvent, modalActive } = this.state;
-
-    return (
-      <div className="event-selector">
-        <Modal active={modalActive} onClose={() => this.setState({ modalActive: false })}>
-          <EventForm
-            event={editEvent}
-            onSubmit={(event) => {
-              if (!!event) {
-                this.props.onEventSelect(event);
-              }
-              this.setState({
-                modalActive: false,
-                editEvent: null,
-              });
-            }}
-          />
-        </Modal>
-        <div className="event-selector__button-bar">
-          <button className="btn" onClick={this.createNewRehearsal}>
-            Ny øvelse i dag
-          </button>
-          <button
-            className="btn"
-            onClick={() =>
-              this.setState({
-                modalActive: true,
-                editEvent: null,
-              })
+  return (
+    <div className="event-selector">
+      <Modal active={modalActive} onClose={() => setModalActive(false)}>
+        <EventForm
+          event={editEvent}
+          onSubmit={(event) => {
+            if (!!event) {
+              onEventSelect(event);
             }
-          >
-            Nytt arrangement
-          </button>
-        </div>
-        {!events.length && <Spinner />}
-        {!!events.length && (
-          <EventList events={events} onEventSelect={this.props.onEventSelect} onEventEdit={this.handleEventEdit} />
-        )}
+            setModalActive(false);
+            setEditEvent(null);
+          }}
+        />
+      </Modal>
+      <div className="event-selector__button-bar">
+        <button className="btn" onClick={createNewRehearsal}>
+          Ny øvelse i dag
+        </button>
+        <button
+          className="btn"
+          onClick={() =>{
+            setModalActive(true);
+            setEditEvent(null);
+          }}
+        >
+          Nytt arrangement
+        </button>
       </div>
-    );
-  }
+      {!events.length && <Spinner />}
+      {!!events.length && (
+        <EventList events={events} onEventSelect={onEventSelect} onEventEdit={handleEventEdit} />
+      )}
+    </div>
+  );
 }
-
-const EventSelector = withFirebase(EventSelectorBase);
 
 const EventList = ({ events, onEventSelect, onEventEdit }) => {
   return (
