@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Modal = ({ active, onClose, children, title, headerStyle, containerStyle, contentStyle }) => (
-  <React.Fragment>
+  <>
     {active && (
       <div
         className="modal__container"
@@ -26,7 +26,7 @@ const Modal = ({ active, onClose, children, title, headerStyle, containerStyle, 
         </div>
       </div>
     )}
-  </React.Fragment>
+  </>
 );
 
 export default Modal;

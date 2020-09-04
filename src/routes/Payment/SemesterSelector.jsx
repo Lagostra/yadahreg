@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import Modal from './../../components/Modal';
+import Modal from '../../components/Modal';
 
 import { withFirebase } from '../../components/Firebase';
 import SemesterForm from './SemesterForm';

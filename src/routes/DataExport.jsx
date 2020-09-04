@@ -5,7 +5,7 @@ import { saveAs } from 'file-saver';
 import { compose } from 'recompose';
 
 import { withFirebase } from '../components/Firebase';
-import { withAuthUser, withAuthorization } from './../components/Session';
+import { withAuthUser, withAuthorization } from '../components/Session';
 import * as PERMISSIONS from '../constants/permissions';
 
 const DataExportBase = ({ firebase, authUser }) => {

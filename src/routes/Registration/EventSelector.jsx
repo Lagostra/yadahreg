@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 
-import Modal from './../../components/Modal';
+import Modal from '../../components/Modal';
 import EventForm from './EventForm';
 import { withFirebase } from '../../components/Firebase';
 import Spinner from '../../components/Spinner';

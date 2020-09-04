@@ -1,5 +1,5 @@
 import React from 'react';
-import ButtonSelect from './../../components/ButtonSelect';
+import ButtonSelect from '../../components/ButtonSelect';
 
 class PaymentForm extends React.Component {
   constructor(props) {
