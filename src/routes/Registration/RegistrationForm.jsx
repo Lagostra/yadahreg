@@ -1,37 +1,33 @@
-import React from 'react';
-import ButtonSelect from '../../components/ButtonSelect';
+import React, { useState } from 'react';
+import ButtonSelect from 'components/ButtonSelect';
 import moment from 'moment';
-import Modal from '../../components/Modal';
+import Modal from 'components/Modal';
 import { MemberForm } from '../Members';
-import hasBirthday from '../../util/hasBirthday';
+import hasBirthday from 'util/hasBirthday';
 
-class RegistrationForm extends React.Component {
-  constructor(props) {
-    super(props);
+const RegistrationForm = ({members, onRegistrationChange, event, semester, onChangeEvent}) => {
+  const [filter, setFilter] = useState('');
+  const [memberModalActive, setMemberModalActive] = useState(false);
 
-    this.presenceOptions = [
-      {
-        value: 'present',
-        text: <i className="fas fa-check-circle" />,
-        tooltip: 'Til stede',
-      },
-      {
-        value: 'notified',
-        text: <i className="fas fa-comment" />,
-        tooltip: 'Gitt beskjed',
-      },
-      {
-        value: 'not-present',
-        text: <i className="fas fa-times-circle" />,
-        tooltip: 'Ikke til stede',
-      },
-    ];
+  const presenceOptions = [
+    {
+      value: 'present',
+      text: <i className="fas fa-check-circle" />,
+      tooltip: 'Til stede',
+    },
+    {
+      value: 'notified',
+      text: <i className="fas fa-comment" />,
+      tooltip: 'Gitt beskjed',
+    },
+    {
+      value: 'not-present',
+      text: <i className="fas fa-times-circle" />,
+      tooltip: 'Ikke til stede',
+    },
+  ];
 
-    this.state = { filter: '', memberModalActive: false };
-  }
-
-  getStatus = (member) => {
-    const { event } = this.props;
+  const getStatus = (member) => {
     if (event) {
       if (event.attendants && !!event.attendants[member.id]) {
         return 'present';
@@ -41,113 +37,98 @@ class RegistrationForm extends React.Component {
       }
     }
     return 'not-present';
-  };
+  }
 
-  isMatch = (filter, name) => {
+  const isMatch = (filter, name) => {
     const regex = new RegExp('(.*)' + filter + '(.*)', 'i');
     return regex.test(name);
-  };
+  }
 
-  handleFilterChange = (e) => {
-    this.setState({ filter: e.target.value });
-  };
-
-  handleFilterKeyDown = (e) => {
-    const { members, onRegistrationChange } = this.props;
-    const { filter } = this.state;
+  const handleFilterKeyDown = (e) => {
     if (e.key === 'Enter') {
       const matchingMembers = members.filter((member) => {
-        const res = this.isMatch(filter, member.first_name + ' ' + member.last_name);
+        const res = isMatch(filter, member.first_name + ' ' + member.last_name);
         return res;
       });
       if (matchingMembers.length === 1) {
         onRegistrationChange(matchingMembers[0], 'present');
 
         setTimeout(() => {
-          this.setState({ filter: '' });
+          setFilter('');
         }, 600);
       }
     }
   };
 
-  handleAddMember = (memberId) => {
-    this.props.onRegistrationChange({ id: memberId }, 'present');
-    this.setState({ memberModalActive: false });
-  };
+  const handleAddMember = (memberId) => {
+    onRegistrationChange({id: memberId}, 'present');
+    setMemberModalActive(false);
+  }
 
-  render() {
-    const { members, event, onChangeEvent, semester } = this.props;
-    const { filter, memberModalActive } = this.state;
+  return (
+    <div className="registration-form">
+      <Modal onClose={() => setMemberModalActive(false)} active={memberModalActive}>
+        <MemberForm onSubmit={handleAddMember} event={event} />
+      </Modal>
+      <div className="registration-form__header">
+        <h1>
+          {moment(event.date).format('DD.MM.YYYY')} - {event.title}
+        </h1>
 
-    return (
-      <div className="registration-form">
-        <Modal onClose={() => this.setState({ memberModalActive: false })} active={memberModalActive}>
-          <MemberForm onSubmit={this.handleAddMember} event={event} />
-        </Modal>
-        <div className="registration-form__header">
-          <h1>
-            {moment(event.date).format('DD.MM.YYYY')} - {event.title}
-          </h1>
-
-          <button className="btn btn-link registration-form__change-event" onClick={onChangeEvent}>
-            Endre arrangement
+        <button className="btn btn-link registration-form__change-event" onClick={onChangeEvent}>
+          Endre arrangement
+        </button>
+      </div>
+      <div className="registration-form__util-bar">
+        <div>
+          <button
+            onClick={() => setMemberModalActive(true)}
+            className="btn"
+          >
+            Nytt medlem
           </button>
         </div>
-        <div className="registration-form__util-bar">
-          <div>
-            <button
-              onClick={() => {
-                this.setState({
-                  memberModalActive: true,
-                });
-              }}
-              className="btn"
-            >
-              Nytt medlem
-            </button>
-          </div>
 
-          <div className="registration-form__num-attendants">
-            Antall oppmøtte: {event.attendants ? Object.keys(event.attendants).length : 0}
-          </div>
+        <div className="registration-form__num-attendants">
+          Antall oppmøtte: {event.attendants ? Object.keys(event.attendants).length : 0}
         </div>
-
-        <input
-          value={filter}
-          onChange={this.handleFilterChange}
-          name="filter"
-          type="text"
-          placeholder="Søk..."
-          onKeyDown={this.handleFilterKeyDown}
-        />
-
-        <table className="registration-form__member-table table-full-width table-hor-lines-between table-last-td-right">
-          <tbody>
-            {members.map((member) => (
-              <React.Fragment key={member.id}>
-                {(!filter || this.isMatch(filter, member.first_name + ' ' + member.last_name)) && (
-                  <tr className={hasBirthday(member) ? 'registration-form__member--birthday' : ''}>
-                    <td className="registration-form__member-name">
-                      {member.first_name} {member.last_name}
-                      {semester && semester.payees && !semester.payees[member.id] && '*'}
-                    </td>
-                    <td className="registration-form__buttons">
-                      <ButtonSelect
-                        options={this.presenceOptions}
-                        onChange={(e) => this.props.onRegistrationChange(member, e.value)}
-                        value={this.getStatus(member)}
-                      />
-                    </td>
-                  </tr>
-                )}
-              </React.Fragment>
-            ))}
-          </tbody>
-        </table>
-        {semester && '* Har ikke betalt siste semesteravgift'}
       </div>
-    );
-  }
+
+      <input
+        value={filter}
+        onChange={(e) => setFilter(e.currentTarget.value)}
+        name="filter"
+        type="text"
+        placeholder="Søk..."
+        onKeyDown={handleFilterKeyDown}
+      />
+
+      <table className="registration-form__member-table table-full-width table-hor-lines-between table-last-td-right">
+        <tbody>
+          {members.map((member) => (
+            <React.Fragment key={member.id}>
+              {(!filter || isMatch(filter, member.first_name + ' ' + member.last_name)) && (
+                <tr className={hasBirthday(member) ? 'registration-form__member--birthday' : ''}>
+                  <td className="registration-form__member-name">
+                    {member.first_name} {member.last_name}
+                    {semester && semester.payees && !semester.payees[member.id] && '*'}
+                  </td>
+                  <td className="registration-form__buttons">
+                    <ButtonSelect
+                      options={presenceOptions}
+                      onChange={(e) => onRegistrationChange(member, e.value)}
+                      value={getStatus(member)}
+                    />
+                  </td>
+                </tr>
+              )}
+            </React.Fragment>
+          ))}
+        </tbody>
+      </table>
+      {semester && '* Har ikke betalt siste semesteravgift'}
+    </div>
+  );
 }
 
 export default RegistrationForm;
