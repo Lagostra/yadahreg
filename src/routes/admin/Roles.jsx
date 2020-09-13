@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { withFirebase } from '../../components/Firebase';
-import { compose } from 'recompose';
-import { withAuthorization } from '../../components/Session';
 
+import { withAuthorization } from '../../components/Session';
 import * as PERMISSIONS from './../../constants/permissions';
 import Modal from '../../components/Modal';
 import Spinner from '../../components/Spinner';
@@ -103,112 +101,83 @@ const RolesList = () => {
   </>);
 }
 
-class RoleFormBase extends React.Component {
-  constructor(props) {
-    super(props);
-
-    const role = {
-      name: '',
-      description: '',
-      restricted: false,
-      permissions: {},
-      ...props.role,
-    };
-
-    this.state = {
-      ...role,
-    };
-  }
-
-  onChange = (e) => {
-    let value = e.target.value;
-    if (e.target.hasOwnProperty('checked')) {
-      value = e.target.checked;
-    }
-    this.setState({
-      [e.target.name]: value,
-    });
+const RoleForm = ({role: roleProp, onSubmit: handleSubmitProp, permissions: availablePermissions}) => {
+  const role = {
+    name: '',
+    description: '',
+    restricted: false,
+    permissions: {},
+    ...roleProp,
   };
 
-  onPermissionChange = (e) => {
-    const { permissions } = this.state;
+  const [name, setName] = useState(role.name);
+  const [description, setDescription] = useState(role.description);
+  const [restricted, setRestricted] = useState(role.restricted);
+  const [permissions, setPermissions] = useState(role.permissions);
 
+  const firebase = useFirebase();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    firebase.role(name).set({description, permissions, restricted});
+
+    if (handleSubmitProp) {
+      handleSubmitProp();
+    }
+  };
+
+  const handlePermissionChange = (e) => {
+    const permissions_ = {...permissions};
     if (e.target.checked) {
-      permissions[e.target.name] = e.target.name;
+      permissions_[e.target.name] = e.target.name;
     } else {
-      if (permissions[e.target.name]) {
-        delete permissions[e.target.name];
+      if (permissions_[e.target.name]) {
+        delete permissions_[e.target.name];
       }
     }
+
+    setPermissions(permissions_);
   };
 
-  onSubmit = (e) => {
-    e.preventDefault();
-    const { name, description, permissions, restricted } = this.state;
+  return (
+    <form onSubmit={handleSubmit}>
+      {roleProp && <h1>{name}</h1>}
+      {!roleProp && (
+        <>
+          <label htmlFor="name">Navn</label>
+          <input type="text" name="name" value={name} onChange={e => setName(e.target.value)} />
+        </>
+      )}
 
-    /*
-        if (name !== this.props.name) {
-            if (
-                !window.confirm(
-                    'Du er i ferd med å endre navn på en rolle. Det betyr at brukere som har denne rollen, kan miste rettigheter. Vil du fortsette?',
-                )
-            ) {
-                return;
-            }
+      <label htmlFor="description">Beskrivelse</label>
+      <input type="text" name="description" value={description} onChange={e => setDescription(e.target.value)} />
 
-            this.props.firebase.role(this.props.name).remove();
-        }
-        */
+      <label htmlFor="restricted">Begrenset</label>
+      <input type="checkbox" name="restricted" checked={restricted} onChange={e => setRestricted(e.target.checked)} />
+      <p className="light">
+        Bare brukere med tilgangen "set-restricted-roles" kan tildele begrensede roller. Dette er nyttig for å la en
+        moderator kunne dele ut alle andre roller enn sin egen eller høyere.
+      </p>
 
-    this.props.firebase.role(name).set({ description, permissions, restricted });
-
-    if (this.props.onSubmit) {
-      this.props.onSubmit();
-    }
-  };
-
-  render() {
-    const { name, description, restricted, permissions } = this.state;
-
-    return (
-      <form onSubmit={this.onSubmit}>
-        {this.props.role && <h1>{name}</h1>}
-        {!this.props.role && (
-          <React.Fragment>
-            <label htmlFor="name">Navn</label>
-            <input type="text" name="name" value={name} onChange={this.onChange} />
-          </React.Fragment>
-        )}
-
-        <label htmlFor="description">Beskrivelse</label>
-        <input type="text" name="description" value={description} onChange={this.onChange} />
-
-        <label htmlFor="restricted">Begrenset</label>
-        <input type="checkbox" name="restricted" checked={restricted} onChange={this.onChange} />
-        <p className="light">
-          Bare brukere med tilgangen "set-restricted-roles" kan tildele begrensede roller. Dette er nyttig for å la en
-          moderator kunne dele ut alle andre roller enn sin egen eller høyere.
-        </p>
-
-        <h2>Tilganger</h2>
-        {this.props.permissions.map((permission) => (
-          <span key={permission}>
-            <label>{permission}</label>
-            <input
-              type="checkbox"
-              name={permission}
-              key={permission}
-              checked={permissions && permissions[permission]}
-              onChange={this.onPermissionChange}
-            />
-          </span>
-        ))}
-        <button type="submit" className="btn">
-          Lagre
-        </button>
-      </form>
-    );
-  }
+      <h2>Tilganger</h2>
+      {availablePermissions.map((permission) => (
+        <span key={permission}>
+          <label>{permission}</label>
+          <input
+            type="checkbox"
+            name={permission}
+            key={permission}
+            checked={!!permissions && !!permissions[permission]}
+            onChange={handlePermissionChange}
+          />
+        </span>
+      ))}
+      <button type="submit" className="btn">
+        Lagre
+      </button>
+    </form>
+  );
 }
 
 const RolesPage = () => (
@@ -220,6 +189,4 @@ const RolesPage = () => (
 
 const authCondition = (authUser) => !!authUser && !!authUser.permissions[PERMISSIONS.ROLES_WRITE];
 
-const RoleForm = withFirebase(RoleFormBase);
-
-export default compose(withAuthorization(authCondition))(RolesPage);
+export default withAuthorization(authCondition)(RolesPage);
