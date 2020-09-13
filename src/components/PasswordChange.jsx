@@ -1,52 +1,37 @@
-import React, { Component } from 'react';
-import { compose } from 'recompose';
+import React, { useState } from 'react';
 
-import { withFirebase } from './Firebase';
+import useFirebase from 'hooks/useFirebase';
 import { withAuthorization } from './Session';
 
-const INITIAL_STATE = {
-  passwordOne: '',
-  passwordTwo: '',
-  error: null,
-};
+const PasswordChangeForm = () => {
+  const [passwordOne, setPasswordOne] = useState('');
+  const [passwordTwo, setPasswordTwo] = useState('');
+  const [error, setError] = useState(null);
 
-class PasswordChangeForm extends Component {
-  constructor(props) {
-    super(props);
+  const firebase = useFirebase();
 
-    this.state = { ...INITIAL_STATE };
-  }
-
-  onSubmit = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
 
-    const { passwordOne } = this.state;
-
-    this.props.firebase
-      .doPasswordUpdate(passwordOne)
+    firebase.doPasswordUpdate(passwordOne)
       .then(() => {
-        this.setState({ ...INITIAL_STATE });
+        setPasswordOne('');
+        setPasswordTwo('');
+        setError(null);
       })
       .catch((error) => {
-        this.setState({ error });
+        setError(error);
       });
   };
 
-  onChange = (event) => {
-    this.setState({ [event.target.name]: event.target.value });
-  };
+  const isInvalid = passwordOne !== passwordTwo || passwordOne === '';
 
-  render() {
-    const { passwordOne, passwordTwo, error } = this.state;
-
-    const isInvalid = passwordOne !== passwordTwo || passwordOne === '';
-
-    return (
-      <form onSubmit={this.onSubmit}>
+  return (
+    <form onSubmit={handleSubmit}>
         <input
           name="passwordOne"
           value={passwordOne}
-          onChange={this.onChange}
+          onChange={e => setPasswordOne(e.target.value)}
           type="password"
           placeholder="Nytt passord"
         />
@@ -54,7 +39,7 @@ class PasswordChangeForm extends Component {
         <input
           name="passwordTwo"
           value={passwordTwo}
-          onChange={this.onChange}
+          onChange={e => setPasswordTwo(e.target.value)}
           type="password"
           placeholder="Bekreft nytt passord"
         />
@@ -65,10 +50,10 @@ class PasswordChangeForm extends Component {
 
         {error && <p>{error.message}</p>}
       </form>
-    );
-  }
+  )
 }
+
 
 const authCondition = (authUser) => !!authUser;
 
-export default compose(withFirebase, withAuthorization(authCondition))(PasswordChangeForm);
+export default withAuthorization(authCondition)(PasswordChangeForm);
