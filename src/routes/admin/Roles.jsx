@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { withFirebase } from '../../components/Firebase';
 import { compose } from 'recompose';
 import { withAuthorization } from '../../components/Session';
@@ -6,20 +6,18 @@ import { withAuthorization } from '../../components/Session';
 import * as PERMISSIONS from './../../constants/permissions';
 import Modal from '../../components/Modal';
 import Spinner from '../../components/Spinner';
+import useFirebase from 'hooks/useFirebase';
 
-class RolesListBase extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      roles: [],
-      permissions: [],
-      selectedRole: null,
-      modalActive: false,
-    };
-  }
+const RolesList = () => {
+  const [roles, setRoles] = useState([]);
+  const [permissions, setPermissions] = useState([]);
+  const [selectedRole, setSelectedRole] = useState(null);
+  const [modalActive, setModalActive] = useState(false);
 
-  componentDidMount() {
-    this.props.firebase.roles().on('value', (result) => {
+  const firebase = useFirebase();
+
+  useEffect(() => {
+    firebase.roles().on('value', (result) => {
       const rolesObject = result.val();
 
       const roles = Object.keys(rolesObject).map((key) => ({
@@ -27,63 +25,50 @@ class RolesListBase extends React.Component {
         name: key,
       }));
 
-      this.setState({ roles });
+      setRoles(roles);
     });
 
-    this.props.firebase
-      .permissions()
-      .once('value')
-      .then((result) => {
-        const permissionsObject = result.val();
-        const permissions = Object.keys(permissionsObject);
+    return () => {firebase.roles().off()};
+  }, [firebase]);
 
-        this.setState({ permissions });
-      });
-  }
+  useEffect(() => {
+    firebase.permissions().once('value').then((result) => {
+      const permissionsObject = result.val();
+      const permissions = Object.keys(permissionsObject);
 
-  componentWillUnmount() {
-    this.props.firebase.roles().off();
-  }
+      setPermissions(permissions);
+    });
+  }, [firebase]);
 
-  render() {
-    const { roles, selectedRole, permissions, modalActive } = this.state;
-
-    return (
-      <React.Fragment>
-        <Modal
+  return (<>
+  <Modal
           active={modalActive}
-          onClose={() =>
-            this.setState({
-              modalActive: false,
-              selectedRole: null,
-            })
-          }
+          onClose={() => {
+            setModalActive(false);
+            setSelectedRole(null);
+          }}
         >
           <RoleForm
             role={selectedRole}
             permissions={permissions}
-            onSubmit={() =>
-              this.setState({
-                selectedRole: null,
-                modalActive: false,
-              })
-            }
+            onSubmit={() => {
+              setModalActive(false);
+              setSelectedRole(null);
+            }}
           />
         </Modal>
 
         <button
           className="btn"
-          onClick={() =>
-            this.setState({
-              selectedRole: null,
-              modalActive: true,
-            })
-          }
+          onClick={() => {
+            setSelectedRole(null);
+            setModalActive(true);
+          }}
         >
           Ny rolle
         </button>
 
-        {!this.state.roles.length || !this.state.permissions.length ? (
+        {!roles.length || !permissions.length ? (
           <Spinner />
         ) : (
           <table className="table-full-width table-hor-lines-between">
@@ -96,18 +81,16 @@ class RolesListBase extends React.Component {
             </thead>
             <tbody>
               {roles.map((role) => (
-                <tr key={role.name} onClick={(e) => (e.currentTarget === e.target ? this.selectRole(role) : null)}>
+                <tr key={role.name}>
                   <td>{role.name}</td>
                   <td>{role.description}</td>
                   <td>
                     <button
                       className="btn btn-small"
-                      onClick={() =>
-                        this.setState({
-                          selectedRole: role,
-                          modalActive: true,
-                        })
-                      }
+                      onClick={() => {
+                        setSelectedRole(role);
+                        setModalActive(true);
+                      }}
                     >
                       <i className="fas fa-edit" />
                     </button>
@@ -117,12 +100,8 @@ class RolesListBase extends React.Component {
             </tbody>
           </table>
         )}
-      </React.Fragment>
-    );
-  }
+  </>);
 }
-
-const RolesList = withFirebase(RolesListBase);
 
 class RoleFormBase extends React.Component {
   constructor(props) {
