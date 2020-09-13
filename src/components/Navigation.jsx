@@ -1,40 +1,31 @@
-import React from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 import SignOutButton from './SignOutButton';
 import * as ROUTES from '../constants/routes';
 import * as PERMISSIONS from '../constants/permissions';
-import { withAuthUser } from './Session';
-import { compose } from 'recompose';
+import useAuthUser from 'hooks/useAuthUser';
 
-class Navigation extends React.Component {
-  constructor(props) {
-    super(props);
+const Navigation = () => {
+  const [navDrawerActive, setNavDrawerActive] = useState(false);
+  const [activeSubDrawer, setActiveSubDrawer] = useState('');
+  const authUser = useAuthUser();
 
-    this.state = {
-      navDrawerActive: false,
-      activeSubDrawer: '',
-    };
-  }
+  const location = useLocation();
 
-  componentDidUpdate(prevProps) {
-    if (this.props.location !== prevProps.location) {
-      this.setState({
-        navDrawerActive: false,
-        activeSubDrawer: '',
-      });
-    }
-  }
+  useEffect(() => {
+    setNavDrawerActive(false);
+    setActiveSubDrawer('');
+  }, [location]);
 
-  handleActivateSubDrawer = (name) => {
-    this.setState({ activeSubDrawer: name });
+  const handleActivateSubDrawer = (name) => {
+    this.setActiveSubDrawer(name);
   };
 
-  render() {
-    const isTest =
-      !process.env.REACT_APP_ENVIRONMENT ||
-      process.env.REACT_APP_ENVIRONMENT === 'development' ||
-      process.env.REACT_APP_ENVIRONMENT === 'test';
+  const isTest = 
+    !process.env.REACT_APP_ENVIRONMENT ||
+    process.env.REACT_APP_ENVIRONMENT === 'development' ||
+    process.env.REACT_APP_ENVIRONMENT === 'test';
 
     return (
       <nav className="navbar">
@@ -55,33 +46,30 @@ class Navigation extends React.Component {
           </Link>
           <button
             className="navbar__hamburger-menu"
-            onClick={() =>
-              this.setState({
-                navDrawerActive: !this.state.navDrawerActive,
-                activeSubDrawer: '',
-              })
-            }
+            onClick={() => {
+              setNavDrawerActive(!navDrawerActive);
+              setActiveSubDrawer('');
+            }}
           >
             <i className="fas fa-bars" />
           </button>
         </div>
-        {this.props.authUser ? (
+        {authUser ? (
           <NavigationAuth
-            authUser={this.props.authUser}
-            active={this.state.navDrawerActive}
-            activeSubDrawer={this.state.activeSubDrawer}
-            onActivateSubDrawer={this.handleActivateSubDrawer}
+            authUser={authUser}
+            active={navDrawerActive}
+            activeSubDrawer={activeSubDrawer}
+            onActivateSubDrawer={handleActivateSubDrawer}
           />
         ) : (
           <NavigationNonAuth
-            active={this.state.navDrawerActive}
-            activeSubDrawer={this.state.activeSubDrawer}
-            onActivateSubDrawer={this.handleActivateSubDrawer}
+            active={navDrawerActive}
+            activeSubDrawer={activeSubDrawer}
+            onActivateSubDrawer={handleActivateSubDrawer}
           />
         )}
       </nav>
     );
-  }
 }
 
 const NavigationAuth = ({ authUser, active, activeSubDrawer, onActivateSubDrawer }) => (
@@ -175,4 +163,4 @@ class NavSubDrawer extends React.Component {
   }
 }
 
-export default compose(withAuthUser, withRouter)(Navigation);
+export default Navigation;
