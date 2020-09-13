@@ -19,7 +19,7 @@ const Navigation = () => {
   }, [location]);
 
   const handleActivateSubDrawer = (name) => {
-    this.setActiveSubDrawer(name);
+    setActiveSubDrawer(name);
   };
 
   const isTest = 
@@ -121,46 +121,40 @@ const NavLink = (props) => (
   </li>
 );
 
-class NavSubDrawer extends React.Component {
-  handleClick = () => {
-    if (this.props.active) {
-      this.props.onActivateSubDrawer('');
+const NavSubDrawer = ({active, onActivateSubDrawer, title, children}) => {
+  const handleClick = () => {
+    if (active) {
+      onActivateSubDrawer('');
     } else {
-      this.props.onActivateSubDrawer(this.props.title);
+      onActivateSubDrawer(title);
     }
-  };
-
-  render() {
-    const shouldRender =
-      this.props.children &&
-      (!Array.isArray(this.props.children) || this.props.children.reduce((prev, cur) => prev || cur));
-
-    if (!shouldRender) {
-      return null;
-    }
-
-    return (
-      <li className="navbar__subdrawer-container">
-        <span className="navbar__element">
-          <button
-            className={`navbar__link navbar__subdrawer-link ${
-              this.props.active ? 'navbar__subdrawer-link--active' : ''
-            }`}
-            onClick={this.handleClick}
-          >
-            {this.props.title}
-            <i
-              className={`navbar__subdrawer-caret-down fas ${this.props.active ? 'fa-caret-down' : 'fa-caret-right'}`}
-            />
-          </button>
-        </span>
-
-        <ul className={`navbar__subdrawer ${this.props.active ? 'navbar__subdrawer--active' : ''}`}>
-          {this.props.children}
-        </ul>
-      </li>
-    );
   }
+
+  const shouldRender = children && (!Array.isArray(children) || children.reduce((prev, cur) => prev || cur));
+
+  if (!shouldRender) return null;
+
+  return (
+    <li className="navbar__subdrawer-container">
+      <span className="navbar__element">
+        <button
+          className={`navbar__link navbar__subdrawer-link ${
+            active ? 'navbar__subdrawer-link--active' : ''
+          }`}
+          onClick={handleClick}
+        >
+          {title}
+          <i
+            className={`navbar__subdrawer-caret-down fas ${active ? 'fa-caret-down' : 'fa-caret-right'}`}
+          />
+        </button>
+      </span>
+
+      <ul className={`navbar__subdrawer ${active ? 'navbar__subdrawer--active' : ''}`}>
+        {children}
+      </ul>
+    </li>
+  );
 }
 
 export default Navigation;
