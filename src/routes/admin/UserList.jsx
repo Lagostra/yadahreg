@@ -1,27 +1,24 @@
-import React, { Component } from 'react';
-import { compose } from 'recompose';
+import React, { Component, useEffect, useState } from 'react';
 
 import * as PERMISSIONS from '../../constants/permissions';
-import { withFirebase } from '../../components/Firebase';
 import { withAuthorization } from '../../components/Session';
 import Modal from '../../components/Modal';
 import UserForm from './UserForm';
 import Spinner from '../../components/Spinner';
+import useFirebase from 'hooks/useFirebase';
 
-class UsersPage extends Component {
-  constructor(props) {
-    super(props);
+const UsersPage = () => {
+  const [loading, setLoading] = useState(false);
+  const [users, setUsers] = useState([]);
+  const [modalActive, setModalActive] = useState(false);
+  const [editUser, setEditUser] = useState(null);
 
-    this.state = {
-      loading: false,
-      users: [],
-    };
-  }
+  const firebase = useFirebase();
 
-  componentDidMount() {
-    this.setState({ loading: true });
+  useEffect(() => {
+    setLoading(true);
 
-    this.props.firebase.users().on('value', (snapshot) => {
+    firebase.users().on('value', snapshot => {
       const usersObject = snapshot.val();
 
       const usersList = Object.keys(usersObject)
@@ -34,53 +31,32 @@ class UsersPage extends Component {
           if (b.name < a.name) return 1;
           return 0;
         });
-
-      this.setState({
-        users: usersList,
-        loading: false,
-        modalActive: false,
-        editUser: null,
-      });
+        setUsers(usersList);
+        setLoading(false);
     });
-  }
 
-  componentWillUnmount() {
-    this.props.firebase.users().off();
-  }
+    return () => firebase.users().off();
+  }, [firebase]);
 
-  handleModalClose = () => {
-    this.setState({ modalActive: false });
-  };
+  return (
+    <div className="content">
+      <h1>Brukere</h1>
 
-  handleEditUser = (user) => {
-    this.setState({ editUser: user, modalActive: true });
-  };
+      <Modal active={modalActive} onClose={() => setModalActive(false)}>
+        <UserForm
+          user={editUser}
+          onSubmit={() => {
+            setEditUser(null);
+            setModalActive(false);
+          }}
+        />
+      </Modal>
 
-  render() {
-    const { users, loading, modalActive, editUser } = this.state;
+      {loading && <Spinner />}
 
-    return (
-      <div className="content">
-        <h1>Brukere</h1>
-
-        <Modal active={modalActive} onClose={this.handleModalClose}>
-          <UserForm
-            user={editUser}
-            onSubmit={() =>
-              this.setState({
-                editUser: null,
-                modalActive: false,
-              })
-            }
-          />
-        </Modal>
-
-        {loading && <Spinner />}
-
-        {!loading && <UsersList users={users} onEditUser={this.handleEditUser} />}
-      </div>
-    );
-  }
+      {!loading && <UsersList users={users} onEditUser={(user) => {setEditUser(user); setModalActive(true);}} />}
+    </div>
+  );
 }
 
 const UsersList = ({ users, onEditUser }) => (
@@ -112,4 +88,4 @@ const UsersList = ({ users, onEditUser }) => (
 
 const authCondition = (authUser) => !!authUser && !!authUser.permissions[PERMISSIONS.USERS_READ];
 
-export default compose(withFirebase, withAuthorization(authCondition))(UsersPage);
+export default withAuthorization(authCondition)(UsersPage);
