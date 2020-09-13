@@ -1,124 +1,92 @@
-import React from 'react';
-import { withFirebase } from '../../components/Firebase';
+import React, { useEffect, useState } from 'react';
 
-import { compose } from 'recompose';
-import { withAuthUser } from '../../components/Session';
 import * as PERMISSIONS from '../../constants/permissions';
+import useFirebase from 'hooks/useFirebase';
+import useAuthUser from 'hooks/useAuthUser';
 
-class UserForm extends React.Component {
-  _isMounted = false;
-  constructor(props) {
-    super(props);
+const UserForm = ({user: userProp}) => {
+  const user_ = {
+    name: '',
+    email: '',
+    role: '',
+    ...userProp,
+  };
 
-    this.state = {
+  const [name, setName] = useState(user_.name);
+  const [email, setEmail] = useState(user_.email);
+  const [role, setRole] = useState(user_.role);
+  const [availableRoles, setAvailableRoles] = useState([]);
+
+  const firebase = useFirebase();
+  const authUser = useAuthUser();
+
+  useEffect(() => {
+    const user_ = {
       name: '',
       email: '',
       role: '',
-      ...props.user,
-      availableRoles: [],
+      ...userProp,
     };
-  }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps !== this.props) {
-      this.setState({
-        name: '',
-        email: '',
-        role: '',
-        ...this.props.user,
-      });
-    }
-  }
+    setName(user_.name);
+    setEmail(user_.email);
+    setRole(user_.role);
+  }, [userProp]);
 
-  componentDidMount() {
-    this._isMounted = true;
-    const { userUid } = this.props;
-    this.userUid = userUid;
-    /*this.props.firebase
-            .user(userUid)
-            .once('value')
-            .then(snapshot => {
-                if (this._isMounted) {
-                    const user = snapshot.val();
-                    this.setState({ ...user });
-                }
-            });*/
+  useEffect(() => {
+    firebase.roles().once('value').then((snapshot) => {
+      const roleObject = snapshot.val();
+      const roles = Object.keys(roleObject).map((key) => ({ ...roleObject[key], name: key }));
+      setAvailableRoles(roles);
+    })
+  }, [firebase]);
 
-    this.props.firebase
-      .roles()
-      .once('value')
-      .then((snapshot) => {
-        if (this._isMounted) {
-          const roleObject = snapshot.val();
-          const roles = Object.keys(roleObject).map((key) => ({ ...roleObject[key], name: key }));
-          this.setState({ availableRoles: roles });
-        }
-      });
-  }
-
-  componentWillUnmount() {
-    this._isMounted = false;
-  }
-
-  onSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    const { name, email, role } = this.state;
-    const user = { name, email, role };
-    this.props.firebase.user(this.state.uid).set(user);
-    if (this.props.onSubmit) {
-      this.props.onSubmit();
-    }
-  };
-
-  onChange = (event) => {
-    this.setState({ [event.target.name]: event.target.value });
-  };
-
-  render() {
-    const { name, email, role, availableRoles } = this.state;
-    const { authUser } = this.props;
-
-    const restrictedRoles = availableRoles.filter((r) => r.restricted).map((r) => r.name);
-    console.log(restrictedRoles);
-
-    return (
-      <form onSubmit={this.onSubmit}>
-        <h1>Endre bruker</h1>
-        <label htmlFor="name">Navn</label>
-        <input name="name" value={name} onChange={this.onChange} type="text" placeholder="Full Name" />
-
-        <label htmlFor="email">E-post</label>
-        <input name="email" value={email} onChange={this.onChange} type="text" placeholder="Email Address" />
-
-        <label htmlFor="role">Rolle</label>
-        <select
-          value={role}
-          onChange={this.onChange}
-          name="role"
-          disabled={restrictedRoles.includes(role) && !authUser.permissions[PERMISSIONS.SET_RESTRICTED_ROLES]}
-        >
-          <option value="" title="Ingen rolle - brukeren vil ikke ha tilgang til noen funksjoner.">
-            Ingen rolle
-          </option>
-          {availableRoles.map((r) => (
-            <option
-              value={r.name}
-              key={r.name}
-              title={r.description}
-              disabled={r.restricted && !authUser.permissions[PERMISSIONS.SET_RESTRICTED_ROLES]}
-            >
-              {r.name}
-            </option>
-          ))}
-        </select>
-
-        <button className="btn" type="submit">
-          Lagre
-        </button>
-      </form>
-    );
+    const user = {name, email, role};
+    firebase.user(userProp.uid).set(user);
   }
+
+  const restrictedRoles = availableRoles.filter((r) => r.restricted).map((r) => r.name);
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <h1>Endre bruker</h1>
+      <label htmlFor="name">Navn</label>
+      <input name="name" value={name} onChange={e => setName(e.target.value)} type="text" placeholder="Full Name" />
+
+      <label htmlFor="email">E-post</label>
+      <input name="email" value={email} onChange={e => setEmail(e.target.value)} type="text" placeholder="Email Address" />
+
+      <label htmlFor="role">Rolle</label>
+      <select
+        value={role}
+        onChange={e => setRole(e.target.value)}
+        name="role"
+        disabled={restrictedRoles.includes(role) && !authUser.permissions[PERMISSIONS.SET_RESTRICTED_ROLES]}
+      >
+        <option value="" title="Ingen rolle - brukeren vil ikke ha tilgang til noen funksjoner.">
+          Ingen rolle
+        </option>
+        {availableRoles.map((r) => (
+          <option
+            value={r.name}
+            key={r.name}
+            title={r.description}
+            disabled={r.restricted && !authUser.permissions[PERMISSIONS.SET_RESTRICTED_ROLES]}
+          >
+            {r.name}
+          </option>
+        ))}
+      </select>
+
+      <button className="btn" type="submit">
+        Lagre
+      </button>
+    </form>
+  );
+
 }
 
-export default compose(withFirebase, withAuthUser)(UserForm);
+
+export default UserForm;
