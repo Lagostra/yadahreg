@@ -15,12 +15,8 @@ class MailingList extends React.Component {
         this.state = {
             members: [],
             useDates: false,
-            endDate: moment()
-                .add(1, 'd')
-                .format('YYYY-MM-DD'),
-            startDate: moment()
-                .subtract(6, 'd')
-                .format('YYYY-MM-DD'),
+            endDate: moment().add(1, 'd').format('YYYY-MM-DD'),
+            startDate: moment().subtract(6, 'd').format('YYYY-MM-DD'),
         };
     }
 
@@ -28,27 +24,27 @@ class MailingList extends React.Component {
         this.props.firebase
             .members()
             .once('value')
-            .then(snapshot => {
+            .then((snapshot) => {
                 const membersObject = snapshot.val();
 
                 const members = Object.keys(membersObject)
-                    .map(key => ({
+                    .map((key) => ({
                         ...membersObject[key],
                         id: key,
                     }))
-                    .filter(member => member.active);
+                    .filter((member) => member.active);
 
                 this.setState({ members });
             });
     }
 
-    onChange = event => {
+    onChange = (event) => {
         this.setState({
             [event.currentTarget.name]: event.currentTarget.value,
         });
     };
 
-    onCheckboxChange = event => {
+    onCheckboxChange = (event) => {
         this.setState({
             [event.currentTarget.name]: event.currentTarget.checked,
         });
@@ -57,14 +53,18 @@ class MailingList extends React.Component {
     render() {
         const { members, useDates, startDate, endDate } = this.state;
         const chosenMembers = useDates
-            ? members.filter(
-                  member =>
-                      moment(member['created_at']) >
-                          moment(startDate) &&
-                      moment(member['created_at'] < moment(endDate)),
-              )
+            ? members
+                  .filter((member) => 'created_at' in member)
+                  .filter(
+                      (member) =>
+                          moment(member['created_at']) >
+                              moment(startDate) &&
+                          moment(
+                              member['created_at'] < moment(endDate),
+                          ),
+                  )
             : members;
-        const mails = chosenMembers.map(member => member.email);
+        const mails = chosenMembers.map((member) => member.email);
         const mailString = mails.join(';');
 
         console.log(startDate, endDate);
@@ -127,7 +127,7 @@ class MailingList extends React.Component {
     }
 }
 
-const authCondition = authUser =>
+const authCondition = (authUser) =>
     !!authUser && !!authUser.permissions[PERMISSIONS.MEMBERS_READ];
 
 export default compose(
