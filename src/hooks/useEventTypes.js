@@ -13,7 +13,7 @@ const useEventTypes = () => {
         const eventTypes = Object.keys(snapshot.val());
         setEventTypes(eventTypes);
       });
-  });
+  }, [firebase]);
 
   return [eventTypes, setEventTypes];
 };

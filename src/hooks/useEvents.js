@@ -15,7 +15,7 @@ const useEvents = () => {
       setEvents(events);
     });
     return () => firebase.events().off();
-  });
+  }, [firebase]);
 
   return [events, setEvents];
 };

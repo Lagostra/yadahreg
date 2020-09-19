@@ -20,7 +20,7 @@ const useSemesters = () => {
       setSemesters(semesters);
     });
     return () => firebase.semesters().off();
-  });
+  }, [firebase]);
 
   return [semesters, setSemesters];
 };

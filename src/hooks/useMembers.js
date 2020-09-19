@@ -15,7 +15,7 @@ const useMembers = () => {
       setMembers(members);
     });
     return () => firebase.members().off();
-  });
+  }, [firebase]);
 
   return [members, setMembers];
 };
