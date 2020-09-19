@@ -1,17 +1,22 @@
-const { useState, useEffect } = require('react');
-const { default: useFirebase } = require('./useFirebase');
+import { useState, useEffect } from 'react';
+import moment from 'moment';
 
-const useEvents = () => {
+import { useFirebase } from 'hooks';
+
+const useEvents = (sort = true) => {
   const [events, setEvents] = useState([]);
   const firebase = useFirebase();
 
   useEffect(() => {
     firebase.events().on('value', (snapshot) => {
       const eventsObject = snapshot.val();
-      const events = Object.keys(eventsObject).map((key) => ({
+      let events = Object.keys(eventsObject).map((key) => ({
         ...eventsObject[key],
         id: key,
       }));
+      if (sort) {
+        events = events.sort((a, b) => moment(b.date) - moment(a.date));
+      }
       setEvents(events);
     });
     return () => firebase.events().off();
