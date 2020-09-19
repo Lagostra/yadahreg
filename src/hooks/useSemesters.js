@@ -5,7 +5,7 @@ import useFirebase from './useFirebase';
 
 const useSemesters = () => {
   const [semesters, setSemesters] = useState([]);
-  const firebase = useFirebase;
+  const firebase = useFirebase();
 
   useEffect(() => {
     firebase.semesters().on('value', (snapshot) => {

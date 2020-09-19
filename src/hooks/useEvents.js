@@ -3,7 +3,7 @@ const { default: useFirebase } = require('./useFirebase');
 
 const useEvents = () => {
   const [events, setEvents] = useState([]);
-  const firebase = useFirebase;
+  const firebase = useFirebase();
 
   useEffect(() => {
     firebase.events().on('value', (snapshot) => {
