@@ -18,7 +18,7 @@ const TopListPage = () => {
   ]);
   const [filter, setFilter] = useState('');
 
-  const [members] = useMembers();
+  const [members] = useMembers(false, false);
   const [semesters] = useSemesters();
   const [events] = useEvents();
   const [eventTypes] = useEventTypes();
