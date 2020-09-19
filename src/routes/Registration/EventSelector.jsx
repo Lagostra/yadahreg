@@ -3,31 +3,15 @@ import moment from 'moment';
 
 import Modal from '../../components/Modal';
 import EventForm from './EventForm';
-import useFirebase from 'hooks/useFirebase';
 import Spinner from '../../components/Spinner';
+import { useEvents, useFirebase } from 'hooks';
 
 const EventSelector = ({ onEventSelect }) => {
   const firebase = useFirebase();
 
   const [modalActive, setModalActive] = useState(false);
   const [editEvent, setEditEvent] = useState(null);
-  const [events, setEvents] = useState([]);
-
-  useEffect(() => {
-    firebase.events().on('value', (snapshot) => {
-      const eventsObject = snapshot.val();
-      let events = Object.keys(eventsObject).map((key) => ({
-        ...eventsObject[key],
-        id: key,
-      }));
-
-      events.sort((a, b) => moment(b.date) - moment(a.date));
-
-      setEvents(events);
-    })
-
-    return () => firebase.events().off();
-  }, [firebase]);
+  const [events] = useEvents();
 
   const createNewRehearsal = () => {
     const event = {

@@ -4,39 +4,15 @@ import EventSelector from './EventSelector';
 import * as PERMISSIONS from 'constants/permissions';
 import { withAuthorization } from 'components/Session';
 import moment from 'moment';
-import useFirebase from 'hooks/useFirebase';
-import useAuthUser from 'hooks/useAuthUser';
+import { useFirebase, useAuthUser, useMembers } from 'hooks';
 
 const RegistrationPage = () => {
-  const [members, setMembers] = useState([]);
+  const [members] = useMembers();
   const [event, setEvent] = useState(null);
   const [semester, setSemester] = useState(null);
 
   const firebase = useFirebase();
   const authUser = useAuthUser();
-
-  useEffect(() => {
-    firebase.members().on('value', (snapshot) => {
-      const membersObject = snapshot.val();
-      const members = Object.keys(membersObject)
-        .map((key) => ({
-          ...membersObject[key],
-          id: key,
-        }))
-        .filter((member) => member.active)
-        .sort((a, b) => {
-          const a1 = (a.first_name + a.last_name).toLowerCase();
-          const b1 = (b.first_name + b.last_name).toLowerCase();
-          if (a1 < b1) return -1;
-          if (b1 < a1) return 1;
-          return 0;
-        });
-
-      setMembers(members);
-    });
-
-    return () => firebase.members().off();
-  }, [firebase]);
 
   useEffect(() => {
     if (event) {
