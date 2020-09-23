@@ -1,11 +1,9 @@
-import React, { Component } from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import { compose } from 'recompose';
+import React, { useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 
-import { withFirebase } from '../../components/Firebase';
 import * as ROUTES from '../../constants/routes';
-import { withAuthUser } from '../../components/Session';
 import { SignInGoogle, SignInFacebook } from './SignIn';
+import { useAuthUser, useFirebase } from 'hooks';
 
 const ERROR_CODE_ACCOUNT_EXISTS = 'auth/email-already-in-use';
 const ERROR_MSG_ACCOUNT_EXISTS = `
@@ -26,78 +24,68 @@ const SignUpPage = () => (
   </div>
 );
 
-const INITIAL_STATE = {
-  name: '',
-  email: '',
-  passwordOne: '',
-  passwordTwo: '',
-  error: null,
-};
+const SignUpForm = () => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [passwordOne, setPasswordOne] = useState('');
+  const [passwordTwo, setPasswordTwo] = useState('');
+  const [error, setError] = useState(null);
 
-class SignUpFormBase extends Component {
-  constructor(props) {
-    super(props);
+  const authUser = useAuthUser();
+  const history = useHistory();
+  const firebase = useFirebase();
 
-    this.state = { ...INITIAL_STATE };
-
-    if (this.props.authUser) {
-      this.props.history.push(ROUTES.HOME);
-    }
+  if (authUser) {
+    history.push(ROUTES.HOME);
   }
 
-  onSubmit = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
 
-    const { name, email, passwordOne } = this.state;
-    this.props.firebase
-      .doCreateUserWithEmailAndPassword(email, passwordOne)
+    firebase.doCreateUserWithEmailAndPassword(email, passwordOne)
       .then((authUser) => {
         setTimeout(() => {
-          this.props.firebase.user(authUser.user.uid).child('name').set(name);
+          firebase.user(authUser.user.uid).child('name').set(name);
         }, 1000);
       })
       .then(() => {
-        this.setState({ ...INITIAL_STATE });
-        this.props.history.push(ROUTES.HOME);
+        setName('');
+        setEmail('');
+        setPasswordOne('');
+        setPasswordTwo('');
+        setError(null);
+        history.push(ROUTES.HOME);
       })
-      .catch((error) => {
+      .catch(error => {
         if (error.code === ERROR_CODE_ACCOUNT_EXISTS) {
           error.message = ERROR_MSG_ACCOUNT_EXISTS;
         }
-        this.setState({ error });
-      });
-  };
-
-  onChange = (event) => {
-    this.setState({ [event.target.name]: event.target.value });
-  };
-
-  render() {
-    const { name, email, passwordOne, passwordTwo, error } = this.state;
-
-    const isInvalid = passwordOne !== passwordTwo || passwordOne === '' || email === '' || name === '';
-
-    return (
-      <form onSubmit={this.onSubmit}>
-        <input name="name" value={name} onChange={this.onChange} type="text" placeholder="Fullt navn" />
-        <input name="email" value={email} onChange={this.onChange} type="text" placeholder="E-post" />
-        <input name="passwordOne" value={passwordOne} onChange={this.onChange} type="password" placeholder="Passord" />
-        <input
-          name="passwordTwo"
-          value={passwordTwo}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Bekreft passord"
-        />
-
-        <button type="submit" disabled={isInvalid} className="signup__submit">
-          Registrer
-        </button>
-
-        {error && <p>{error.message}</p>}
-      </form>
-    );
+        setError(error);
+      })
   }
+
+  const isInvalid = passwordOne !== passwordTwo || passwordOne === '' || email === '' || name === '';
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input name="name" value={name} onChange={e => setName(e.target.value)} type="text" placeholder="Fullt navn" />
+      <input name="email" value={email} onChange={e => setEmail(e.target.value)} type="text" placeholder="E-post" />
+      <input name="passwordOne" value={passwordOne} onChange={e => setPasswordOne(e.target.value)} type="password" placeholder="Passord" />
+      <input
+        name="passwordTwo"
+        value={passwordTwo}
+        onChange={e => setPasswordTwo(e.target.value)}
+        type="password"
+        placeholder="Bekreft passord"
+      />
+
+      <button type="submit" disabled={isInvalid} className="signup__submit">
+        Registrer
+      </button>
+
+      {error && <p>{error.message}</p>}
+    </form>
+  );
 }
 
 const SignUpLink = () => (
@@ -105,8 +93,6 @@ const SignUpLink = () => (
     Har du ikke bruker? <Link to={ROUTES.SIGN_UP}>Registrer deg</Link>
   </p>
 );
-
-const SignUpForm = compose(withRouter, withFirebase, withAuthUser)(SignUpFormBase);
 
 export default SignUpPage;
 export { SignUpForm, SignUpLink };
