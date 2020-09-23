@@ -3,7 +3,7 @@ import React from 'react';
 import { withFirebase } from '../components/Firebase';
 import { compose } from 'recompose';
 import { withAuthorization } from '../components/Session';
-import copyToClipboard from '../util/CopyToClipboard';
+import copyTextToClipboard from '../util/copyTextToClipboard';
 import Spinner from '../components/Spinner';
 import * as PERMISSIONS from '../constants/permissions';
 import moment from 'moment';
@@ -82,7 +82,7 @@ class MailingList extends React.Component {
             <a href={'mailto:' + mailString} className="btn">
               Send mail
             </a>
-            <button className="btn" onClick={() => copyToClipboard(mailString)}>
+            <button className="btn" onClick={() => copyTextToClipboard(mailString)}>
               Kopier mailadresser
             </button>
           </React.Fragment>
