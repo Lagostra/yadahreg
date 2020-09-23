@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { withAuthorization } from '../../components/Session';
 import PasswordChangeForm from '../../components/PasswordChange';
@@ -44,7 +44,7 @@ const LoginManagement = () => {
   const firebase = useFirebase();
   const authUser = useAuthUser();
 
-  const fetchSignInMethods = () => {
+  const fetchSignInMethods = useCallback(() => {
     firebase.auth
       .fetchSignInMethodsForEmail(authUser.email)
       .then((activeSignInMethods) => {
@@ -52,11 +52,11 @@ const LoginManagement = () => {
         setError(null);
       })
       .catch((error) => setError(error));
-  };
+  }, [firebase, authUser]);
   
   useEffect(() => {
     fetchSignInMethods();
-  }, []);
+  }, [fetchSignInMethods]);
 
   const onSocialLoginLink = (provider) => {
     firebase.auth.currentUser

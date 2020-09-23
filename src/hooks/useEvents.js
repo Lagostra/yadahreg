@@ -20,7 +20,7 @@ const useEvents = (sort = true) => {
       setEvents(events);
     });
     return () => firebase.events().off();
-  }, [firebase]);
+  }, [firebase, sort]);
 
   return [events, setEvents];
 };

@@ -31,7 +31,7 @@ const useMembers = (activeOnly = true, sort = true) => {
     });
 
     return () => firebase.members().off();
-  }, [firebase]);
+  }, [firebase, sort, activeOnly]);
 
   return [members, setMembers];
 };
