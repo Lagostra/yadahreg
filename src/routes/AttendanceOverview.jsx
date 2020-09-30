@@ -97,7 +97,7 @@ const AttendanceOverview = () => {
                 <tr>
                   <th>Navn</th>
                   {filteredEvents.map((event) => (
-                    <th key={event.uid}>{moment(event.date).format('DD.MM.YYYY')}</th>
+                    <th key={event.id}>{moment(event.date).format('DD.MM.YYYY')}</th>
                   ))}
                 </tr>
               </thead>
@@ -107,16 +107,16 @@ const AttendanceOverview = () => {
                     <i>Antall oppmøtte</i>
                   </td>
                   {filteredEvents.map((event) => (
-                    <td key={event.uid}>{event.attendants ? Object.keys(event.attendants).length : 0}</td>
+                    <td key={event.id}>{event.attendants ? Object.keys(event.attendants).length : 0}</td>
                   ))}
                 </tr>
                 {filteredMembers.map((member) => (
-                  <tr key={member.uid}>
+                  <tr key={member.id}>
                     <td>
                       {member.first_name} {member.last_name}
                     </td>
                     {filteredEvents.map((event) => (
-                      <td key={event.uid}>
+                      <td key={event.id}>
                         {event.attendants && member.id in event.attendants
                           ? 'Y'
                           : event.non_attendants && member.id in event.non_attendants
