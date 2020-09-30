@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import useFirebase from './useFirebase';
 
 const useMembers = (activeOnly = true, sort = true) => {
-  const [members, setMembers] = useState([]);
+  const [members, setMembers] = useState(null);
   const firebase = useFirebase();
 
   useEffect(() => {
