@@ -65,8 +65,8 @@ const EventSelector = ({ onEventSelect }) => {
           Nytt arrangement
         </button>
       </div>
-      {!events.length && <Spinner />}
-      {!!events.length && (
+      {!events && <Spinner />}
+      {!!events && (
         <EventList events={events} onEventSelect={onEventSelect} onEventEdit={handleEventEdit} />
       )}
     </div>
