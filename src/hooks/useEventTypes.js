@@ -2,7 +2,7 @@ const { useState, useEffect } = require('react');
 const { default: useFirebase } = require('./useFirebase');
 
 const useEventTypes = () => {
-  const [eventTypes, setEventTypes] = useState([]);
+  const [eventTypes, setEventTypes] = useState(null);
   const firebase = useFirebase();
 
   useEffect(() => {

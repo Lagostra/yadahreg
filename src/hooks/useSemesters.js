@@ -4,7 +4,7 @@ import moment from 'moment';
 import useFirebase from './useFirebase';
 
 const useSemesters = () => {
-  const [semesters, setSemesters] = useState([]);
+  const [semesters, setSemesters] = useState(null);
   const firebase = useFirebase();
 
   useEffect(() => {

@@ -4,7 +4,7 @@ import moment from 'moment';
 import { useFirebase } from 'hooks';
 
 const useEvents = (sort = true) => {
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState(null);
   const firebase = useFirebase();
 
   useEffect(() => {
