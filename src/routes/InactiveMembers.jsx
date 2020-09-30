@@ -21,13 +21,14 @@ const InactiveMembers = () => {
 
   const getFilteredEvents = () => {
     if (!events) return null;
-    const lastThree = events.slice(0, 3);
+    let filteredEvents = events.filter(event => event.type && event.type === 'Øvelse');
+    const lastThree = filteredEvents.slice(0, 3);
     const thisYear = moment().year();
     const semesterStart =
         moment() <= moment([thisYear, 6, 31])
             ? moment([thisYear, 0, 1])
             : moment([thisYear, 7, 1]);
-    let filteredEvents = events.filter(
+    filteredEvents = filteredEvents.filter(
         event => moment(event.date) > semesterStart,
     );
     filteredEvents = filteredEvents.length >= 3 ? filteredEvents : lastThree;
