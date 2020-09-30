@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAuthUser } from 'hooks';
+import { withAuthorization } from 'components/Session';
 
 const Home = () => {
  
@@ -19,4 +20,4 @@ const Home = () => {
   )
 };
 
-export default Home;
+export default withAuthorization(authUser => !!authUser)(Home);
