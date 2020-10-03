@@ -53,7 +53,8 @@ class MailingList extends React.Component {
   render() {
     const { members, useDates, startDate, endDate } = this.state;
     const chosenMembers = useDates
-      ? members.filter(
+      ? members.filter((member) => 'created_at' in member)
+        .filter(
           (member) =>
             moment(member['created_at']) > moment(startDate) && moment(member['created_at'] < moment(endDate)),
         )
