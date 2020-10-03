@@ -61,8 +61,6 @@ const RegistrationPage = () => {
     const saveEvent = { ...event };
     delete saveEvent['id'];
 
-    setEvent(event);
-
     firebase.event(event.id).set(saveEvent);
   };
 
