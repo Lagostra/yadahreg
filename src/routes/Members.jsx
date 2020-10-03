@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
 
 import { withFirebase } from '../components/Firebase';
@@ -9,117 +9,67 @@ import * as PERMISSIONS from '../constants/permissions';
 import Spinner from '../components/Spinner';
 import Modal from '../components/Modal';
 import PhoneBilliard from '../components/PhoneBilliard';
+import { useMembers } from 'hooks';
 
-class MembersPage extends React.Component {
-  constructor(props) {
-    super(props);
+const MembersPage = () => {
+  const [editMember, setEditMember] = useState(null);
+  const [modalActive, setModalActive] = useState(false);
+  const [filter, setFilter] = useState('');
+  const [showOnlyActiveMembers, setShowOnlyActiveMembers] = useState(true);
+  const [members] = useMembers(showOnlyActiveMembers);
 
-    this.state = {
-      members: [],
-      editMember: null,
-      modalActive: false,
-      filter: '',
-      showOnlyActiveMembers: true,
-    };
-  }
-
-  componentDidMount() {
-    this.props.firebase.members().on('value', (snapshot) => {
-      const membersObject = snapshot.val();
-      const members = Object.keys(membersObject)
-        .map((key) => ({
-          ...membersObject[key],
-          id: key,
-        }))
-        .sort((a, b) => {
-          const a1 = (a.first_name + a.last_name).toLowerCase();
-          const b1 = (b.first_name + b.last_name).toLowerCase();
-          if (a1 < b1) return -1;
-          if (b1 < a1) return 1;
-          return 0;
-        });
-
-      this.setState({ members });
-    });
-  }
-
-  componentWillUnmount() {
-    this.props.firebase.members().off();
-  }
-
-  handleModalClose = () => {
-    this.setState({ modalActive: false });
-  };
-
-  handleEditMember = (member) => {
-    this.setState({ editMember: member, modalActive: true });
-  };
-
-  handleDeleteMember = (member) => {
+  const handleDeleteMember = (member) => {
     if (window.confirm(`Er du sikker på at du vil slette ${member.first_name} ${member.last_name}?`)) {
       this.props.firebase.member(member.id).remove();
     }
   };
 
-  handleFilterChange = (e) => {
-    this.setState({ filter: e.target.value });
-  };
+  return (
+    <div className="content">
+      <h1>Medlemmer</h1>
+      <Modal active={modalActive} onClose={() => setModalActive(false)}>
+        <MemberForm member={editMember} onSubmit={() => setModalActive(false)} />
+      </Modal>
 
-  render() {
-    const { members, modalActive, editMember, filter, showOnlyActiveMembers } = this.state;
-    return (
-      <div className="content">
-        <h1>Medlemmer</h1>
-        <Modal active={modalActive} onClose={this.handleModalClose}>
-          <MemberForm member={editMember} onSubmit={this.handleModalClose} />
-        </Modal>
+      <button
+        className="btn"
+        onClick={() => {
+          setEditMember(null);
+          setModalActive(true);
+        }}
+      >
+        Nytt medlem
+      </button>
+      <button
+        className="btn"
+        onClick={() => setShowOnlyActiveMembers(!showOnlyActiveMembers)}
+      >
+        {showOnlyActiveMembers ? 'Vis inaktive medlemmer' : 'Vis bare aktive medlemmer'}
+      </button>
+      {!members && <Spinner />}
+      {!!members && (
+        <>
+          <input
+            value={filter}
+            onChange={e => setFilter(e.target.value)}
+            name="filter"
+            type="text"
+            placeholder="Søk..."
+            style={{ marginTop: '25px' }}
+          />
 
-        <button
-          className="btn"
-          onClick={() => {
-            this.setState({
-              editMember: null,
-              modalActive: true,
-            });
-          }}
-        >
-          Nytt medlem
-        </button>
-        <button
-          className="btn"
-          onClick={() => {
-            this.setState({
-              showOnlyActiveMembers: !showOnlyActiveMembers,
-            });
-          }}
-        >
-          {showOnlyActiveMembers ? 'Vis inaktive medlemmer' : 'Vis bare aktive medlemmer'}
-        </button>
-        {!members.length && <Spinner />}
-        {!!members.length && (
-          <React.Fragment>
-            <input
-              value={filter}
-              onChange={this.handleFilterChange}
-              name="filter"
-              type="text"
-              placeholder="Søk..."
-              style={{ marginTop: '25px' }}
-            />
-
-            <MembersList
-              members={members}
-              onEditMember={this.handleEditMember}
-              onDeleteMember={this.handleDeleteMember}
-              filter={filter}
-              showOnlyActiveMembers={showOnlyActiveMembers}
-            />
-          </React.Fragment>
-        )}
-      </div>
-    );
-  }
-}
+          <MembersList
+            members={members}
+            onEditMember={member => {setEditMember(member); setModalActive(true);}}
+            onDeleteMember={handleDeleteMember}
+            filter={filter}
+            showOnlyActiveMembers={showOnlyActiveMembers}
+          />
+        </>
+      )}
+    </div>
+  );
+} 
 
 const MembersList = ({ members, onEditMember, onDeleteMember, filter, showOnlyActiveMembers }) => {
   const isMatch = (filter, name) => {
