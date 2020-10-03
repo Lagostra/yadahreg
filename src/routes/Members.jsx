@@ -1,15 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 
-import { withFirebase } from '../components/Firebase';
-import { compose } from 'recompose';
 import { withAuthorization } from '../components/Session';
 
 import * as PERMISSIONS from '../constants/permissions';
 import Spinner from '../components/Spinner';
 import Modal from '../components/Modal';
 import PhoneBilliard from '../components/PhoneBilliard';
-import { useMembers } from 'hooks';
+import { useFirebase, useMembers } from 'hooks';
 
 const MembersPage = () => {
   const [editMember, setEditMember] = useState(null);
@@ -18,9 +16,11 @@ const MembersPage = () => {
   const [showOnlyActiveMembers, setShowOnlyActiveMembers] = useState(true);
   const [members] = useMembers(showOnlyActiveMembers);
 
+  const firebase = useFirebase();
+
   const handleDeleteMember = (member) => {
     if (window.confirm(`Er du sikker på at du vil slette ${member.first_name} ${member.last_name}?`)) {
-      this.props.firebase.member(member.id).remove();
+      firebase.member(member.id).remove();
     }
   };
 
@@ -114,207 +114,165 @@ const MembersList = ({ members, onEditMember, onDeleteMember, filter, showOnlyAc
   );
 };
 
-class MemberFormBase extends React.Component {
-  constructor(props) {
-    super(props);
+export const MemberForm = ({member: memberProp, onSubmit, event}) => {
+  const [active, setActive] = useState(true);
+  const [address, setAddress] = useState('');
+  const [allergies, setAllergies] = useState('');
+  const [birthday, setBirthday] = useState('1995-01-01');
+  const [email, setEmail] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [gender, setGender] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [voiceGroup, setVoiceGroup] = useState('');
+  const [gameModalActive, setGameModalActive] = useState(false);
 
-    if (props.member) {
-      const member = { ...props.member };
-      delete member.id;
-      this.state = {
-        ...member,
-      };
+  const firebase = useFirebase();
+
+  useEffect(() => {
+    if (memberProp) {
+      setActive(memberProp.active);
+      setAddress(memberProp.address);
+      setAllergies(memberProp.allergies);
+      setBirthday(memberProp.birthday);
+      setEmail(memberProp.email);
+      setFirstName(memberProp.first_name);
+      setGender(memberProp.gender);
+      setLastName(memberProp.last_name);
+      setPhone(memberProp.phone);
+      setVoiceGroup(memberProp.voice_group);
     } else {
-      this.state = {
-        active: true,
-        address: '',
-        allergies: '',
-        birthday: '',
-        email: '',
-        first_name: '',
-        gender: '',
-        last_name: '',
-        phone: '',
-        voice_group: '',
-        gameModalActive: false,
-      };
+      setActive(true);
+      setAddress('');
+      setAllergies('');
+      setBirthday('1995-01-01');
+      setEmail('');
+      setFirstName('');
+      setGender('');
+      setLastName('');
+      setPhone('');
+      setVoiceGroup('');
     }
-  }
+  }, [memberProp])
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.member !== this.props.member) {
-      const member = { ...this.props.member };
-      delete member.id;
-      this.setState({ ...member });
-    }
-  }
-
-  onChange = (event) => {
-    this.setState({
-      [event.currentTarget.name]: event.currentTarget.value,
-    });
-
-    if (event.currentTarget.name === 'phone' && event.currentTarget.value === '81549300') {
-      this.setState({ gameModalActive: true });
-    }
-  };
-
-  onCheckboxChange = (event) => {
-    this.setState({
-      [event.currentTarget.name]: event.currentTarget.checked,
-    });
-  };
-
-  onSubmit = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     let memberId;
-
-    const {
-      active,
-      address,
-      allergies,
-      birthday,
-      email,
-      first_name,
-      gender,
-      last_name,
-      phone,
-      voice_group,
-    } = this.state;
-
     let member = {
-      active,
-      address,
-      allergies,
-      birthday,
-      email,
-      first_name,
-      gender,
-      last_name,
-      phone,
-      voice_group,
-    };
+      active, address, allergies, birthday, email,
+      first_name: firstName, gender, last_name: lastName, phone, voice_group: voiceGroup
+    }
 
-    if (this.props.member) {
+    if (memberProp) {
+      memberId = memberProp.id;
+
       // Clean up undefined values that will otherwise cause problems with Firebase
       const savedMember = JSON.parse(JSON.stringify(member));
-      this.props.firebase.member(this.props.member.id).set(savedMember);
-      memberId = this.props.member.id;
+      firebase.member(memberId).set(savedMember);
     } else {
       const createdAt = moment().toISOString();
-      member['created_at'] = createdAt;
+      member = {...member, 'created_at': createdAt};
 
-      const ref = this.props.firebase.members().push(member);
+      const ref = firebase.members().push(member);
       memberId = ref.getKey();
     }
-
-    if (this.props.onSubmit) {
-      this.props.onSubmit(memberId);
+    if (onSubmit) {
+      onSubmit(memberId);
     }
-  };
-
-  handleModalClose = () => {
-    this.setState({ gameModalActive: false });
-  };
-
-  render() {
-    return (
-      <React.Fragment>
-        <Modal
-          active={this.state.gameModalActive}
-          onClose={this.handleModalClose}
-          contentStyle={{
-            height: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          <PhoneBilliard updatePhoneNumber={(phoneNumber) => this.setState({ phone: phoneNumber })} />
-        </Modal>
-
-        <form onSubmit={this.onSubmit}>
-          <h1>{this.props.member ? 'Rediger medlem' : 'Nytt medlem'}</h1>
-
-          {this.props.event && (
-            <p>
-              <i className="fas fa-exclamation-circle" />
-              {'  '}
-              Medlemmet vil automatisk bli registrert som til stede på {this.props.event.title}{' '}
-              {moment(this.props.event.date).format('DD.MM.YYYY')}
-            </p>
-          )}
-
-          <label htmlFor="first_name">Fornavn</label>
-          <input name="first_name" value={this.state.first_name} onChange={this.onChange} type="text" />
-
-          <label htmlFor="last_name">Etternavn</label>
-          <input name="last_name" value={this.state.last_name} onChange={this.onChange} type="text" />
-
-          {this.props.member && this.props.member.created_at && (
-            <p style={{ color: 'gray' }}>Medlem siden {moment(this.props.member.created_at).format('DD.MM.YYYY')}</p>
-          )}
-
-          <label htmlFor="gender">Kjønn</label>
-          <select value={this.state.gender} onChange={this.onChange} name="gender">
-            <option value="" disabled>
-              Velg kjønn
-            </option>
-            <option value="Mann">Mann</option>
-            <option value="Kvinne">Kvinne</option>
-          </select>
-
-          <label htmlFor="birthday">Fødselsdato</label>
-          <input name="birthday" value={this.state.birthday} onChange={this.onChange} type="date" />
-
-          <label htmlFor="email">E-post</label>
-          <input name="email" value={this.state.email} onChange={this.onChange} type="text" />
-
-          <label htmlFor="phone">Telefon</label>
-          <input name="phone" value={this.state.phone} onChange={this.onChange} type="text" />
-
-          <label htmlFor="address">Adresse</label>
-          <input name="address" value={this.state.address} onChange={this.onChange} type="text" />
-
-          <label htmlFor="allergies">Allergier</label>
-          <input name="allergies" value={this.state.allergies} onChange={this.onChange} type="text" />
-
-          <label htmlFor="voice_group">Stemmegruppe</label>
-          {['Vet ikke', 'Sopran', 'Alt', 'Tenor', 'Bass'].map((voice_group) => (
-            <div key={voice_group}>
-              <input
-                name="voice_group"
-                checked={this.state.voice_group === voice_group}
-                value={voice_group}
-                onChange={this.onChange}
-                type="radio"
-              />{' '}
-              {voice_group}
-            </div>
-          ))}
-
-          {this.props.member && (
-            <React.Fragment>
-              <label htmlFor="active">Aktiv</label>
-              <input type="checkbox" checked={this.state.active} name="active" onChange={this.onCheckboxChange} />
-            </React.Fragment>
-          )}
-
-          {/* 
-                    Voice group, allergies, address?
-                */}
-
-          <button type="submit" className="btn">
-            Lagre
-          </button>
-        </form>
-      </React.Fragment>
-    );
   }
-}
 
-const MemberForm = withFirebase(MemberFormBase);
-export { MemberForm };
+  return (
+    <>
+      <Modal
+        active={gameModalActive}
+        onClose={() => setGameModalActive(false)}
+        contentStyle={{
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        <PhoneBilliard updatePhoneNumber={(phoneNumber) => setPhone(phoneNumber)} />
+      </Modal>
+
+      <form onSubmit={handleSubmit}>
+        <h1>{!!memberProp ? 'Rediger medlem' : 'Nytt medlem'}</h1>
+
+        {!!event && (
+          <p>
+            <i className="fas fa-exclamation-circle" />
+            {'  '}
+            Medlemmet vil automatisk bli registrert som til stede på {event.title}{' '}
+            {moment(event.date).format('DD.MM.YYYY')}
+          </p>
+        )}
+
+        <label htmlFor="first_name">Fornavn</label>
+        <input name="first_name" value={firstName} onChange={e => setFirstName(e.target.value)} type="text" />
+
+        <label htmlFor="last_name">Etternavn</label>
+        <input name="last_name" value={lastName} onChange={e => setLastName(e.target.value)} type="text" />
+
+        {!!memberProp && memberProp.created_at && (
+          <p style={{ color: 'gray' }}>Medlem siden {moment(memberProp.created_at).format('DD.MM.YYYY')}</p>
+        )}
+
+        <label htmlFor="gender">Kjønn</label>
+        <select value={gender} onChange={e => setGender(e.target.value)} name="gender">
+          <option value="" disabled>
+            Velg kjønn
+          </option>
+          <option value="Mann">Mann</option>
+          <option value="Kvinne">Kvinne</option>
+        </select>
+
+        <label htmlFor="birthday">Fødselsdato</label>
+        <input name="birthday" value={birthday} onChange={e => setBirthday(e.target.value)} type="date" />
+
+        <label htmlFor="email">E-post</label>
+        <input name="email" value={email} onChange={e => setEmail(e.target.value)} type="text" />
+
+        <label htmlFor="phone">Telefon</label>
+        <input name="phone" value={phone} onChange={e => {
+          setPhone(e.target.value);
+          if (e.target.value === '81549300') setGameModalActive(true);
+        }} type="text" />
+
+        <label htmlFor="address">Adresse</label>
+        <input name="address" value={address} onChange={e => setAddress(e.target.value)} type="text" />
+
+        <label htmlFor="allergies">Allergier</label>
+        <input name="allergies" value={allergies} onChange={e => setAllergies(e.target.value)} type="text" />
+
+        <label htmlFor="voice_group">Stemmegruppe</label>
+        {['Vet ikke', 'Sopran', 'Alt', 'Tenor', 'Bass'].map((vg) => (
+          <div key={vg}>
+            <input
+              name="voice_group"
+              checked={voiceGroup === vg}
+              value={vg}
+              onChange={e => setVoiceGroup(e.currentTarget.value)}
+              type="radio"
+            />{' '}
+            {vg}
+          </div>
+        ))}
+
+        {!!memberProp && (
+          <>
+            <label htmlFor="active">Aktiv</label>
+            <input type="checkbox" checked={active} name="active" onChange={e => setActive(e.currentTarget.checked)} />
+          </>
+        )}
+
+        <button type="submit" className="btn">
+          Lagre
+        </button>
+      </form>
+    </>
+  );
+}
 
 const authCondition = (authUser) => !!authUser && !!authUser.permissions[PERMISSIONS.MEMBERS_WRITE];
 
-export default compose(withFirebase, withAuthorization(authCondition))(MembersPage);
+export default withAuthorization(authCondition)(MembersPage);
