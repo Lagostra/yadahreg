@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import { compose } from 'recompose';
 import moment from 'moment';
 import jStat from 'jStat';
 
-import { withFirebase } from '../components/Firebase';
 import { withAuthorization } from '../components/Session';
 import * as PERMISSIONS from '../constants/permissions';
 import Spinner from '../components/Spinner';
@@ -91,4 +89,4 @@ const SemesterStatistics = () => {
 const authCondition = (authUser) =>
   !!authUser && !!authUser.permissions[PERMISSIONS.EVENTS_READ] && !!authUser.permissions[PERMISSIONS.SEMESTERS_READ];
 
-export default compose(withFirebase, withAuthorization(authCondition))(SemesterStatistics);
+export default withAuthorization(authCondition)(SemesterStatistics);
