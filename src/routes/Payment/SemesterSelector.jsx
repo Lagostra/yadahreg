@@ -1,79 +1,45 @@
-import React from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
 import Modal from '../../components/Modal';
 
-import { withFirebase } from '../../components/Firebase';
 import SemesterForm from './SemesterForm';
 import Spinner from '../../components/Spinner';
+import { useFirebase, useSemesters } from 'hooks';
 
-class SemesterSelectorBase extends React.Component {
-  constructor(props) {
-    super(props);
+const SemesterSelector = ({ onSemesterSelect }) => {
+  const [modalActive, setModalActive] = useState(false);
+  const [editSemester, setEditSemester] = useState(null);
+  const [semesters] = useSemesters();
 
-    this.state = {
-      modalActive: false,
-      editSemester: null,
-      semesters: [],
-    };
-  }
+  const firebase = useFirebase();
 
-  componentDidMount() {
-    this.props.firebase.semesters().on('value', (snapshot) => {
-      const semestersObject = snapshot.val();
-      if (!semestersObject) {
-        return;
-      }
-
-      let semesters = Object.keys(semestersObject).map((key) => ({
-        ...semestersObject[key],
-        id: key,
-      }));
-
-      semesters.sort((a, b) => moment(b.end_date) - moment(a.end_date));
-
-      this.setState({ semesters });
-    });
-  }
-
-  componentWillUnmount() {
-    this.props.firebase.semesters().off();
-  }
-
-  render() {
-    const { semesters, editSemester, modalActive } = this.state;
-
-    return (
-      <div className="semester-selector">
-        <Modal active={modalActive} onClose={() => this.setState({ modalActive: false })}>
-          <SemesterForm
-            semester={editSemester}
-            onSubmit={(semester) => {
-              this.props.onSemesterSelect(semester);
-              this.setState({ modalActive: false });
-            }}
-          />
-        </Modal>
-        <div className="semester-selector__button-bar">
-          <button
-            className="btn"
-            onClick={() =>
-              this.setState({
-                modalActive: true,
-                editSemester: null,
-              })
-            }
-          >
-            Nytt semester
-          </button>
-        </div>
-        {!semesters.length && <Spinner />}
-        {!!semesters.length && <SemesterList semesters={semesters} onSemesterSelect={this.props.onSemesterSelect} />}
+  return (
+    <div className="semester-selector">
+      <Modal active={modalActive} onClose={() => setModalActive(false)}>
+        <SemesterForm
+          semester={editSemester}
+          onSubmit={(semester) => {
+            onSemesterSelect(semester);
+            setModalActive(false);
+          }}
+        />
+      </Modal>
+      <div className="semester-selector__button-bar">
+        <button
+          className="btn"
+          onClick={() => {
+            setModalActive(true);
+            setEditSemester(null);
+          }}
+        >
+          Nytt semester
+        </button>
       </div>
-    );
-  }
-}
-
-const SemesterSelector = withFirebase(SemesterSelectorBase);
+      {!semesters && <Spinner />}
+      {!!semesters && <SemesterList semesters={semesters} onSemesterSelect={onSemesterSelect} />}
+    </div>
+  );
+};
 
 const SemesterList = ({ semesters, onSemesterSelect }) => {
   return (
