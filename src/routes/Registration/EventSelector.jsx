@@ -20,7 +20,7 @@ const EventSelector = ({ onEventSelect }) => {
       date: new Date().toISOString().split('T')[0],
     };
 
-    if (events.find((e) => e.date === event.date && e.type === event.type).length) {
+    if (events.find((e) => e.date === event.date && e.type === event.type)) {
       if (!window.confirm('Det finnes allerede en øvelse i dag. Vil du likevel opprette en ny?')) {
         return;
       }
@@ -57,7 +57,7 @@ const EventSelector = ({ onEventSelect }) => {
         </button>
         <button
           className="btn"
-          onClick={() =>{
+          onClick={() => {
             setModalActive(true);
             setEditEvent(null);
           }}
@@ -66,12 +66,10 @@ const EventSelector = ({ onEventSelect }) => {
         </button>
       </div>
       {!events && <Spinner />}
-      {!!events && (
-        <EventList events={events} onEventSelect={onEventSelect} onEventEdit={handleEventEdit} />
-      )}
+      {!!events && <EventList events={events} onEventSelect={onEventSelect} onEventEdit={handleEventEdit} />}
     </div>
   );
-}
+};
 
 const EventList = ({ events, onEventSelect, onEventEdit }) => {
   return (
