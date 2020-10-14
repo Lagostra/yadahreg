@@ -4,14 +4,12 @@ import Modal from '../../components/Modal';
 
 import SemesterForm from './SemesterForm';
 import Spinner from '../../components/Spinner';
-import { useFirebase, useSemesters } from 'hooks';
+import { useSemesters } from 'hooks';
 
 const SemesterSelector = ({ onSemesterSelect }) => {
   const [modalActive, setModalActive] = useState(false);
   const [editSemester, setEditSemester] = useState(null);
   const [semesters] = useSemesters();
-
-  const firebase = useFirebase();
 
   return (
     <div className="semester-selector">
