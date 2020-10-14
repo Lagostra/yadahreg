@@ -1,84 +1,65 @@
-import React from 'react';
-import { withFirebase } from '../../components/Firebase';
+import React, { useEffect, useState } from 'react';
+import { useFirebase } from 'hooks';
 
-class SemesterFormBase extends React.Component {
-  constructor(props) {
-    super(props);
+const SemesterForm = ({ semester: semesterProp, onSubmit }) => {
+  const [title, setTitle] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
-    if (props.semester) {
-      const semester = { ...props.semester };
-      delete semester.id;
-      this.state = { ...semester };
+  const firebase = useFirebase();
+
+  useEffect(() => {
+    if (semesterProp) {
+      setTitle(semesterProp.title);
+      setStartDate(semesterProp.startDate);
+      setEndDate(semesterProp.endDate);
     } else {
-      this.state = {
-        title: '',
-        start_date: '',
-        end_date: '',
-      };
+      setTitle('');
+      setStartDate('');
+      setEndDate('');
     }
-  }
+  }, [semesterProp]);
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.semester !== this.props.semester) {
-      const semester = { ...this.props.semester };
-      delete semester.id;
-      this.setState({ ...semester });
-    }
-  }
-
-  onChange = (event) => {
-    this.setState({
-      [event.currentTarget.name]: event.currentTarget.value,
-    });
-  };
-
-  onSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    const { title, start_date, end_date } = this.state;
     const semester = {
       title,
-      start_date,
-      end_date,
+      start_date: startDate,
+      end_date: endDate,
     };
 
-    if (this.props.semester) {
-      this.props.firebase.semester(this.props.semester.id).set(semester);
-      semester.id = this.props.semester.id;
+    if (semesterProp) {
+      firebase.semester(semesterProp.id).set(semester);
+      semester.id = semesterProp.id;
     } else {
-      const ref = this.props.firebase.semesters().push(semester);
+      const ref = firebase.semesters().push(semester);
       semester.id = ref.getKey();
     }
 
-    if (this.props.onSubmit) {
-      this.props.onSubmit(semester);
+    if (onSubmit) {
+      onSubmit(semester);
     }
   };
 
-  render() {
-    const { title, start_date, end_date } = this.state;
+  return (
+    <form className="semester-form" onSubmit={handleSubmit}>
+      <h1>{semesterProp ? 'Rediger semester' : 'Nytt semester'}</h1>
 
-    return (
-      <form className="semester-form" onSubmit={this.onSubmit}>
-        <h1>{this.props.semester ? 'Rediger semester' : 'Nytt semester'}</h1>
+      <label htmlFor="title">Tittel</label>
+      <input name="title" value={title} onChange={(e) => setTitle(e.target.value)} type="text" />
 
-        <label htmlFor="title">Tittel</label>
-        <input name="title" value={title} onChange={this.onChange} type="text" />
+      <label htmlFor="start_date">Startdato</label>
+      <input name="start_date" value={startDate} onChange={(e) => setStartDate(e.target.value)} type="date" />
 
-        <label htmlFor="start_date">Startdato</label>
-        <input name="start_date" value={start_date} onChange={this.onChange} type="date" />
+      <label htmlFor="end_date">Sluttdato</label>
+      <input name="end_date" value={endDate} onChange={(e) => setEndDate(e.target.value)} type="date" />
 
-        <label htmlFor="end_date">Sluttdato</label>
-        <input name="end_date" value={end_date} onChange={this.onChange} type="date" />
-
-        <button type="submit" className="btn">
-          Lagre
-        </button>
-      </form>
-    );
-  }
-}
-
-const SemesterForm = withFirebase(SemesterFormBase);
+      <button type="submit" className="btn">
+        Lagre
+      </button>
+    </form>
+  );
+};
 
 export default SemesterForm;
