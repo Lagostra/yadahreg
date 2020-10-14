@@ -8,6 +8,7 @@ import { useFirebase, useAuthUser, useMembers } from 'hooks';
 
 const RegistrationPage = () => {
   const [members] = useMembers();
+  const [eventId, setEventId] = useState(null);
   const [event, setEvent] = useState(null);
   const [semester, setSemester] = useState(null);
 
@@ -15,27 +16,30 @@ const RegistrationPage = () => {
   const authUser = useAuthUser();
 
   useEffect(() => {
-    if (event) {
-      firebase.event(event.id).on('value', snapshot => {
-        setEvent({...snapshot.val(), id: event.id})
+    if (eventId) {
+      firebase.event(eventId).on('value', (snapshot) => {
+        setEvent({ ...snapshot.val(), id: eventId });
       });
 
-      return () => firebase.event(event.id).off();
+      return () => firebase.event(eventId).off();
     }
-  }, [event, firebase]);
+  }, [eventId, firebase]);
 
   useEffect(() => {
     if (!!authUser.permissions[PERMISSIONS.SEMESTERS_READ]) {
-      firebase.semesters().once('value').then(snapshot => {
-        const semestersObject = snapshot.val();
-        const semesters = Object.keys(semestersObject).map((key) => ({
-          ...semestersObject[key],
-          id: key,
-        }));
+      firebase
+        .semesters()
+        .once('value')
+        .then((snapshot) => {
+          const semestersObject = snapshot.val();
+          const semesters = Object.keys(semestersObject).map((key) => ({
+            ...semestersObject[key],
+            id: key,
+          }));
 
-        const lastSemester = semesters.reduce((a, b) => (moment(a.end_date) > moment(b.end_data) ? a : b));
-        setSemester(lastSemester);
-      });
+          const lastSemester = semesters.reduce((a, b) => (moment(a.end_date) > moment(b.end_data) ? a : b));
+          setSemester(lastSemester);
+        });
     }
   }, [firebase, authUser]);
 
@@ -66,7 +70,7 @@ const RegistrationPage = () => {
 
   return (
     <div className="content">
-      {!event && <EventSelector onEventSelect={(event) => setEvent(event)} />}
+      {!event && <EventSelector onEventSelect={(event) => setEventId(event.id)} />}
       {event && (
         <RegistrationForm
           onRegistrationChange={handleRegistrationChange}
@@ -78,7 +82,7 @@ const RegistrationPage = () => {
       )}
     </div>
   );
-}
+};
 
 const authCondition = (authUser) => !!authUser && !!authUser.permissions[PERMISSIONS.EVENTS_WRITE];
 
