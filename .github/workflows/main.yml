@@ -23,7 +23,7 @@ jobs:
             github.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: "refs/tags/${{ github.event.pull_request.number }}",
+              ref: "refs/tags/pr-${{ github.event.pull_request.number }}",
               sha: context.sha
             })
         
