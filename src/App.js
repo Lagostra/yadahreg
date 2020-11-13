@@ -3,7 +3,10 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { compose } from 'recompose';
 
 import * as ROUTES from './constants/routes';
-import { withAuthentication, withAuthUser } from './components/Session';
+import {
+    withAuthentication,
+    withAuthUser,
+} from './components/Session';
 
 import Navigation from './components/Navigation';
 import Home from './routes/Home';
@@ -28,53 +31,94 @@ import AttendanceOverview from './routes/AttendanceOverview';
 import Allergies from './routes/Allergies';
 import SemesterStatistics from './routes/SemesterStatistics';
 
-const App = (props) => {
-  const showNavigation = !!props.authUser;
-  const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-  const isProd = process.env.NODE_ENV === 'production';
-  const prodOnLocal = isLocal && isProd;
+const App = props => {
+    const showNavigation = !!props.authUser;
+    const isLocal =
+        window.location.hostname === 'localhost' ||
+        window.location.hostname === '127.0.0.1';
+    const isProd = process.env.NODE_ENV === 'production';
+    const prodOnLocal = isLocal && isProd;
 
-  if (isLocal) {
-    if (!document.title.startsWith('[local] ')) {
-      document.title = '[local] ' + document.title;
+    if (isLocal) {
+        if (!document.title.startsWith('[local] ')) {
+            document.title = '[local] ' + document.title;
+        }
+    } else if (!isProd && !document.title.startsWith('[test] ')) {
+        document.title = '[test] ' + document.title;
     }
-  } else if (!isProd && !document.title.startsWith('[test] ')) {
-    document.title = '[test] ' + document.title;
-  }
 
-  return (
-    <Router>
-      <div className={`top-bar ${showNavigation ? '' : 'hidden'}`}>
-        <Navigation />
-      </div>
-      <div className="content-wrapper">
-        {prodOnLocal && (
-          <span style={{ fontWeight: 'bold', color: 'red' }}>
-            You are running against the production environment on localhost! For development, the testing environment
-            should be used to avoid accidental data corruption or loss.
-          </span>
-        )}
+    return (
+        <Router>
+            <div
+                className={`top-bar ${
+                    showNavigation ? '' : 'hidden'
+                }`}
+            >
+                <Navigation />
+            </div>
+            <div className="content-wrapper">
+                {prodOnLocal && (
+                    <span
+                        style={{ fontWeight: 'bold', color: 'red' }}
+                    >
+                        You are running against the production
+                        environment on localhost! For development, the
+                        testing environment should be used to avoid
+                        accidental data corruption or loss.
+                    </span>
+                )}
 
-        <Route exact path={ROUTES.LANDING} component={Home} />
-        <Route path={ROUTES.SIGN_IN} component={SignIn} />
-        <Route path={ROUTES.SIGN_UP} component={SignUp} />
-        <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForget} />
-        <Route exact path={ROUTES.USER_LIST} component={UserList} />
-        <Route path={ROUTES.ACCOUNT} component={AccountPage} />
-        <Route path={ROUTES.ROLES} component={Roles} />
-        <Route path={ROUTES.MEMBERS} component={Members} />
-        <Route path={ROUTES.REGISTRATION} component={Registration} />
-        <Route path={ROUTES.PAYMENT} component={Payment} />
-        <Route path={ROUTES.DATA_EXPORT} component={DataExport} />
-        <Route path={ROUTES.INACTIVE_MEMBERS} component={InactiveMembers} />
-        <Route path={ROUTES.MAILING_LIST} component={MailingList} />
-        <Route path={ROUTES.TOP_LIST} component={TopList} />
-        <Route path={ROUTES.ATTENDANCE_OVERVIEW} component={AttendanceOverview} />
-        <Route path={ROUTES.ALLERGIES} component={Allergies} />
-        <Route path={ROUTES.SEMESTER_STATISTICS} component={SemesterStatistics} />
-      </div>
-    </Router>
-  );
+                <Route exact path={ROUTES.LANDING} component={Home} />
+                <Route path={ROUTES.SIGN_IN} component={SignIn} />
+                <Route path={ROUTES.SIGN_UP} component={SignUp} />
+                <Route
+                    path={ROUTES.PASSWORD_FORGET}
+                    component={PasswordForget}
+                />
+                <Route
+                    exact
+                    path={ROUTES.USER_LIST}
+                    component={UserList}
+                />
+                <Route
+                    path={ROUTES.ACCOUNT}
+                    component={AccountPage}
+                />
+                <Route path={ROUTES.ROLES} component={Roles} />
+                <Route path={ROUTES.MEMBERS} component={Members} />
+                <Route
+                    path={ROUTES.REGISTRATION}
+                    component={Registration}
+                />
+                <Route path={ROUTES.PAYMENT} component={Payment} />
+                <Route
+                    path={ROUTES.DATA_EXPORT}
+                    component={DataExport}
+                />
+                <Route
+                    path={ROUTES.INACTIVE_MEMBERS}
+                    component={InactiveMembers}
+                />
+                <Route
+                    path={ROUTES.MAILING_LIST}
+                    component={MailingList}
+                />
+                <Route path={ROUTES.TOP_LIST} component={TopList} />
+                <Route
+                    path={ROUTES.ATTENDANCE_OVERVIEW}
+                    component={AttendanceOverview}
+                />
+                <Route
+                    path={ROUTES.ALLERGIES}
+                    component={Allergies}
+                />
+                <Route
+                    path={ROUTES.SEMESTER_STATISTICS}
+                    component={SemesterStatistics}
+                />
+            </div>
+        </Router>
+    );
 };
 
 export default compose(withAuthentication, withAuthUser)(App);
