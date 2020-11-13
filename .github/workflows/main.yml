@@ -1,0 +1,29 @@
+name: PR Tags
+
+on:
+  pull_request:
+    types: [ closed ]
+    branches: [ master ]
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with: 
+          ref: 'master'
+
+      - name: Tag with PR number
+        if: ${{ github.event.pull_request.merged }}
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            github.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: "refs/tags/${{ github.event.pull_request.number }}",
+              sha: context.sha
+            })
+        
