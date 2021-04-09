@@ -38,4 +38,5 @@ jobs:
         run: firebase use ${{ env.run_configuration }}
       
       - name: Deploy application
+        if: startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/master'
         run: firebase deploy
