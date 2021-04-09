@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      run_configuration: ${{ fromJSON('["prod", "test"]')[startsWith(github.ref, 'refs/tags/v')] }}
+      run_configuration: ${{ fromJSON('["test", "prod"]')[startsWith(github.ref, 'refs/tags/v')] }}
       FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
 
     steps:
