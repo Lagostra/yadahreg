@@ -16,7 +16,6 @@ const Home = () => {
       ) : (
         <p>Brukeren din er ikke aktivert. Ta kontakt med en administrator for å få fikset dette.</p>
       )}
-      <p>Denne versjonen er bygd med GitHub Actions!</p>
     </div>
   )
 };
